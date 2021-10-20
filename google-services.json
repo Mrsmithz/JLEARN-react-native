@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "448307471579",
+    "project_id": "j-learn-9a651",
+    "storage_bucket": "j-learn-9a651.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:448307471579:android:8d8b95ea87a735dbfd18fe",
+        "android_client_info": {
+          "package_name": "android.package"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "448307471579-45rvhdgodren1oiuuhf3chkq0mgbg07e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_XPLydSaXuvKVzyRFXjhRlxMhVZD3A54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "448307471579-45rvhdgodren1oiuuhf3chkq0mgbg07e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
