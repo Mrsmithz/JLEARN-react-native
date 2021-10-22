@@ -21,7 +21,7 @@ import {
 } from "react-native";
 import { Chip, Text } from 'react-native-paper';
 import Navbar from '../Navbar/Navbar'
-import According from '../According/According'
+import Accordion from '../Accordion/Accordion'
 import { Icon } from 'react-native-eva-icons';
 import { Button, Card, Layout, Tab, TabBar } from "@ui-kitten/components";
 import * as Progress from 'react-native-progress';
@@ -143,11 +143,11 @@ function Result(props) {
                             </Stack>
                         </Stack>
                     </Card>
-                    <According title={"Class"} icon={"clipboard"} color={'#E79796'}></According>
-                    <According title={"Relations"} icon={"folder"} color={'#E79796'}></According>
-                    <According title={"Test Case"} icon={"chart-tree"} color={'#E79796'}></According>
-                    <According title={"Diagram"} icon={"chart-tree"} color={'#E79796'}></According>
-                    <According title={"Code"} icon={"chart-tree"} color={'#E79796'}></According>
+                    <Accordion title={"Class"} icon={"clipboard"} color={'#E79796'}></Accordion>
+                    <Accordion title={"Relations"} icon={"folder"} color={'#E79796'}></Accordion>
+                    <Accordion title={"Test Case"} icon={"chart-tree"} color={'#E79796'}></Accordion>
+                    <Accordion title={"Diagram"} icon={"chart-tree"} color={'#E79796'}></Accordion>
+                    <Accordion title={"Code"} icon={"chart-tree"} color={'#E79796'}></Accordion>
                     <TouchableOpacity style={styles.button} onPress={() => {
                         props.props.navigation.navigate("AssignmentScreen");
                     }}>

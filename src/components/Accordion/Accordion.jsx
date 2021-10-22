@@ -4,7 +4,7 @@ import { Box, NativeBaseProvider, Center, Stack, HStack, Text } from 'native-bas
 import {
   StyleSheet,
 } from "react-native";
-const MyComponent = (props) => {
+const Accordion = (props) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handlePress = () => setExpanded(!expanded);
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MyComponent;
+export default Accordion;

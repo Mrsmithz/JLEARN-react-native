@@ -117,7 +117,7 @@ function CreateCourse(props) {
                             style={styles.textinput}
                         />
                         <TextInput
-                            label="Password"
+                            label="Enroll Key"
                             mode="outlined"
                             style={styles.textinput}
                         />

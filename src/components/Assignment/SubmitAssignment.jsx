@@ -21,7 +21,7 @@ import {
 } from "react-native";
 import { Chip, Text } from 'react-native-paper';
 import Navbar from '../Navbar/Navbar'
-import According from '../According/According'
+import Accordion from '../Accordion/Accordion'
 import { Icon } from 'react-native-eva-icons';
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -91,10 +91,10 @@ function SubmitAssignment(props) {
                     />
                 } >
                 <View style={styles.cardLayout}>
-                    <According title={"Description"} icon={"clipboard"} color={"#B4B4F5"}></According>
-                    <According title={"Files"} icon={"folder"} color={"#B4B4F5"}></According>
-                    <According title={"Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></According>
-                    <According title={"Your Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></According>
+                    <Accordion title={"Description"} icon={"clipboard"} color={"#B4B4F5"}></Accordion>
+                    <Accordion title={"Files"} icon={"folder"} color={"#B4B4F5"}></Accordion>
+                    <Accordion title={"Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></Accordion>
+                    <Accordion title={"Your Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></Accordion>
                     <TouchableOpacity style={styles.upload} onPress={() => {
                         console.log("click")
                     }}>
