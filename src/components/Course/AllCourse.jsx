@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -27,12 +27,36 @@ import back from "../../assets/back2.png";
 import Navbar from '../Navbar/Navbar'
 import { Icon } from 'react-native-eva-icons';
 import AddIcon from '../Icon/AddIcon'
+import useSWR from 'swr'
+import axios from "axios"
+import API from "../../service/API"
+import ClassroomService from "../../service/ClassroomService";
+
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
-
+// const url = API.Classroom.getAllClassroom
+// const fetcher = (...args) => axios.get(...args, {
+//   headers: {
+//     Authorization: "Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiTEVBUk5FUiIsImlkIjoiNjE4ZWFjZTA2MzE1MzAzYmVkZjFmZWQxIiwic3ViIjoiNjIwNzAxNjVAaXQua21pdGwuYWMudGgiLCJpYXQiOjE2MzY4OTYyMDQsImV4cCI6MTYzNjk4MjYwNH0.1s9gcWsczLUgpkztLndhUC1FMsF1S9A8T0ZdjRSawkdbJugv6v0GdyCBkKPl9mVY"
+//   }
+// }).then(res => res.data)
 function AllCourse(props) {
+  const [course, setCourse] = React.useState([])
+  // useEffect(() =>{ 
+  //   console.log(course, "zz")
+  // }, [course])
+  // const { data, error } = ClassroomService.getAllClassroom()
+  async function getCourse() {
+    const data = await ClassroomService.getAllClassroom()
+    setCourse(data)
+  }
+  getCourse()
+  // const { data, error } = useSWR(url, fetcher)
+  // console.log(data, error)
+  // console.log(url)
+
   const styles = StyleSheet.create({
     cardLayout: {
       marginTop: 20,
@@ -79,77 +103,25 @@ function AllCourse(props) {
           />
         } >
         <View style={styles.cardLayout}>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20 }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Description</Text>
+          {course && course.map((course, index) => (
+            <TouchableOpacity style={styles.card} key={index} onPress={() => {
+              props.navigation.navigate("LessonScreen");
+            }}>
+              <Stack direction="row" style={{ marginRight: 20 }}>
+                <Image source={Logo} style={styles.image}  ></Image>
+                <Stack direction="column" style={styles.text}>
+                  <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
+                  <Text style={{ flex: 3 }} numberOfLines={4}>{course.description}</Text>
+                </Stack>
               </Stack>
-            </Stack>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20 }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Description</Text>
-              </Stack>
-            </Stack>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20, }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Descriptionzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</Text>
-              </Stack>
-            </Stack>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20 }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Description</Text>
-              </Stack>
-            </Stack>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20 }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Description</Text>
-              </Stack>
-            </Stack>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20 }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Description</Text>
-              </Stack>
-            </Stack>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
         </View>
       </ScrollView >
       {true ?
-        <AddIcon props={props} goto={()=>{
-          props.navigation.navigate("CreateCourseScreen")}} ></AddIcon> : null
+        <AddIcon props={props} goto={() => {
+          props.navigation.navigate("CreateCourseScreen")
+        }} ></AddIcon> : null
       }
     </SafeAreaView>
   );

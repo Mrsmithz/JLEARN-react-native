@@ -23,6 +23,7 @@ import { Chip, Text } from 'react-native-paper';
 import Navbar from '../Navbar/Navbar'
 import Accordion from '../Accordion/Accordion'
 import { Icon } from 'react-native-eva-icons';
+import * as DocumentPicker from 'expo-document-picker';
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
@@ -71,10 +72,30 @@ function SubmitAssignment(props) {
             alignItems: "center",
             marginBottom: 10,
             marginLeft: 2
-        }
+        },
+        text_upload: {
+            fontSize: 18,
+            textAlign: 'center',
+            color: 'snow',
+            flex: 1
+        },
     });
     const [refreshing, setRefreshing] = React.useState(false);
+    let [files, setFiles] = React.useState([]);
 
+    const pickDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({});
+        if (result.type === "success") {
+            setFiles([...files, result.name])
+        } else if (result.type === "cancel") {
+            console.log("cancel")
+        }
+    };
+    const deleteFile = (index) => {
+        let allFiles = files
+        allFiles.splice(index, 1)
+        setFiles([...allFiles])
+    }
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
@@ -96,17 +117,16 @@ function SubmitAssignment(props) {
                     <Accordion title={"Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></Accordion>
                     <Accordion title={"Your Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></Accordion>
                     <TouchableOpacity style={styles.upload} onPress={() => {
-                        console.log("click")
+                        pickDocument()
                     }}>
 
-                        <Text style={{ alignSelf: 'center', marginTop: 10 }}>Upload your code files here</Text>
+                        <Text style={{ alignSelf: 'center', marginTop: 10, fontSize: 18,fontWeight: 'bold'}}>Upload your code files here</Text>
                         <Icon name="cloud-upload" fill='black' style={{ height: 100 }} />
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                            <Chip onPress={() => console.log('Pressed')} onClose={() => console.log('Closed')} style={styles.chip}>Examp</Chip>
-                            <Chip onPress={() => console.log('Pressed')} onClose={() => console.log('Closed')} style={styles.chip}>Example Chipaaaaaa</Chip>
-                            <Chip onPress={() => console.log('Pressed')} onClose={() => console.log('Closed')} style={styles.chip}>Examplzzz</Chip>
-                            <Chip onPress={() => console.log('Pressed')} onClose={() => console.log('Closed')} style={styles.chip}>Example Chip</Chip>
-                            <Chip onPress={() => console.log('Pressed')} onClose={() => console.log('Closed')} style={styles.chip}>Example Chipzzzz</Chip>
+                            {files.length ? files.map((file, index) => {
+                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file}</Chip>
+                            })
+                                : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => {

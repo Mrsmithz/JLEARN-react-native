@@ -32,15 +32,19 @@ import {
 } from "react-native/Libraries/NewAppScreen";
 import Logo from "../../assets/j-learn.png";
 import back from "../../assets/back2.png";
-import ParticleBackground from "react-native-particle-background";
 import { BackgroundImage } from "react-native-elements/dist/config";
 import { BoxShadow } from "react-native-shadow";
 import * as GoogleSignIn from 'expo-google-sign-in';
 import * as Google from 'expo-google-app-auth';
+import axios from 'axios';
+import { useSelector, useDispatch } from "react-redux";
+import { addToken } from "../../store/actions/tokenAction"
+import useSWR from 'swr'
 
 
 
 function LoginScreen(props) {
+  const dispatch = useDispatch() 
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
@@ -73,22 +77,26 @@ function LoginScreen(props) {
   // Somewhere in your code
 
   signInAsync = async () => {
-    // const config = {
-    //   androidClientId: "1078651650648-hi0rvrcbhb6geg8aogb1um3kbc8di1pl.apps.googleusercontent.com"
-    // }
-    // try {
-    //   const result = await Google.logInAsync(
-    //     config
-    //   );
-    //   if (result.type === 'success') {
-        // return result.accessToken;
+    const config = {
+      clientId: "1078651650648-hi0rvrcbhb6geg8aogb1um3kbc8di1pl.apps.googleusercontent.com",
+    }
+    try {
+      const result = await Google.logInAsync(
+        config
+      );
+      if (result.type === 'success') {
+        const accessToken = await axios.get('http://192.168.1.33:8081/api/v1/auth/token/google/verify/'+ result.idToken)
+        dispatch(addToken(accessToken.data.accessToken));
+        axios.defaults.headers.common['Authorization'] = accessToken.data.accessToken
         props.navigation.navigate("CourseScreen")
-    //   } else {
-    //     return { cancelled: true };
-    //   }
-    // } catch (e) {
-    //   return { error: true };
-    // }
+        return result.accessToken;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log(e)
+      return { error: true };
+    }
   };
   return (
     <SafeAreaView>
@@ -131,12 +139,6 @@ function LoginScreen(props) {
               width={300}
             ></Image>
           </View>
-          {/* <GoogleSigninButton
-            style={{ width: 192, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={signIn} */}
-          {/* />; */}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
