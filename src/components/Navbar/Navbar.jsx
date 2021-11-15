@@ -42,7 +42,7 @@ function Navbar(props) {
     props.props.navigation.navigate("LoginScreen")
   }
   return (
-    <Box height='119' borderBottomRadius='25' bg='#FFB284' width="100%" style={{ flexDirection: 'column' }} >
+    <Box height='119' borderBottomRadius='20' bg='#FFB284' width="100%" style={{ flexDirection: 'column' }} >
       <Stack direction="row" style={{ marginRight: 20, marginTop: 35, alignItems: "center", justifyContent: "center" }}>
         <Stack direction="column" style={{ flex: 1, height: 35 }}>
           {props.back ?

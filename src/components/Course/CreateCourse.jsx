@@ -29,11 +29,18 @@ import back from "../../assets/back2.png";
 import Navbar from '../Navbar/Navbar'
 import { Icon } from 'react-native-eva-icons';
 import * as ImagePicker from 'expo-image-picker'
-
+import CourseService from "../../service/CourseService"
+import useSWR, { useSWRConfig } from 'swr'
+import API from "../../service/API"
 
 function CreateCourse(props) {
     props = props.props
+    const { mutate } = useSWRConfig()
     let [image, setImage] = React.useState(null);
+    let [title, setTitle] = React.useState("");
+    let [description, setDescription] = React.useState("");
+    let [enroll, setEnroll] = React.useState("");
+    let [isHide, setIsHide] = React.useState(false);
     const styles = StyleSheet.create({
         Layout: {
             marginTop: 10,
@@ -80,8 +87,8 @@ function CreateCourse(props) {
             width: "95%"
         },
         logo: {
-            width: 370,
-            height: 180,
+            width: '100%',
+            height: 250,
             marginBottom: 10,
             alignSelf: "center"
         },
@@ -94,9 +101,39 @@ function CreateCourse(props) {
             return;
         }
 
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
         setImage({ localUri: pickerResult.uri });
 
+    }
+    const createCourse = async () => {
+        // if (title === '') {
+        //     this.setState({ errorName: true, dialogError: true })
+        //     return 0
+        // }
+        try {
+            let form = new FormData()
+            if(image){
+                let localUri = image.localUri;
+                let filename = localUri.split('/').pop();
+                let match = /\.(\w+)$/.exec(filename);
+                let type = match ? `image/${match[1]}` : `image`;
+                form.append('image',{ uri: localUri, name: filename, type })
+            }
+            form.append('title', title)
+            form.append('description', description)
+            form.append('password', enroll)
+            form.append('isHide', isHide)
+            await CourseService.createCourse(form)
+            mutate(API.Course.getAllCourse)
+            props.navigation.navigate("CourseScreen")
+        } catch (err) {
+            console.log(err)
+        }
     }
     return (
         <SafeAreaView style={styles.container}>
@@ -109,21 +146,28 @@ function CreateCourse(props) {
                             label="Title"
                             mode="outlined"
                             style={styles.textinput}
+                            value={title}
+                            onChangeText={title => setTitle(title)}
                         />
                         {/* <Text style={styles.text}>Description</Text> */}
                         <TextInput
                             label="Description"
                             mode="outlined"
                             style={styles.textinput}
+                            value={description}
+                            onChangeText={description => setDescription(description)}
                         />
                         <TextInput
                             label="Enroll Key"
                             mode="outlined"
                             style={styles.textinput}
+                            secureTextEntry={true}
+                            value={enroll}
+                            onChangeText={enroll => setEnroll(enroll)}
                         />
                         <Stack direction="row" style={{ marginTop: 5 }}>
                             <Text style={styles.text}>Hide</Text>
-                            <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" />
+                            <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" onPress={() => setIsHide(!isHide)} />
                         </Stack>
                         <Text style={styles.text}>Course Image</Text>
                         <Image source={image !== null ? { uri: image.localUri } : Logo} style={styles.logo} />
@@ -131,10 +175,10 @@ function CreateCourse(props) {
                             openImagePickerAsync()
                         }}>
                             <Stack direction="row">
-                                <Stack direction="column" style={{flex:1}}>
-                                    <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop:4 }} />
+                                <Stack direction="column" style={{ flex: 1 }}>
+                                    <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
                                 </Stack>
-                                <Stack direction="column" style={{flex:7, marginRight:"12%"}}>
+                                <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
                                     <Text style={styles.text_button}>Upload Image</Text>
                                 </Stack>
                             </Stack>
@@ -142,7 +186,7 @@ function CreateCourse(props) {
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.button} onPress={() => {
-                            props.props.navigation.navigate("ResultScreen");
+                            createCourse()
                         }}>
                             <Text style={styles.text_button}>Create Course</Text>
                         </TouchableOpacity>

@@ -40,6 +40,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from "react-redux";
 import { addToken } from "../../store/actions/tokenAction"
 import useSWR from 'swr'
+import AuthService from "../../service/AuthService"
 
 
 
@@ -85,9 +86,10 @@ function LoginScreen(props) {
         config
       );
       if (result.type === 'success') {
-        const accessToken = await axios.get('http://192.168.1.33:8081/api/v1/auth/token/google/verify/'+ result.idToken)
+        const accessToken = await AuthService.getAccessToken(result.idToken)
         dispatch(addToken(accessToken.data.accessToken));
-        axios.defaults.headers.common['Authorization'] = accessToken.data.accessToken
+        console.log(result.idToken)
+        axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken.data.accessToken}`
         props.navigation.navigate("CourseScreen")
         return result.accessToken;
       } else {

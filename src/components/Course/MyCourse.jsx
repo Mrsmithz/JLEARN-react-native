@@ -25,14 +25,20 @@ import { Box, NativeBaseProvider, Center, Stack, HStack } from 'native-base';
 import Logo from "../../assets/j-learn.png";
 import back from "../../assets/back2.png";
 import { Icon } from 'react-native-eva-icons';
-import { Avatar } from 'react-native-elements';
 import Navbar from '../Navbar/Navbar'
+import useSWR from 'swr'
+import API from "../../service/API"
+import { Fetcher } from "../../service/Fetcher";
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 function AllCourse(props) {
+  const url = API.Course.getAllCourse
+  const {data, error} = useSWR(url, Fetcher)
+  let course = data
+
   const styles = StyleSheet.create({
     cardLayout: {
       marginTop: 20,
@@ -81,39 +87,19 @@ function AllCourse(props) {
           />
         } >
         <View style={styles.cardLayout}>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20 }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Description</Text>
+        {course && course.map((course, index) => (
+            <TouchableOpacity style={styles.card} key={index} onPress={() => {
+              props.navigation.navigate("LessonScreen");
+            }}>
+              <Stack direction="row" style={{ marginRight: 20 }}>
+                <Image source={Logo} style={styles.image}  ></Image>
+                <Stack direction="column" style={styles.text}>
+                  <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
+                  <Text style={{ flex: 3 }} numberOfLines={4}>{course.description}</Text>
+                </Stack>
               </Stack>
-            </Stack>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20 }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Description</Text>
-              </Stack>
-            </Stack>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={() => {
-            props.navigation.navigate("LessonScreen");
-          }}>
-            <Stack direction="row" style={{ marginRight: 20, }}>
-              <Image source={Logo} style={styles.image}  ></Image>
-              <Stack direction="column" style={styles.text}>
-                <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>Course name</Text>
-                <Text style={{ flex: 3 }} numberOfLines={4}>Descriptionzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</Text>
-              </Stack>
-            </Stack>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
         </View>
       </ScrollView >
     </SafeAreaView>

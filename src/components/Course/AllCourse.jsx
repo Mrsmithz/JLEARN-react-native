@@ -28,38 +28,23 @@ import Navbar from '../Navbar/Navbar'
 import { Icon } from 'react-native-eva-icons';
 import AddIcon from '../Icon/AddIcon'
 import useSWR from 'swr'
-import axios from "axios"
 import API from "../../service/API"
-import ClassroomService from "../../service/ClassroomService";
+import { Fetcher } from "../../service/Fetcher";
 
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
-// const url = API.Classroom.getAllClassroom
-// const fetcher = (...args) => axios.get(...args, {
-//   headers: {
-//     Authorization: "Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiTEVBUk5FUiIsImlkIjoiNjE4ZWFjZTA2MzE1MzAzYmVkZjFmZWQxIiwic3ViIjoiNjIwNzAxNjVAaXQua21pdGwuYWMudGgiLCJpYXQiOjE2MzY4OTYyMDQsImV4cCI6MTYzNjk4MjYwNH0.1s9gcWsczLUgpkztLndhUC1FMsF1S9A8T0ZdjRSawkdbJugv6v0GdyCBkKPl9mVY"
-//   }
-// }).then(res => res.data)
+
 function AllCourse(props) {
-  const [course, setCourse] = React.useState([])
-  // useEffect(() =>{ 
-  //   console.log(course, "zz")
-  // }, [course])
-  // const { data, error } = ClassroomService.getAllClassroom()
-  async function getCourse() {
-    const data = await ClassroomService.getAllClassroom()
-    setCourse(data)
-  }
-  getCourse()
-  // const { data, error } = useSWR(url, fetcher)
-  // console.log(data, error)
-  // console.log(url)
+  const url = API.Course.getAllCourse
+  const {data, error} = useSWR(url, Fetcher)
+  let course = data
 
   const styles = StyleSheet.create({
     cardLayout: {
-      marginTop: 20,
+      marginTop: 10,
+      marginBottom:15,
       width: "93%",
       alignSelf: "center",
     },
