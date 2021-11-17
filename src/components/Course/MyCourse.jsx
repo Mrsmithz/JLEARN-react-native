@@ -63,7 +63,10 @@ function AllCourse(props) {
       justifyContent: "flex-start"
     },
     image: {
-      flex: 2, height: 120
+      flex: 2, 
+      height: 115,
+      borderRadius:10,
+      margin:2
     },
     text: {
       flex: 3,
@@ -71,7 +74,6 @@ function AllCourse(props) {
     }
   });
   const [refreshing, setRefreshing] = React.useState(false);
-
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -89,10 +91,10 @@ function AllCourse(props) {
         <View style={styles.cardLayout}>
         {course && course.map((course, index) => (
             <TouchableOpacity style={styles.card} key={index} onPress={() => {
-              props.navigation.navigate("LessonScreen");
+              props.navigation.navigate("LessonScreen", course);
             }}>
               <Stack direction="row" style={{ marginRight: 20 }}>
-                <Image source={Logo} style={styles.image}  ></Image>
+                <Image source={course.image ? {uri:API.File.getImage+course.image} : Logo} style={styles.image}  ></Image>
                 <Stack direction="column" style={styles.text}>
                   <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
                   <Text style={{ flex: 3 }} numberOfLines={4}>{course.description}</Text>

@@ -24,11 +24,14 @@ import Navbar from '../Navbar/Navbar'
 import Accordion from '../Accordion/Accordion'
 import { Icon } from 'react-native-eva-icons';
 import * as DocumentPicker from 'expo-document-picker';
+import EditIcon from "../Icon/EditIcon"
+
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 function SubmitAssignment(props) {
+
     const styles = StyleSheet.create({
         cardLayout: {
             width: "95%",
@@ -120,7 +123,7 @@ function SubmitAssignment(props) {
                         pickDocument()
                     }}>
 
-                        <Text style={{ alignSelf: 'center', marginTop: 10, fontSize: 18,fontWeight: 'bold'}}>Upload your code files here</Text>
+                        <Text style={{ alignSelf: 'center', marginTop: 10, fontSize: 18, fontWeight: 'bold' }}>Upload your code files here</Text>
                         <Icon name="cloud-upload" fill='black' style={{ height: 100 }} />
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                             {files.length ? files.map((file, index) => {
@@ -136,7 +139,14 @@ function SubmitAssignment(props) {
                     </TouchableOpacity>
                 </View>
             </ScrollView >
-
+            {true ?
+                <>
+                    <EditIcon props={props} goto={() => {
+                        props.props.navigation.navigate("EditAssignmentScreen")
+                    }}></EditIcon>
+                </>
+                : null
+            }
         </SafeAreaView>
     );
 }

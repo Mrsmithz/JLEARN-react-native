@@ -86,10 +86,11 @@ function LoginScreen(props) {
         config
       );
       if (result.type === 'success') {
+        console.log(result.idToken)
         const accessToken = await AuthService.getAccessToken(result.idToken)
         dispatch(addToken(accessToken.data.accessToken));
-        console.log(result.idToken)
         axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken.data.accessToken}`
+        // console.log(accessToken.data.accessToken)
         props.navigation.navigate("CourseScreen")
         return result.accessToken;
       } else {

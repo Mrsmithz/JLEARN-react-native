@@ -24,11 +24,13 @@ import { Link } from 'native-base';
 import Navbar from '../Navbar/Navbar'
 import Carousel from '../Carousel/AssignmentCarousel'
 import { Icon } from 'react-native-eva-icons';
+import EditIcon from '../Icon/EditIcon'
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 function Lesson(props) {
+    let lesson = props.props.route.params
     const styles = StyleSheet.create({
         cardLayout: {
             width: "90%",
@@ -63,7 +65,7 @@ function Lesson(props) {
     }, []);
     return (
         <SafeAreaView style={styles.container}>
-            <Navbar back={true} header={"Lesson name"} props={props.props}></Navbar>
+            <Navbar back={true} header={lesson.title} props={props.props}></Navbar>
 
             <ScrollView
                 refreshControl={
@@ -75,24 +77,23 @@ function Lesson(props) {
                 <View style={styles.cardLayout}>
                     <Text style={{ marginTop: 20, marginLeft: 6 }}>Description</Text>
                     <Card style={styles.card}>
-                        <Text>Aj. John Smithzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</Text>
+                        <Text>{lesson.description}</Text>
                     </Card>
                 </View>
                 <View style={styles.cardLayout}>
                     <Text style={{ marginTop: 20, marginLeft: 6 }}>Material</Text>
                     <Card style={styles.card}>
-                        <Link
-                            _text={{
-                                color: "blue.400",
-                            }}>Materail1.pdf</Link>
-                        <Link
-                            _text={{
-                                color: "blue.400",
-                            }}>Materail1.pdf</Link>
-                        <Link
-                            _text={{
-                                color: "blue.400",
-                            }}>Materail1.pdf</Link>
+                        {lesson.files.map((file, index) => {
+                            return (
+                                <Link
+                                    _text={{
+                                        color: "blue.400",
+                                    }}
+                                    key={index}>
+                                    Materail1.pdf
+                                </Link>
+                            )
+                        })}
 
                     </Card>
                 </View>
@@ -107,10 +108,15 @@ function Lesson(props) {
                             <Icon name="plus-circle" fill='#478BA2' style={{ height: 35, marginRight: 255 }} />
                         </TouchableOpacity>
                     </View>
-                    <Carousel props={props.props}></Carousel>
+                    <Carousel props={props.props} assignment={lesson.assignmentList}></Carousel>
                 </View>
             </ScrollView >
-
+            {true ?
+                <>
+                    <EditIcon></EditIcon>
+                </>
+                : null
+            }
         </SafeAreaView>
     );
 }

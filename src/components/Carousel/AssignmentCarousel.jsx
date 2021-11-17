@@ -25,9 +25,13 @@ for (let i = 0; i < 5; i++) {
 }
 
 function AssingmentCarousel(props) {
-    const _renderItem = ({ item }) => {
+    // props.assignment.map((assignment) => {
+
+    // })
+    const _renderItem = ({ item,  index }) => {
+        // console.log(item, index)
         return (
-            <TouchableOpacity style={[styles.card, {backgroundColor:color[item%5]}]} onPress={() => {
+            <TouchableOpacity style={[styles.card, {backgroundColor:color[index%5]}]} onPress={() => {
                 props.props.navigation.navigate("SubmitAssignmentScreen");
             }}>
                 <View style={styles.cardLayout}>
@@ -40,7 +44,7 @@ function AssingmentCarousel(props) {
     return (
         <View>
             <Carousel
-                data={DATA}
+                data={props.assignment ? props.assignment : []}
                 renderItem={_renderItem}
                 sliderWidth={SLIDER_WIDTH}
                 itemWidth={ITEM_WIDTH}

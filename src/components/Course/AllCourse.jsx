@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -22,6 +22,7 @@ import {
 import { Button, Card, Layout, Text, Tab, TabBar } from "@ui-kitten/components";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Box, NativeBaseProvider, Center, Stack, HStack } from 'native-base';
+import { TextInput } from 'react-native-paper';
 import Logo from "../../assets/j-learn.png";
 import back from "../../assets/back2.png";
 import Navbar from '../Navbar/Navbar'
@@ -30,7 +31,8 @@ import AddIcon from '../Icon/AddIcon'
 import useSWR from 'swr'
 import API from "../../service/API"
 import { Fetcher } from "../../service/Fetcher";
-
+import RBSheet from "react-native-raw-bottom-sheet";
+import EnrollCourse from "../Enroll/EnrollCourse"
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -38,13 +40,14 @@ const wait = (timeout) => {
 
 function AllCourse(props) {
   const url = API.Course.getAllCourse
-  const {data, error} = useSWR(url, Fetcher)
+  const { data, error } = useSWR(url, Fetcher)
+  const [courseObj, setCourseObj] = React.useState({})
   let course = data
 
   const styles = StyleSheet.create({
     cardLayout: {
       marginTop: 10,
-      marginBottom:15,
+      marginBottom: 15,
       width: "93%",
       alignSelf: "center",
     },
@@ -64,15 +67,24 @@ function AllCourse(props) {
       flexDirection: "column"
     },
     image: {
-      flex: 2, height: 120
+      flex: 2, 
+      height: 115,
+      borderRadius:10,
+      margin:2
     },
     text: {
       flex: 3,
       marginLeft: 4
     },
+    textinput: {
+      marginTop: 10,
+      height: 45,
+      width:"93%",
+      alignSelf:'center',
+  },
   });
   const [refreshing, setRefreshing] = React.useState(false);
-
+  const refRBSheet = useRef();
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -90,10 +102,11 @@ function AllCourse(props) {
         <View style={styles.cardLayout}>
           {course && course.map((course, index) => (
             <TouchableOpacity style={styles.card} key={index} onPress={() => {
-              props.navigation.navigate("LessonScreen");
+              setCourseObj(course)
+              refRBSheet.current.open()
             }}>
               <Stack direction="row" style={{ marginRight: 20 }}>
-                <Image source={Logo} style={styles.image}  ></Image>
+              <Image source={course.image ? {uri:API.File.getImage+course.image} : Logo} style={styles.image}  ></Image>
                 <Stack direction="column" style={styles.text}>
                   <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
                   <Text style={{ flex: 3 }} numberOfLines={4}>{course.description}</Text>
@@ -102,6 +115,29 @@ function AllCourse(props) {
             </TouchableOpacity>
           ))}
         </View>
+        {/* <Button title="OPEN BOTTOM SHEET" onPress={() => refRBSheet.current.open()} /> */}
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={true}
+          animationType={'fade'}
+          customStyles={{
+            wrapper: {
+
+            },
+            draggableIcon: {
+              backgroundColor: "red"
+            },
+            container: {
+              borderRadius: 12,
+              height: "50%"
+            }
+          }}
+        >
+
+            <EnrollCourse course={courseObj} navigation={props.navigation} close={()=>refRBSheet.current.close()}/>
+
+        </RBSheet>
       </ScrollView >
       {true ?
         <AddIcon props={props} goto={() => {
