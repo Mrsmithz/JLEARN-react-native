@@ -2,9 +2,12 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { TextInput, Text } from "react-native-paper";
 import UserService from "../../service/UserService"
+import useSWR, { useSWRConfig } from 'swr'
+import API from "../../service/API"
 
 function EnrollCourse(props) {
   let course = props.course;
+  const { mutate } = useSWRConfig()
   const [password, setPassword] = React.useState("");
   const styles = StyleSheet.create({
     textinput: {
@@ -53,6 +56,8 @@ function EnrollCourse(props) {
     }
     try{
       await UserService.userJoinCourse(Obj)
+      mutate(API.User.getUser)
+      mutate(API.Course.getAllCourse)
       props.close()
       props.navigation.navigate("LessonScreen", props.course)
     }catch(err){

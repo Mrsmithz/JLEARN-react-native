@@ -34,6 +34,7 @@ import useSWR from 'swr'
 import Fetcher from "../../service/Fetcher"
 import axios from "axios"
 import LessonService from "../../service/LessonService"
+import UserService from "../../service/UserService"
 import { getMediaLibraryPermissionsAsync } from "expo-image-picker";
 
 const wait = (timeout) => {
@@ -46,19 +47,23 @@ function Lesson(props) {
   const fetcher = url => axios.get(url).then(res => res.data)
   const { data, error } = useSWR(url, fetcher)
   const [lessonList, setLessonList] = useState([])
+  const [userRole, setUserRole] = useState("")
 
 
   const getLesson = async () => {
     try {
       let result = await Promise.all(data.lessons.map(async (lesson) => {
         let lessonResult = (await LessonService.getLessonById(lesson.id)).data
-        let createtorId = lessonResult.creatorId
-        // lessonResult.creator = 
+        let creatorId = lessonResult.creatorId
+        let creator = (await UserService.getUserById(creatorId)).data
+        lessonResult.creator = creator
         return lessonResult
       }))
-      if(result != lessonList){
-        setLessonList(result)
-      }
+      let myUserId = await UserService.getUser()
+      let userRole = (data.users.filter((user) => user.id === myUserId.data.id))[0].role
+      setLessonList(result)
+      setUserRole(userRole)
+      console.log(userRole)
     } catch (err) {
       console.log("no lesson")
     }
@@ -67,11 +72,11 @@ function Lesson(props) {
   // if (data) {
   //   getLesson()
   // }
-  useEffect(()=>{
-    if(data){
+  useEffect(() => {
+    if (data) {
       getLesson()
     }
-  },[data])
+  }, [data])
   const styles = StyleSheet.create({
     cardLayout: {
       width: "93%",
@@ -121,19 +126,23 @@ function Lesson(props) {
         <View style={styles.cardLayout}>
           {lessonList ? lessonList.map((lesson, index) => (
             <TouchableOpacity style={styles.card} key={index} onPress={() => {
-              props.props.navigation.navigate("AssignmentScreen", lesson);
+              props.props.navigation.navigate("AssignmentScreen", {lesson:lesson, userRole: userRole});
             }}>
               <Stack direction="row" style={{ flex: 1 }}>
                 <Stack direction="column" style={{ flex: 1, marginTop: 10, marginLeft: 5, alignItems: "center" }}>
                   <Avatar
                     rounded
                     size={30}
-                    title="MD"
-                    overlayContainerStyle={{ backgroundColor: 'grey' }}
+                    // title="MD"
+                    // overlayContainerStyle={{ backgroundColor: 'grey' }}
+                    source={{
+                      uri:
+                        lesson.creator.picture,
+                    }}
                   />
                 </Stack>
                 <Stack direction="column" style={styles.text}>
-                  <Text style={{ flex: 1, marginTop: 13 }}>Aj. John Smith</Text>
+                  <Text style={{ flex: 1, marginTop: 13 }}>{`${lesson.creator.firstName} ${lesson.creator.lastName}`}</Text>
                   <Text style={{ flex: 1, fontWeight: 'bold' }} numberOfLines={4}>{lesson.title}</Text>
                   <Text style={{ flex: 3 }} numberOfLines={3}>{lesson.description}</Text>
                 </Stack>
@@ -142,14 +151,15 @@ function Lesson(props) {
           )) : null}
         </View>
       </ScrollView >
-      {true ?
-              <>
-        <AddIcon props={props.props} goto={() => {
-          props.props.navigation.navigate("CreateLessonScreen", courseId)
-        }}></AddIcon> 
-        <EditIcon></EditIcon>
+      {userRole === "LECTURER" &&
+        <>
+          <AddIcon props={props.props} goto={() => {
+            props.props.navigation.navigate("CreateLessonScreen", courseId)
+          }}></AddIcon>
+          <EditIcon props={props} goto={() => {
+            props.props.navigation.navigate("EditCourseScreen", data)
+          }}></EditIcon>
         </>
-        : null
       }
     </SafeAreaView>
   );

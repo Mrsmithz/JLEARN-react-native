@@ -32,11 +32,11 @@ function AssingmentCarousel(props) {
         // console.log(item, index)
         return (
             <TouchableOpacity style={[styles.card, {backgroundColor:color[index%5]}]} onPress={() => {
-                props.props.navigation.navigate("SubmitAssignmentScreen");
+                props.props.navigation.navigate("SubmitAssignmentScreen", item);
             }}>
                 <View style={styles.cardLayout}>
-                    <Text style={{fontWeight:'bold', marginTop:5}}>Assignment</Text>
-                    <Text style={{fontSize:11}}numberOfLines={4}>Aj. John Smithzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</Text>
+                    <Text style={{fontWeight:'bold', marginTop:5}}>{item.title}</Text>
+                    <Text style={{fontSize:11}}numberOfLines={4}>{item.description}</Text>
                 </View>
             </TouchableOpacity>
         );

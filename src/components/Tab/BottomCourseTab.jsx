@@ -15,7 +15,7 @@ function BottomCourseTab(props) {
         name="MyCourse"
         component={MyCourse}
         options={{
-          tabBarIcon: "account-heart-outline",
+          tabBarIcon: "account",
           tabBarColor: "#694fad",
         }}
       />
@@ -23,7 +23,7 @@ function BottomCourseTab(props) {
         name="Allcourse"
         component={AllCourse}
         options={{
-          tabBarIcon: "qqchat",
+          tabBarIcon: "google-classroom",
           tabBarColor: "#3B52B4",
         }}
       />

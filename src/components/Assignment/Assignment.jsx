@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
     SafeAreaView,
     StatusBar,
@@ -25,12 +25,44 @@ import Navbar from '../Navbar/Navbar'
 import Carousel from '../Carousel/AssignmentCarousel'
 import { Icon } from 'react-native-eva-icons';
 import EditIcon from '../Icon/EditIcon'
+import useSWR from 'swr'
+import API from "../../service/API"
+import { Fetcher } from "../../service/Fetcher";
+import AssignmentService from "../../service/AssignmentService"
+import Lesson from "../Lesson/Lesson";
+
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-function Lesson(props) {
-    let lesson = props.props.route.params
+function Assignment(props) {
+    let id = props.props.route.params.lesson.id
+
+    const url = API.Lesson.getLessonById + id
+    const { data, error } = useSWR(url, Fetcher)
+    const [assignmentList, setAssignmentList] = React.useState([])
+    const [userRole, setUserRole] = React.useState(props.props.route.params.userRole)
+    const getLesson = async () => {
+        try {
+            let result = await Promise.all(data.assignmentList.map(async (assignment) => {
+                let assignmentResult = (await AssignmentService.getAssignmentById(assignment.id)).data
+                return assignmentResult
+            }))
+            setAssignmentList(result)
+        } catch (err) {
+            console.log("no assignment")
+        }
+    }
+
+    // if (data) {
+    //   getLesson()
+    // }
+    useEffect(() => {
+        if (data) {
+            getLesson()
+        }
+    }, [data])
+
     const styles = StyleSheet.create({
         cardLayout: {
             width: "90%",
@@ -63,62 +95,85 @@ function Lesson(props) {
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
     }, []);
-    return (
-        <SafeAreaView style={styles.container}>
-            <Navbar back={true} header={lesson.title} props={props.props}></Navbar>
+    if (data) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <Navbar back={true} header={data.title} props={props.props}></Navbar>
 
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                } >
-                <View style={styles.cardLayout}>
-                    <Text style={{ marginTop: 20, marginLeft: 6 }}>Description</Text>
-                    <Card style={styles.card}>
-                        <Text>{lesson.description}</Text>
-                    </Card>
-                </View>
-                <View style={styles.cardLayout}>
-                    <Text style={{ marginTop: 20, marginLeft: 6 }}>Material</Text>
-                    <Card style={styles.card}>
-                        {lesson.files.map((file, index) => {
-                            return (
-                                <Link
-                                    _text={{
-                                        color: "blue.400",
-                                    }}
-                                    key={index}>
-                                    Materail1.pdf
-                                </Link>
-                            )
-                        })}
-
-                    </Card>
-                </View>
-                <View style={styles.assignmentLayout}>
-                    <View style={{ flexDirection: "row", flex: 1, marginLeft: 25 }}>
-                        <View style={{ flexDirection: "column", flex: 1, marginTop: 7 }}>
-                            <Text>Assignment</Text>
-                        </View>
-                        <TouchableOpacity
-                            style={{ flexDirection: "column", flex: 3 }}
-                            onPress={() => props.props.navigation.navigate("CreateAssignmentScreen")}>
-                            <Icon name="plus-circle" fill='#478BA2' style={{ height: 35, marginRight: 255 }} />
-                        </TouchableOpacity>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    } >
+                    <View style={styles.cardLayout}>
+                        <Text style={{ marginTop: 20, marginLeft: 6 }}>Description</Text>
+                        <Card style={styles.card}>
+                            <Text>{data.description}</Text>
+                        </Card>
                     </View>
-                    <Carousel props={props.props} assignment={lesson.assignmentList}></Carousel>
-                </View>
-            </ScrollView >
-            {true ?
-                <>
-                    <EditIcon></EditIcon>
-                </>
-                : null
-            }
-        </SafeAreaView>
-    );
+                    <View style={styles.cardLayout}>
+                        <Text style={{ marginTop: 20, marginLeft: 6 }}>Material</Text>
+                        <Card style={styles.card}>
+                            {data.files && data.files.map((file, index) => {
+                                return (
+                                    <Link
+                                        _text={{
+                                            color: "blue.400",
+                                        }}
+                                        key={index}>
+                                        Materail1.pdf
+                                    </Link>
+                                )
+                            })}
+
+                        </Card>
+                    </View>
+                    <View style={styles.assignmentLayout}>
+                        <View style={{ flexDirection: "row", flex: 1, marginLeft: 25 }}>
+                            <View style={{ flexDirection: "column", flex: 1, marginTop: 7 }}>
+                                <Text>Assignment</Text>
+                            </View>
+                            {userRole !== "LEARNER" &&
+                                <TouchableOpacity
+                                    style={{ flexDirection: "column", flex: 3 }}
+                                    onPress={() => props.props.navigation.navigate("CreateAssignmentScreen", { lessonId: data.id, courseId: data.courseId })}>
+                                    <Icon name="plus-circle" fill='#478BA2' style={{ height: 35, marginRight: "87%" }} />
+                                </TouchableOpacity>
+                            }
+                        </View>
+                        <Carousel props={props.props} assignment={assignmentList}></Carousel>
+                    </View>
+                    <View style={styles.assignmentLayout}>
+                        <View style={{ flexDirection: "row", flex: 1, marginLeft: 25 }}>
+                            <View style={{ flexDirection: "column", flex: 1, marginTop: 7 }}>
+                                <Text>Quiz</Text>
+                            </View>
+                            {userRole !== "LEARNER" &&
+                                <TouchableOpacity
+                                    style={{ flexDirection: "column", flex: 7 }}
+                                    onPress={() => props.props.navigation.navigate("CreateAssignmentScreen", { lessonId: data.id, courseId: data.courseId })}>
+                                    <Icon name="plus-circle" fill='#478BA2' style={{ height: 35, marginRight: "87%" }} />
+                                </TouchableOpacity>
+                            }
+                        </View>
+                        <Carousel props={props.props} assignment={assignmentList}></Carousel>
+                    </View>
+                </ScrollView >
+                {userRole !== "LEARNER" &&
+                    <>
+                        <EditIcon props={props} goto={() => {
+                            props.props.navigation.navigate("EditLessonScreen", data)
+                        }}></EditIcon>
+                    </>
+                }
+            </SafeAreaView>
+        );
+    } else {
+        return <View></View>
+    }
+
 }
 
-export default Lesson;
+export default Assignment;

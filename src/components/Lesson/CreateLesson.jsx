@@ -150,7 +150,7 @@ function CreateLesson(props) {
             let result = await LessonService.createLesson(form)
             mutate(API.Course.getCourseById+props.route.params)
             props.navigation.goBack()
-            props.navigation.navigate("AssignmentScreen", result.data)
+            props.navigation.navigate("AssignmentScreen", {lesson:result.data})
         } catch (err) {
             console.log(err)
         }
@@ -224,7 +224,7 @@ function CreateLesson(props) {
                     <TouchableOpacity style={styles.button} onPress={() => {
                         createLesson()
                     }}>
-                        <Text style={styles.text_button}>Create Course</Text>
+                        <Text style={styles.text_button}>Create Lesson</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView >

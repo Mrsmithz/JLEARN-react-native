@@ -22,6 +22,8 @@ import {
 import { Chip, Text } from 'react-native-paper';
 import Navbar from '../Navbar/Navbar'
 import Accordion from '../Accordion/Accordion'
+import AccordionText from "../Accordion/AccordionText"
+import AccordionFiles from "../Accordion/AccordionFiles"
 import { Icon } from 'react-native-eva-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import EditIcon from "../Icon/EditIcon"
@@ -31,7 +33,7 @@ const wait = (timeout) => {
 }
 
 function SubmitAssignment(props) {
-
+    let assignment = props.props.route.params
     const styles = StyleSheet.create({
         cardLayout: {
             width: "95%",
@@ -115,8 +117,8 @@ function SubmitAssignment(props) {
                     />
                 } >
                 <View style={styles.cardLayout}>
-                    <Accordion title={"Description"} icon={"clipboard"} color={"#B4B4F5"}></Accordion>
-                    <Accordion title={"Files"} icon={"folder"} color={"#B4B4F5"}></Accordion>
+                    <AccordionText title={"Description"} icon={"clipboard"} color={"#B4B4F5"} text={assignment.description}></AccordionText>
+                    <AccordionFiles title={"Files"} icon={"folder"} color={"#B4B4F5"} files={assignment.files}></AccordionFiles>
                     <Accordion title={"Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></Accordion>
                     <Accordion title={"Your Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></Accordion>
                     <TouchableOpacity style={styles.upload} onPress={() => {

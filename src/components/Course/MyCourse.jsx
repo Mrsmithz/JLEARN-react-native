@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -29,16 +29,40 @@ import Navbar from '../Navbar/Navbar'
 import useSWR from 'swr'
 import API from "../../service/API"
 import { Fetcher } from "../../service/Fetcher";
+import CourseService from "../../service/CourseService"
 
 const wait = (timeout) => {
-  return new Promise(resolve => setTimeout(resolve, timeout));
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout)
+  });
 }
 
-function AllCourse(props) {
-  const url = API.Course.getAllCourse
-  const {data, error} = useSWR(url, Fetcher)
-  let course = data
+function MyCourse(props) {
+  const url = API.User.getUser
+  const { data, error } = useSWR(url, Fetcher)
+  const [courseList, setCourseList] = React.useState([])
+  const getCourse = async () => {
+    try {
+      let result = await Promise.all(data.courseList.map(async (course) => {
+        let courseResult = (await CourseService.getCourseById(course.id)).data
+        return courseResult
+      }))
+      setCourseList(result)
+    } catch (err) {
+      console.log("no course")
+    }
+  }
 
+  // if (data) {
+  //   getLesson()
+  // }
+  useEffect(() => {
+    console.log('get')
+    if (data) {
+      console.log('get')
+      getCourse()
+    }
+  }, [data])
   const styles = StyleSheet.create({
     cardLayout: {
       marginTop: 20,
@@ -89,7 +113,7 @@ function AllCourse(props) {
           />
         } >
         <View style={styles.cardLayout}>
-        {course && course.map((course, index) => (
+        {courseList && courseList.map((course, index) => (
             <TouchableOpacity style={styles.card} key={index} onPress={() => {
               props.navigation.navigate("LessonScreen", course);
             }}>
@@ -108,4 +132,4 @@ function AllCourse(props) {
   );
 }
 
-export default AllCourse;
+export default MyCourse;

@@ -7,8 +7,13 @@ import { Avatar } from 'react-native-elements';
 import { StackActions } from '@react-navigation/native';
 import { TouchableOpacity } from "react-native";
 import { Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import API from "../../service/API"
+import useSWR from 'swr'
+import Fetcher from "../../service/Fetcher"
 
 function Navbar(props) {
+  const url = API.User.getUser
+  const { data, error } = useSWR(url, Fetcher)
   const [menuVisible, setMenuVisible] = React.useState(false);
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -29,7 +34,10 @@ function Navbar(props) {
     <TouchableOpacity onPress={toggleMenu}>
       <Avatar
         rounded
-        title="MD"
+        source={{
+          uri:
+            data ? data.picture : null,
+        }}
         overlayContainerStyle={{ backgroundColor: 'grey' }}
       />
     </TouchableOpacity>

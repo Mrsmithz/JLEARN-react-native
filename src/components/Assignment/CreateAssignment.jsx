@@ -30,13 +30,22 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Chip } from 'react-native-paper';
 import ReactNativeChipInput from '../ChipInput/ChipInput';
 import Accordion from "../Accordion/Accordion"
+import AccordionTable from "../Accordion/AcoordionTable"
+import AssignmentService from "../../service/AssignmentService"
+import useSWR, { useSWRConfig } from 'swr'
+import API from "../../service/API"
 
 
 function CreateAssignment(props) {
     props = props.props
+    const { mutate } = useSWRConfig()
+    const lessonId = props.route.params.lessonId
+    const courseId = props.route.params.courseId
     let [files, setFiles] = React.useState([]);
     let [codeFiles, setCodeFiles] = React.useState([]);
     let [tags, setTags] = React.useState([]);
+    let [title, setTitle] = React.useState("");
+    let [description, setDescription] = React.useState("");
     const styles = StyleSheet.create({
         Layout: {
             marginTop: 10,
@@ -110,7 +119,7 @@ function CreateAssignment(props) {
     const pickDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({});
         if (result.type === "success") {
-            setFiles([...files, result.name])
+            setFiles([...files, result])
         } else if (result.type === "cancel") {
             console.log("cancel")
         }
@@ -118,7 +127,7 @@ function CreateAssignment(props) {
     const pickCode = async () => {
         let result = await DocumentPicker.getDocumentAsync({});
         if (result.type === "success") {
-            setCodeFiles([...codeFiles, result.name])
+            setCodeFiles([...codeFiles, result])
         } else if (result.type === "cancel") {
             console.log("cancel")
         }
@@ -137,6 +146,37 @@ function CreateAssignment(props) {
         allCodeFiles.splice(index, 1)
         setCodeFiles([...allCodeFiles])
     }
+    const createAssignment = async () => {
+        console.log(title, description, files, codeFiles, tags)
+        try {
+            let form = new FormData()
+            tags.map((tag)=>{
+                form.append('tags', tag)
+            })
+            files.map((file) => {
+                let filename = file.name;
+                let type = file.name.split('.').reverse()[0];
+                form.append('files', { uri: file.uri, name: filename, size:file.size, type })
+            })
+            codeFiles.map((file) => {
+                let filename = file.name;
+                let type = file.name.split('.').reverse()[0];
+                form.append('javaCode', { uri: file.uri, name: filename, size:file.size, type })
+            })
+            form.append('title', title)
+            form.append('description', description)
+            form.append('type', 'ASSIGNMENT')
+            form.append('lessonId', lessonId)
+            await AssignmentService.createAssignment(form)
+            mutate(API.Lesson.getLessonById + lessonId )
+            // mutate(API.Course.getCourseById + courseId, test.data)
+            // props.navigation.navigate("CourseScreen")
+            props.navigation.goBack()
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Navbar back={true} header={"Create Assignment"} props={props}></Navbar>
@@ -147,18 +187,22 @@ function CreateAssignment(props) {
                         label="Assignment Name"
                         mode="outlined"
                         style={styles.textinput}
+                        value={title}
+                        onChangeText={title => setTitle(title)}
                     />
                     {/* <Text style={styles.text}>Description</Text> */}
                     <TextInput
                         label="Description"
                         mode="outlined"
                         style={styles.textinput}
+                        value={description}
+                        onChangeText={description => setDescription(description)}
                     />
-                    <Accordion title={"Diagram"} icon={"clipboard"} color={'#E79796'}></Accordion>
+                    <AccordionTable title={"Class"} color={'#E79796'} files={codeFiles}></AccordionTable>
                     <Box style={styles.box}>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
                             {codeFiles.length ? codeFiles.map((file, index) => {
-                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteCodeFile(index)} style={styles.chip} key={index}>{file}</Chip>
+                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteCodeFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
                             })
                                 : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
                         </View>
@@ -178,7 +222,7 @@ function CreateAssignment(props) {
                     <Box style={styles.box}>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
                             {files.length ? files.map((file, index) => {
-                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file}</Chip>
+                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
                             })
                                 : <Text style={styles.text_upload}>No Uploaded PDF Files</Text>}
                         </View>
@@ -210,7 +254,7 @@ function CreateAssignment(props) {
                         onAdd={(value) => setTags([...tags, value])}
                     />
                     <TouchableOpacity style={styles.button} onPress={() => {
-                        console.log(tags, files)
+                        createAssignment()
                     }}>
                         <Text style={styles.text_button}>Create Assignment</Text>
                     </TouchableOpacity>
