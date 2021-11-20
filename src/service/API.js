@@ -21,9 +21,13 @@ const API = {
     Lesson:{
         createLesson:`${BASE_URL}/lesson`,
         getLessonById:`${BASE_URL2}/lesson/`,
+        updateLesson:`${BASE_URL2}/lesson`
     },
     File:{
-        getImage:`${BASE_URL3}/file/image/`
+        getImage:`${BASE_URL3}/file/image/`,
+        getPdfDetail:`${BASE_URL}/file/detail/pdf/`, //+id
+        getCodeDetail:`${BASE_URL}/file/detail/code/`, //+id
+        getImageDetail:`${BASE_URL}/file/detail/image/`, //+id
     },
     Assignment:{
         createAssignment:`${BASE_URL4}/assignment`,

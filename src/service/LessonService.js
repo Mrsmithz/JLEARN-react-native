@@ -9,5 +9,8 @@ class LessonService {
   static async getLessonById(id){
     return await axios.get(API.Lesson.getLessonById+id)
   }
+  static async updateLesson(form){
+    return await axios.put(API.Lesson.updateLesson, form)
+  }
 }
 export default LessonService;

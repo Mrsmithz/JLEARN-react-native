@@ -49,9 +49,12 @@ function Lesson(props) {
   const [lessonList, setLessonList] = useState([])
   const [userRole, setUserRole] = useState("")
 
-
   const getLesson = async () => {
     try {
+      let myUserId = await UserService.getUser()
+      let userRole = (data.users.filter((user) => user.id === myUserId.data.id))[0].role
+      console.log(userRole)
+      setUserRole(userRole)
       let result = await Promise.all(data.lessons.map(async (lesson) => {
         let lessonResult = (await LessonService.getLessonById(lesson.id)).data
         let creatorId = lessonResult.creatorId
@@ -59,10 +62,7 @@ function Lesson(props) {
         lessonResult.creator = creator
         return lessonResult
       }))
-      let myUserId = await UserService.getUser()
-      let userRole = (data.users.filter((user) => user.id === myUserId.data.id))[0].role
       setLessonList(result)
-      setUserRole(userRole)
       console.log(userRole)
     } catch (err) {
       console.log("no lesson")

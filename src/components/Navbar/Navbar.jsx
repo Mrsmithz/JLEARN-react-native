@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text } from "@ui-kitten/components";
 
 import { Box, Stack } from 'native-base';
@@ -15,6 +15,7 @@ function Navbar(props) {
   const url = API.User.getUser
   const { data, error } = useSWR(url, Fetcher)
   const [menuVisible, setMenuVisible] = React.useState(false);
+  const [picture, setPicture] = React.useState(null);
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
@@ -49,6 +50,11 @@ function Navbar(props) {
   const logout = () => {
     props.props.navigation.navigate("LoginScreen")
   }
+  useEffect(() => {
+    if (data !== undefined) {
+      setPicture(data.picture)
+    }
+  }, [data])
   return (
     <Box height='119' borderBottomRadius='20' bg='#FFB284' width="100%" style={{ flexDirection: 'column' }} >
       <Stack direction="row" style={{ marginRight: 20, marginTop: 35, alignItems: "center", justifyContent: "center" }}>
@@ -66,7 +72,7 @@ function Navbar(props) {
             visible={menuVisible}
             onBackdropPress={toggleMenu}>
             <MenuItem accessoryLeft={ProfileIcon} title='Profile' />
-            <MenuItem accessoryLeft={LogoutIcon} title='Logout' onPress={logout}/>
+            <MenuItem accessoryLeft={LogoutIcon} title='Logout' onPress={logout} />
           </OverflowMenu>
         </Stack>
       </Stack>

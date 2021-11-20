@@ -64,6 +64,7 @@ function AllCourse(props) {
   }
   useEffect(() => {
     if (data) {
+      console.log("all")
       getCourse()
     }
   }, [data])

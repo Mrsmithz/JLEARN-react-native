@@ -56,7 +56,8 @@ function EnrollCourse(props) {
     }
     try{
       await UserService.userJoinCourse(Obj)
-      mutate(API.User.getUser)
+      let myCourse = await UserService.getUser()
+      mutate(API.User.getUser, myCourse.data)
       mutate(API.Course.getAllCourse)
       props.close()
       props.navigation.navigate("LessonScreen", props.course)

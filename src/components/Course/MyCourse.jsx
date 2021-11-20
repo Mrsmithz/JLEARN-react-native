@@ -53,13 +53,8 @@ function MyCourse(props) {
     }
   }
 
-  // if (data) {
-  //   getLesson()
-  // }
   useEffect(() => {
-    console.log('get')
     if (data) {
-      console.log('get')
       getCourse()
     }
   }, [data])

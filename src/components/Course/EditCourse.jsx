@@ -30,13 +30,13 @@
  import { Icon } from 'react-native-eva-icons';
  import * as ImagePicker from 'expo-image-picker'
  import CourseService from "../../service/CourseService"
+ import UserService from "../../service/UserService"
  import useSWR, { useSWRConfig } from 'swr'
  import API from "../../service/API"
  
  function EditCourse(props) {
      props = props.props
      let data = props.route.params
-     console.log(data)
      const { mutate } = useSWRConfig()
      let [image, setImage] = React.useState(API.File.getImage+data.image);
      let [title, setTitle] = React.useState(data.title);
@@ -134,13 +134,24 @@
              form.append('description', description)
              form.append('password', enroll)
              form.append('isHide', isHide)
-             let result = await CourseService.updateCourse(form)
-            //  mutate(API.User.getUser, result.data)
-            //  mutate(API.Course.getAllCourse)
-             console.log(result.data)
-            //  mutate(API.Course.getCourseById + data.id, data.lessons)
-            //  props.navigation.navigate("CourseScreen")
-            props.navigation.goBack()
+            //  data.lessons.map((lesson)=>{
+            //      console.log(lesson)
+            //      form.append('lessons', lesson)
+            //  })
+            // form.append('lessons', JSON.stringify(data.lessons))
+            // form.append('users', JSON.stringify(data.users))
+            //  data.users.map((user)=>{
+            //      console.log(user)
+            //     form.append('users', user)
+            // })
+            await CourseService.updateCourse(form)
+            let result = await UserService.getUser()
+             mutate(API.Course.getAllCourse)
+             mutate(API.Course.getCourseById + data.id)
+             mutate(API.User.getUser, []) // หลอกมัน
+             mutate(API.User.getUser, result.data)
+             props.navigation.navigate("CourseScreen")
+            // props.navigation.goBack()
          } catch (err) {
              console.log(err)
          }
