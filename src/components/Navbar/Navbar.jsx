@@ -5,7 +5,7 @@ import { Box, Stack } from 'native-base';
 // import { Icon } from 'react-native-eva-icons';
 import { Avatar } from 'react-native-elements';
 import { StackActions } from '@react-navigation/native';
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import { Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import API from "../../service/API"
 import useSWR from 'swr'
@@ -52,9 +52,17 @@ function Navbar(props) {
   }
   useEffect(() => {
     if (data !== undefined) {
+      console.log(Platform.OS)
       setPicture(data.picture)
     }
   }, [data])
+  const styles = StyleSheet.create({
+    text: {
+      fontWeight: 'bold',
+      fontFamily: (Platform.OS === "ios") ? "Zapfino" : "serif"
+    }
+
+  });
   return (
     <Box height='119' borderBottomRadius='20' bg='#FFB284' width="100%" style={{ flexDirection: 'column' }} >
       <Stack direction="row" style={{ marginRight: 20, marginTop: 35, alignItems: "center", justifyContent: "center" }}>
@@ -64,7 +72,7 @@ function Navbar(props) {
             : null}
         </Stack>
         <Stack direction="column" style={{ flex: 5, alignItems: "center" }}>
-          <Text style={{ fontWeight: 'bold', fontFamily: "serif" }}>{props.header}</Text>
+          <Text style={styles.text}>{props.header}</Text>
         </Stack>
         <Stack direction="column" style={{ flex: 1, height: 35 }}>
           <OverflowMenu
