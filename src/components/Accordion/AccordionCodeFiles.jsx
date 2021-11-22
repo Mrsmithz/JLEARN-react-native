@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import FilesService from "../../service/FilesService"
 import { Link } from 'native-base';
-const AccordionFiles = (props) => {
+const AccordionCodeFiles = (props) => {
     const [expanded, setExpanded] = React.useState(false);
     const handlePress = () => setExpanded(!expanded);
     const icon = props.icon
@@ -14,7 +14,7 @@ const AccordionFiles = (props) => {
     const [files, setFiles] = React.useState([])
     const getFiles = async () => {
         let result = await Promise.all(props.files.map(async (file) => {
-            let pdf = await FilesService.getPdfDetail(file.id)
+            let pdf = await FilesService.getCodeDetail(file.id)
             return { id: file.id, name: pdf.data.filename }
         }))
         setFiles(result)
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AccordionFiles;
+export default AccordionCodeFiles;

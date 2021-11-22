@@ -63,11 +63,11 @@ function MyCourse(props) {
       marginTop: 20,
       width: "93%",
       alignSelf: "center",
+      height: "50%"
     },
     card: {
       borderRadius: 10,
       marginTop: 11,
-      height: 120,
       marginBottom: 2,
       backgroundColor: "#86E3CE",
     },
@@ -113,7 +113,7 @@ function MyCourse(props) {
               props.navigation.navigate("LessonScreen", course);
             }}>
               <Stack direction="row" style={{ marginRight: 20 }}>
-                <Image source={course.image ? {uri:API.File.getImage+course.image} : Logo} style={styles.image}  ></Image>
+                <Image source={course.image ? {uri:API.File.getImage+course.image} : Logo} style={styles.image}></Image>
                 <Stack direction="column" style={styles.text}>
                   <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
                   <Text style={{ flex: 3 }} numberOfLines={4}>{course.description}</Text>

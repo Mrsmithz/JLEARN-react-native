@@ -15,6 +15,7 @@ import {
 import { scrollInterpolator, animatedStyles } from '../../utils/animation';
 import { Text } from "@ui-kitten/components";
 const SLIDER_WIDTH = Dimensions.get('window').width;
+
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.5);
 const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 
@@ -25,11 +26,7 @@ for (let i = 0; i < 5; i++) {
 }
 
 function AssingmentCarousel(props) {
-    // props.assignment.map((assignment) => {
-
-    // })
     const _renderItem = ({ item,  index }) => {
-        // console.log(item, index)
         return (
             <TouchableOpacity style={[styles.card, {backgroundColor:color[index%5]}]} onPress={() => {
                 props.props.navigation.navigate("SubmitAssignmentScreen", item);
@@ -42,7 +39,7 @@ function AssingmentCarousel(props) {
         );
     }
     return (
-        <View>
+        <View style={{width: '100%'}}>
             <Carousel
                 data={props.assignment ? props.assignment : []}
                 renderItem={_renderItem}

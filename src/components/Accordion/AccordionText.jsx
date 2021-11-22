@@ -20,7 +20,7 @@ const AccordionText = (props) => {
         onPress={handlePress}
         left={props => <List.Icon {...props} icon={icon} />}>
         <Box style={[styles.Box, {backgroundColor:color}]}>
-          <Text>{text}</Text>
+          <Text style={styles.text}>{text}</Text>
         </Box>
       </List.Accordion>
 
@@ -55,6 +55,9 @@ const styles = StyleSheet.create({
   assignmentLayout: {
     width: "100%",
     alignSelf: "center",
+  },
+  text:{
+    marginBottom:10
   }
 });
 

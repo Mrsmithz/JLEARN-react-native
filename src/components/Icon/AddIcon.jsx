@@ -17,8 +17,8 @@ function AddIcon(props) {
     const styles = StyleSheet.create({
         iconContainer: {
             bottom: 90,
-            marginBottom: -90,
-            marginLeft: 350,
+            marginBottom: -85,
+            marginLeft: "85%",
             marginTop: 20,
             width: 50,
             height: 50,

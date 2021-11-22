@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React , { useEffect } from 'react';
 import { Box, NativeBaseProvider, Center, Stack, HStack, Text } from 'native-base';
 import {
     StyleSheet,
@@ -10,7 +10,7 @@ import { DataTable, TextInput, List } from 'react-native-paper';
 
 const optionsPerPage = [2, 3, 4];
 
-const AccordionTable = (props) => {
+const AccordionSetScoreTable = (props) => {
     const [expanded, setExpanded] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
@@ -39,6 +39,7 @@ const AccordionTable = (props) => {
         generateTable(files)
     }, [files])
     return (
+        
         <List.Section >
             <List.Accordion
                 style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
@@ -46,33 +47,48 @@ const AccordionTable = (props) => {
                 expanded={expanded}
                 onPress={handlePress}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
-                    {jaSon.length ?
-                        <DataTable>
-                            <DataTable.Header>
-                                <DataTable.Title>Name</DataTable.Title>
-                                <DataTable.Title>Stereotype</DataTable.Title>
-                                <DataTable.Title>Score</DataTable.Title>
-                                {/* <DataTable.Title>Score</DataTable.Title> */}
-                            </DataTable.Header>
+                    <DataTable>
+                        <DataTable.Header>
+                            <DataTable.Title>Name</DataTable.Title>
+                            <DataTable.Title>Stereotype</DataTable.Title>
+                            <DataTable.Title>Score</DataTable.Title>
+                            <DataTable.Title></DataTable.Title>
+                            {/* <DataTable.Title>Score</DataTable.Title> */}
+                        </DataTable.Header>
 
-                            {jaSon.map((jason, index) => {
-                                return (
-                                    <DataTable.Row key={index}>
-                                        <DataTable.Cell>
-                                            {jason.name}
-                                        </DataTable.Cell>
-                                        <DataTable.Cell>
-                                            {jason.stereotype.value}
-                                        </DataTable.Cell>
-                                        <DataTable.Cell>
-                                            {jason.allScore}
-                                        </DataTable.Cell>
-                                    </DataTable.Row>
-                                )
-                            })}
-                        </DataTable>
-                        : null
-                    }
+                        {jaSon.map((jason, index) => {
+                            return (
+                                <DataTable.Row key={index}>
+                                    <DataTable.Cell>
+                                        {jason.name}
+                                    </DataTable.Cell>
+                                    <DataTable.Cell>
+                                        {jason.stereotype.value}
+                                    </DataTable.Cell>
+                                    <DataTable.Cell>
+                                        {jason.allScore}
+                                    </DataTable.Cell>
+                                    <DataTable.Cell style={{marginTop:7}}>
+                                        <TouchableOpacity style={styles.button}>
+                                            <Text style={styles.text_button}>Set Score</Text>
+                                        </TouchableOpacity>
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
+                        })}
+
+                        {/* <DataTable.Pagination
+                            page={page}
+                            numberOfPages={3}
+                            onPageChange={(page) => setPage(page)}
+                            label={`${page + 1} of 3`}
+                            optionsPerPage={optionsPerPage}
+                            itemsPerPage={itemsPerPage}
+                            setItemsPerPage={setItemsPerPage}
+
+                            optionsLabel={'Rows per page'}
+                        /> */}
+                    </DataTable>
                     {/* <View style={{ flexDirection: "row", marginTop: 15 }}>
                         <TouchableOpacity style={styles.button} onPress={() => {
                             generateTable(files)
@@ -123,11 +139,11 @@ const styles = StyleSheet.create({
     button: {
         borderRadius: 10,
         height: 35,
-        width: 70,
+        width:70,
         backgroundColor: "#478BA2",
         marginLeft: 20,
         alignItems: "center"
     },
 });
 
-export default AccordionTable;
+export default AccordionSetScoreTable;

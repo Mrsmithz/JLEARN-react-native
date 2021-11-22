@@ -32,6 +32,8 @@ const API = {
     Assignment:{
         createAssignment:`${BASE_URL4}/assignment`,
         getAssignmentById:`${BASE_URL4}/assignment/`,  //+id
+        updateAssignment:`${BASE_URL4}/assignment`,
+        validateAssignment:`${BASE_URL}/assignment/validate`
     },
     Validate:{
         getPreview:`${BASE_URL}/validate/veson`

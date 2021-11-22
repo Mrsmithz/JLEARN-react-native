@@ -11,5 +11,11 @@ class AssignmentService {
   static async getAssignmentById(id){
     return await axios.get(API.Assignment.getAssignmentById + id)
   }
+  static async updateAssignment(form){
+    return await axios.put(API.Assignment.updateAssignment, form)
+  }
+  static async validateAssignment(form){
+    return await axios.post(API.Assignment.validateAssignment, form)
+  }
 }
 export default AssignmentService;

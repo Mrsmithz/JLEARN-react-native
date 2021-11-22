@@ -64,7 +64,7 @@ function Navbar(props) {
             : null}
         </Stack>
         <Stack direction="column" style={{ flex: 5, alignItems: "center" }}>
-          <Text style={{ fontWeight: 'bold' }}>{props.header}</Text>
+          <Text style={{ fontWeight: 'bold', fontFamily: "serif" }}>{props.header}</Text>
         </Stack>
         <Stack direction="column" style={{ flex: 1, height: 35 }}>
           <OverflowMenu

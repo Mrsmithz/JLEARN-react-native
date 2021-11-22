@@ -132,7 +132,6 @@ function CreateLesson(props) {
 
     const createLesson = async () => {
         try {
-            console.log(files)
             let form = new FormData()
             form.append('title', title)
             form.append('description', description)
@@ -219,7 +218,7 @@ function CreateLesson(props) {
                         autoCapitalize="none"
                         autoCorrect={false}
                         autoFocus={true}
-                        onAdd={(value) => setTags([...tags, value])}
+                        onAdd={(value) => value !== null ? setTags([...tags, value]) :null}
                     />
                     <TouchableOpacity style={styles.button} onPress={() => {
                         createLesson()

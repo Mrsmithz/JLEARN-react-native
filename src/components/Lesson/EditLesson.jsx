@@ -117,7 +117,7 @@ function EditLesson(props) {
     const getPdfFiles = async () => {
         let result = await Promise.all(files.map(async (file) => {
             let detail = await FilesService.getPdfDetail(file.id)
-            return {id: file.id, name: detail.data.filename}
+            return { id: file.id, name: detail.data.filename }
         }))
         setFiles(result)
     }
@@ -145,47 +145,39 @@ function EditLesson(props) {
     const editLesson = async () => {
         try {
             let form = new FormData()
-            console.log(data.id, title, description, isHide, props.route.params.courseId, type)
             form.append('id', data.id)
             form.append('title', title)
             form.append('description', description)
             form.append('isHide', isHide)
             form.append('courseId', props.route.params.courseId)
             form.append('type', type)
-            if(data.assignmentList){
-                data.assignmentList.map((assignment)=>{
-                    console.log(assignment.id, "assignment")
+            if (data.assignmentList) {
+                data.assignmentList.map((assignment) => {
                     form.append("assignmentList", assignment.id)
                 })
             }
-            // if(data.questionList){
-            //     data.questionList.map((question)=>{
-            //         console.log(questtion.id, "q1")
-            //         form.append("questionList", question.id)
-            //     })
-            // }else{
-            //     console.log("q2")
-            //     form.append("questionList",  null)
-            // }
-            tags.map((tag) => {
-                console.log("t", tag)
-                form.append('tags', tag)
-            })
+            if (tags.length) {
+                tags.map((tag) => {
+                    form.append('tags', tag)
+                })
+            } else {
+                form.append('tags', "")
+            }
             files.map((file) => {
-                if(file.id === undefined){
+                if (file.id === undefined) {
                     let filename = file.name;
                     let type = file.name.split('.').reverse()[0];
                     form.append('newFilesUpload', { uri: file.uri, name: filename, size: file.size, type })
-                }else{
-                    console.log('f', file.id)
+                } else {
                     form.append('files', file.id)
                 }
             })
             let result = await LessonService.updateLesson(form)
-            console.log(result.data)
-            // let les  = await LessonService.getLessonById(data.id)
-            // console.log(les, "s")
-            // mutate(API.Course.getCourseById + props.route.params.courseId)
+            let les = await LessonService.getLessonById(data.id)
+            // mutate(API.Course.getCourseById + props.route.params.courseId, [])
+            mutate(API.Course.getCourseById + props.route.params.courseId, result.data)
+            // mutate(API.Course.getCourseById + props.route.params.courseId, les.data)
+            mutate(API.Lesson.getLessonById + data.id)
             props.navigation.goBack()
             // props.navigation.navigate("AssignmentScreen", result.data)
         } catch (err) {
@@ -257,7 +249,7 @@ function EditLesson(props) {
                         autoCorrect={false}
                         autoFocus={true}
                         initialInput={tags}
-                        onAdd={(value) => value !== null ? setTags([...tags, value]) :null}
+                        onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
                     />
                     <TouchableOpacity style={styles.button} onPress={() => {
                         editLesson()

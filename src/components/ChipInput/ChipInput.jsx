@@ -163,7 +163,6 @@ function ReactNativeChipInput(props) {
         initialInput
     } = props;
     const [inputValues, setInputValues] = useState(((initialInput === undefined) || initialInput === null) ? [] : initialInput);
-    console.log(inputValues, "int")
     const [currentInputValue, setCurrentInputValue] = useState(null);
 
     const themedStyles = styles(primaryColor, secondaryColor, variant);

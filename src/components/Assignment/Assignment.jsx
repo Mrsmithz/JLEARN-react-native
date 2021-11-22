@@ -30,6 +30,7 @@ import API from "../../service/API"
 import { Fetcher } from "../../service/Fetcher";
 import AssignmentService from "../../service/AssignmentService"
 import Lesson from "../Lesson/Lesson";
+import FilesService from "../../service/FilesService";
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -42,6 +43,14 @@ function Assignment(props) {
     const { data, error } = useSWR(url, Fetcher)
     const [assignmentList, setAssignmentList] = React.useState([])
     const [userRole, setUserRole] = React.useState(props.props.route.params.userRole)
+    const [files, setFiles] = React.useState([])
+    const getFiles = async() =>{
+        let result = await Promise.all(data.files.map(async (file) => {
+            let pdf = await FilesService.getPdfDetail(file.id)
+            return {id:file.id, name:pdf.data.filename}
+        }))
+        setFiles(result)
+    }
     const getLesson = async () => {
         try {
             let result = await Promise.all(data.assignmentList.map(async (assignment) => {
@@ -60,6 +69,9 @@ function Assignment(props) {
     useEffect(() => {
         if (data) {
             getLesson()
+            if(data.files) {
+                getFiles()
+            }
         }
     }, [data])
 
@@ -116,14 +128,14 @@ function Assignment(props) {
                     <View style={styles.cardLayout}>
                         <Text style={{ marginTop: 20, marginLeft: 6 }}>Material</Text>
                         <Card style={styles.card}>
-                            {data.files && data.files.map((file, index) => {
+                            {files && files.map((file, index) => {
                                 return (
                                     <Link
                                         _text={{
                                             color: "blue.400",
                                         }}
                                         key={index}>
-                                        Materail1.pdf
+                                        {file.name}
                                     </Link>
                                 )
                             })}
@@ -145,7 +157,7 @@ function Assignment(props) {
                         </View>
                         <Carousel props={props.props} assignment={assignmentList}></Carousel>
                     </View>
-                    <View style={styles.assignmentLayout}>
+                    {/* <View style={styles.assignmentLayout}>
                         <View style={{ flexDirection: "row", flex: 1, marginLeft: 25 }}>
                             <View style={{ flexDirection: "column", flex: 1, marginTop: 7 }}>
                                 <Text>Quiz</Text>
@@ -159,7 +171,7 @@ function Assignment(props) {
                             }
                         </View>
                         <Carousel props={props.props} assignment={assignmentList}></Carousel>
-                    </View>
+                    </View> */}
                 </ScrollView >
                 {userRole !== "LEARNER" &&
                     <>

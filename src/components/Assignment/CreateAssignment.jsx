@@ -147,7 +147,6 @@ function CreateAssignment(props) {
         setCodeFiles([...allCodeFiles])
     }
     const createAssignment = async () => {
-        console.log(title, description, files, codeFiles, tags)
         try {
             let form = new FormData()
             tags.map((tag)=>{
@@ -167,11 +166,11 @@ function CreateAssignment(props) {
             form.append('description', description)
             form.append('type', 'ASSIGNMENT')
             form.append('lessonId', lessonId)
-            await AssignmentService.createAssignment(form)
+            let result = await AssignmentService.createAssignment(form)
             mutate(API.Lesson.getLessonById + lessonId )
             // mutate(API.Course.getCourseById + courseId, test.data)
-            // props.navigation.navigate("CourseScreen")
             props.navigation.goBack()
+            props.navigation.navigate("SetAssignmentScoreScreen", result.data)
         } catch (err) {
             console.log(err)
         }
@@ -251,7 +250,7 @@ function CreateAssignment(props) {
                         autoCapitalize="none"
                         autoCorrect={false}
                         autoFocus={true}
-                        onAdd={(value) => setTags([...tags, value])}
+                        onAdd={(value) => value !== null ? setTags([...tags, value]) :null}
                     />
                     <TouchableOpacity style={styles.button} onPress={() => {
                         createAssignment()

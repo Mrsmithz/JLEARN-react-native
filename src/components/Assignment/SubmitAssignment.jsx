@@ -27,6 +27,7 @@ import AccordionFiles from "../Accordion/AccordionFiles"
 import { Icon } from 'react-native-eva-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import EditIcon from "../Icon/EditIcon"
+import AssignmentService from "../../service/AssignmentService"
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -91,7 +92,7 @@ function SubmitAssignment(props) {
     const pickDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({});
         if (result.type === "success") {
-            setFiles([...files, result.name])
+            setFiles([...files, result])
         } else if (result.type === "cancel") {
             console.log("cancel")
         }
@@ -100,6 +101,18 @@ function SubmitAssignment(props) {
         let allFiles = files
         allFiles.splice(index, 1)
         setFiles([...allFiles])
+    }
+    const submitAssignment = async () => {
+
+        let form = new FormData()
+        files.map((file) => {
+            let filename = file.name;
+            let type = file.name.split('.').reverse()[0];
+            form.append('codeFiles', { uri: file.uri, name: filename, size:file.size, type })
+        })
+        form.append('assignmentId', assignment.id)
+        let result = await AssignmentService.validateAssignment(form)
+        props.props.navigation.navigate("ResultScreen", result.data)
     }
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -119,8 +132,6 @@ function SubmitAssignment(props) {
                 <View style={styles.cardLayout}>
                     <AccordionText title={"Description"} icon={"clipboard"} color={"#B4B4F5"} text={assignment.description}></AccordionText>
                     <AccordionFiles title={"Files"} icon={"folder"} color={"#B4B4F5"} files={assignment.files}></AccordionFiles>
-                    <Accordion title={"Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></Accordion>
-                    <Accordion title={"Your Diagram"} icon={"chart-tree"} color={"#B4B4F5"}></Accordion>
                     <TouchableOpacity style={styles.upload} onPress={() => {
                         pickDocument()
                     }}>
@@ -129,13 +140,13 @@ function SubmitAssignment(props) {
                         <Icon name="cloud-upload" fill='black' style={{ height: 100 }} />
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                             {files.length ? files.map((file, index) => {
-                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file}</Chip>
+                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
                             })
                                 : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => {
-                        props.props.navigation.navigate("ResultScreen");
+                        submitAssignment()
                     }}>
                         <Text style={styles.text_button}>Submit</Text>
                     </TouchableOpacity>
@@ -144,7 +155,7 @@ function SubmitAssignment(props) {
             {true ?
                 <>
                     <EditIcon props={props} goto={() => {
-                        props.props.navigation.navigate("EditAssignmentScreen")
+                        props.props.navigation.navigate("EditAssignmentScreen", assignment)
                     }}></EditIcon>
                 </>
                 : null

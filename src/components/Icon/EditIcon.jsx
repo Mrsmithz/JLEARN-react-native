@@ -18,7 +18,7 @@
          iconContainer: {
              bottom: 130,
              marginBottom: -50,
-             marginLeft: 350,
+             marginLeft: "85%",
              marginTop: 20,
              width: 50,
              height: 50,
