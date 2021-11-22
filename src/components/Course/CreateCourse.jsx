@@ -132,7 +132,7 @@ function CreateCourse(props) {
             mutate(API.Course.getAllCourse)
             props.navigation.navigate("CourseScreen")
         } catch (err) {
-            console.log(err)
+            console.log(err.response.data)
         }
     }
     return (

@@ -115,7 +115,7 @@ const AccordionClass = (props) => {
                             <DataTable.Title>Name</DataTable.Title>
                             <DataTable.Title>accessModifier</DataTable.Title>
                             <DataTable.Title>Type</DataTable.Title>
-                            <DataTable.Title style={{ justifyContent: 'center' }}>Score</DataTable.Title>
+                            <DataTable.Title>Score</DataTable.Title>
                         </DataTable.Header>
 
                         {jaSon.map((jason, index) => {
@@ -137,7 +137,7 @@ const AccordionClass = (props) => {
                             <DataTable.Title>Name</DataTable.Title>
                             <DataTable.Title>accessModifier</DataTable.Title>
                             <DataTable.Title>returnType</DataTable.Title>
-                            <DataTable.Title style={{ justifyContent: 'center' }}>Score</DataTable.Title>
+                            <DataTable.Title>Score</DataTable.Title>
                         </DataTable.Header>
 
                         {jaSon.map((jason, index) => {
@@ -229,10 +229,10 @@ function Attribute(props) {
             <DataTable.Cell>
                 {attr.attributeName}
             </DataTable.Cell>
-            <DataTable.Cell>
+            <DataTable.Cell style={{ justifyContent: 'center' }}>
                 {attr.accessModifier}
             </DataTable.Cell>
-            <DataTable.Cell>
+            <DataTable.Cell style={{ justifyContent: 'center' }}>
                 {attr.type}
             </DataTable.Cell>
 
@@ -293,10 +293,10 @@ function Method(props) {
             <DataTable.Cell>
                 {method.methodName}
             </DataTable.Cell>
-            <DataTable.Cell>
+            <DataTable.Cell style={{ justifyContent: 'center' }}>
                 {method.accessModifier}
             </DataTable.Cell>
-            <DataTable.Cell>
+            <DataTable.Cell style={{ justifyContent: 'center' }}>
                 {method.returnType}
             </DataTable.Cell>
 
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         flex: 1,
         height: 50,
-        marginTop:20,
+        marginTop: 20,
         justifyContent: 'center'
     },
     Box: {
@@ -358,7 +358,8 @@ const styles = StyleSheet.create({
         width: "15%",
         borderRadius: 5,
         textAlign: "center",
-        marginRight: "7.5%"
+        marginRight: "7.5%",
+        justifyContent: 'center'
     },
 });
 

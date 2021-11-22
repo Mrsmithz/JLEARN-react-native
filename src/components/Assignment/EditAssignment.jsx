@@ -194,10 +194,14 @@ function EditAssignment(props) {
             form.append('title', title)
             form.append('description', description)
             form.append('type', assignment.type)
-            if (tags.length) {
-                tags.map((tag) => {
-                    form.append('tags', tag)
-                })
+            if (tags) {
+                if (tags.length) {
+                    tags.map((tag) => {
+                        form.append('tags', tag)
+                    })
+                } else {
+                    form.append('tags', "")
+                }
             } else {
                 form.append('tags', "")
             }

@@ -77,7 +77,7 @@ function SetAssignmentScore(props) {
             marginTop: 20,
             height: 40,
             marginBottom: 10,
-            width:"93%",
+            width: "93%",
             alignSelf: "center",
             backgroundColor: "#031B88",
         },
@@ -118,7 +118,7 @@ function SetAssignmentScore(props) {
 
     }, [jaSon])
     const setAssignmentScore = async () => {
-        try{
+        try {
             let assign = props.route.params
             let veson = veSON
             veson.jaSon = jaSon
@@ -129,27 +129,31 @@ function SetAssignmentScore(props) {
             form.append('title', assign.title)
             form.append('description', assign.description)
             form.append('type', assign.type)
-            if(assign.tags.length){
-                assign.tags.map((tag)=>{
-                    form.append('tags', tag)
-                })
-            }else{
+            if (assign.tags) {
+                if (assign.tags.length) {
+                    assign.tags.map((tag) => {
+                        form.append('tags', tag)
+                    })
+                } else {
+                    form.append('tags', "")
+                }
+            } else {
                 form.append('tags', "")
             }
-            assign.javaCode.map((code)=>{
+            assign.javaCode.map((code) => {
                 form.append('javaCode', code.id)
             })
-            assign.files.map((file)=>{
+            assign.files.map((file) => {
                 form.append('files', file.id)
             })
             form.append('VeSON', JSON.stringify(veson))
             // console.log(assign.id, assign.lessonId, assign.title, assign.description, assign.type, assign.tags, assign.javaCode, assign.files, veson)
             let result = await AssignmentService.updateAssignment(form)
             props.navigation.goBack()
-        }catch(err){
+        } catch (err) {
             console.log(err)
         }
-    
+
     }
     return (
         <KeyboardAvoidingView
@@ -157,7 +161,7 @@ function SetAssignmentScore(props) {
             style={{ flex: 1 }}
         >
             <SafeAreaView style={styles.container}>
-                <Navbar back={true} header={"setscore"} props={props}></Navbar>
+                <Navbar back={true} header={"Set Score"} props={props}></Navbar>
                 <ScrollView>
                     <View style={styles.Layout}>
                         <AccordionClass title={"Class"} color={'#E79796'} jaSon={veSON.jaSon} onChange={(jaSon) => setJaSon(jaSon)}></AccordionClass>
@@ -166,7 +170,7 @@ function SetAssignmentScore(props) {
                     <TouchableOpacity style={styles.button} onPress={() => {
                         setAssignmentScore()
                     }}>
-                        <Text style={styles.text_button}>Submit</Text>
+                        <Text style={styles.text_button}>Confirm</Text>
                     </TouchableOpacity>
                 </ScrollView >
             </SafeAreaView>

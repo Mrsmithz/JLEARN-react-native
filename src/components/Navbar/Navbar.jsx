@@ -59,7 +59,8 @@ function Navbar(props) {
   const styles = StyleSheet.create({
     text: {
       fontWeight: 'bold',
-      fontFamily: (Platform.OS === "ios") ? "Zapfino" : "serif"
+      fontFamily: "serif"
+      // fontFamily: "Palatino"
     }
 
   });
