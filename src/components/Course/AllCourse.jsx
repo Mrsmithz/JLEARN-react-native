@@ -84,7 +84,7 @@ function AllCourse(props) {
     },
     container: {
       height: "100%",
-      backgroundColor: "snow",
+      backgroundColor: "#F3E1E1",
       flex: 1
     },
     card_col: {
@@ -107,6 +107,10 @@ function AllCourse(props) {
       alignSelf: 'center',
     },
   });
+  if(data){
+
+  }
+
   const [refreshing, setRefreshing] = React.useState(false);
   const refRBSheet = useRef();
   const onRefresh = React.useCallback(() => {
@@ -133,7 +137,7 @@ function AllCourse(props) {
                 <Image source={course.image ? { uri: API.File.getImage + course.image } : Logo} style={styles.image}  ></Image>
                 <Stack direction="column" style={styles.text}>
                   <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
-                  <Text style={{ flex: 3 }} numberOfLines={4}>{course.description}</Text>
+                  <Text style={{ flex: 3}} numberOfLines={4}>{course.description}</Text>
                 </Stack>
               </Stack>
             </TouchableOpacity>

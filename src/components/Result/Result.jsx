@@ -56,7 +56,7 @@ function Result(props) {
         },
         container: {
             height: "100%",
-            backgroundColor: "snow",
+            backgroundColor: "#F3E1E1",
             flex: 1
         },
         button: {
@@ -117,7 +117,7 @@ function Result(props) {
     }, []);
     return (
         <SafeAreaView style={styles.container}>
-            <Navbar back={true} header={"Submit Assignment"} props={props.props}></Navbar>
+            <Navbar back={true} header={"Result"} props={props.props}></Navbar>
 
             <ScrollView
                 refreshControl={

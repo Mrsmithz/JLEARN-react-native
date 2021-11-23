@@ -281,7 +281,7 @@ function ReactNativeChipInput(props) {
     }
 
     return (
-        <View style={[getInputVariantStyle(inputVariant), inputStyle ? inputStyle : themedStyles.inputAndChipWrapper]}>
+        <View style={[getInputVariantStyle(inputVariant), inputStyle ? inputStyle : themedStyles.inputAndChipWrapper,{borderRadius:7, borderColor:"#DFD3C3", backgroundColor:'snow' }]}>
             <View style={themedStyles.chipsContainer}>
                 {
                     inputValues.map(value => (
@@ -315,7 +315,7 @@ function ReactNativeChipInput(props) {
                 }
             </View>
             <TextInput
-                style={inputTextStyle ? inputTextStyle : themedStyles.input}
+                style={[inputTextStyle ? inputTextStyle : themedStyles.input]}
                 onKeyPress={enableBackspaceDelete ? e => onBackKeyPress(e) : null}
                 placeholderStyle={placeholderStyle ? placeholderStyle : themedStyles.input}
                 onChangeText={(value) => setCurrentInputValue(value)}

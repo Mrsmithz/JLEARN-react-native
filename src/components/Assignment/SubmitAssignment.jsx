@@ -27,6 +27,7 @@ import AccordionFiles from "../Accordion/AccordionFiles"
 import { Icon } from 'react-native-eva-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import EditIcon from "../Icon/EditIcon"
+import DeleteIcon from "../Icon/DeleteIcon"
 import AssignmentService from "../../service/AssignmentService"
 
 const wait = (timeout) => {
@@ -49,7 +50,7 @@ function SubmitAssignment(props) {
         },
         container: {
             height: "100%",
-            backgroundColor: "snow",
+            backgroundColor: "#F3E1E1",
             flex: 1
         },
         button: {
@@ -108,7 +109,7 @@ function SubmitAssignment(props) {
         files.map((file) => {
             let filename = file.name;
             let type = file.name.split('.').reverse()[0];
-            form.append('codeFiles', { uri: file.uri, name: filename, size:file.size, type })
+            form.append('codeFiles', { uri: file.uri, name: filename, size: file.size, type })
         })
         form.append('assignmentId', assignment.id)
         let result = await AssignmentService.validateAssignment(form)
@@ -154,6 +155,10 @@ function SubmitAssignment(props) {
             </ScrollView >
             {true ?
                 <>
+                    <DeleteIcon props={props} goto={() => {
+                        console.log("Delete")
+                        // props.props.navigation.navigate("EditLessonScreen", data)
+                    }}></DeleteIcon>
                     <EditIcon props={props} goto={() => {
                         props.props.navigation.navigate("EditAssignmentScreen", assignment)
                     }}></EditIcon>

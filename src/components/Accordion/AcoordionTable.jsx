@@ -44,7 +44,8 @@ const AccordionTable = (props) => {
                 style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
                 expanded={expanded}
-                onPress={handlePress}>
+                onPress={handlePress}
+                theme={{colors:{background:'transparent'}}}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     {jaSon.length ?
                         <DataTable>

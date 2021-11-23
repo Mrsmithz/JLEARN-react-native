@@ -19,6 +19,7 @@ import {
     Dimensions,
     RefreshControl,
     KeyboardAvoidingView,
+    Platform
 } from "react-native";
 import { TextInput, RadioButton } from 'react-native-paper';
 import { Button, Card, Layout, Text, Tab, TabBar } from "@ui-kitten/components";
@@ -54,7 +55,7 @@ function CreateAssignment(props) {
         },
         container: {
             height: "100%",
-            backgroundColor: "snow",
+            backgroundColor: "#F3E1E1",
             flex: 1
         },
         textinput: {
@@ -149,25 +150,25 @@ function CreateAssignment(props) {
     const createAssignment = async () => {
         try {
             let form = new FormData()
-            tags.map((tag)=>{
+            tags.map((tag) => {
                 form.append('tags', tag)
             })
             files.map((file) => {
                 let filename = file.name;
                 let type = file.name.split('.').reverse()[0];
-                form.append('files', { uri: file.uri, name: filename, size:file.size, type })
+                form.append('files', { uri: file.uri, name: filename, size: file.size, type })
             })
             codeFiles.map((file) => {
                 let filename = file.name;
                 let type = file.name.split('.').reverse()[0];
-                form.append('javaCode', { uri: file.uri, name: filename, size:file.size, type })
+                form.append('javaCode', { uri: file.uri, name: filename, size: file.size, type })
             })
             form.append('title', title)
             form.append('description', description)
             form.append('type', 'ASSIGNMENT')
             form.append('lessonId', lessonId)
             let result = await AssignmentService.createAssignment(form)
-            mutate(API.Lesson.getLessonById + lessonId )
+            mutate(API.Lesson.getLessonById + lessonId)
             // mutate(API.Course.getCourseById + courseId, test.data)
             props.navigation.goBack()
             props.navigation.navigate("SetAssignmentScoreScreen", result.data)
@@ -177,89 +178,94 @@ function CreateAssignment(props) {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Navbar back={true} header={"Create Assignment"} props={props}></Navbar>
-            <ScrollView>
-                <View style={styles.Layout}>
-                    {/* <Text style={styles.text}>title</Text> */}
-                    <TextInput
-                        label="Assignment Name"
-                        mode="outlined"
-                        style={styles.textinput}
-                        value={title}
-                        onChangeText={title => setTitle(title)}
-                    />
-                    {/* <Text style={styles.text}>Description</Text> */}
-                    <TextInput
-                        label="Description"
-                        mode="outlined"
-                        style={styles.textinput}
-                        value={description}
-                        onChangeText={description => setDescription(description)}
-                    />
-                    <AccordionTable title={"Class"} color={'#E79796'} files={codeFiles}></AccordionTable>
-                    <Box style={styles.box}>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
-                            {codeFiles.length ? codeFiles.map((file, index) => {
-                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteCodeFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
-                            })
-                                : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
-                        </View>
-                        <TouchableOpacity style={styles.uploadFilebutton} onPress={() => {
-                            pickCode()
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <SafeAreaView style={styles.container}>
+                <Navbar back={true} header={"Create Assignment"} props={props}></Navbar>
+                <ScrollView>
+                    <View style={styles.Layout}>
+                        {/* <Text style={styles.text}>title</Text> */}
+                        <TextInput
+                            label="Assignment Name"
+                            mode="outlined"
+                            style={styles.textinput}
+                            value={title}
+                            onChangeText={title => setTitle(title)}
+                        />
+                        {/* <Text style={styles.text}>Description</Text> */}
+                        <TextInput
+                            label="Description"
+                            mode="outlined"
+                            style={styles.textinput}
+                            value={description}
+                            onChangeText={description => setDescription(description)}
+                        />
+                        <AccordionTable title={"Class"} color={'#E79796'} files={codeFiles}></AccordionTable>
+                        <Box style={styles.box}>
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
+                                {codeFiles.length ? codeFiles.map((file, index) => {
+                                    return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteCodeFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                })
+                                    : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
+                            </View>
+                            <TouchableOpacity style={styles.uploadFilebutton} onPress={() => {
+                                pickCode()
+                            }}>
+                                <Stack direction="row">
+                                    <Stack direction="column" style={{ flex: 1 }}>
+                                        <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
+                                    </Stack>
+                                    <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
+                                        <Text style={styles.text_button}>Upload Code Files</Text>
+                                    </Stack>
+                                </Stack>
+                            </TouchableOpacity>
+                        </Box>
+                        <Box style={styles.box}>
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
+                                {files.length ? files.map((file, index) => {
+                                    return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                })
+                                    : <Text style={styles.text_upload}>No Uploaded PDF Files</Text>}
+                            </View>
+                            <TouchableOpacity style={styles.uploadFilebutton} onPress={() => {
+                                pickDocument()
+                            }}>
+                                <Stack direction="row">
+                                    <Stack direction="column" style={{ flex: 1 }}>
+                                        <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
+                                    </Stack>
+                                    <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
+                                        <Text style={styles.text_button}>Upload PDF Files</Text>
+                                    </Stack>
+                                </Stack>
+                            </TouchableOpacity>
+                        </Box>
+                        <ReactNativeChipInput
+                            variant="contained"
+                            inputVarint="outlined"
+                            showChipIcon={true}
+                            onDelete={e => remove(e)}
+                            label="Add Tag Here"
+                            placeholder="Add Tag Here"
+                            primaryColor="#1976d2"
+                            secondaryColor="#ffffff"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            autoFocus={true}
+                            onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
+                        />
+                        <TouchableOpacity style={styles.button} onPress={() => {
+                            createAssignment()
                         }}>
-                            <Stack direction="row">
-                                <Stack direction="column" style={{ flex: 1 }}>
-                                    <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
-                                </Stack>
-                                <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
-                                    <Text style={styles.text_button}>Upload Code Files</Text>
-                                </Stack>
-                            </Stack>
+                            <Text style={styles.text_button}>Create Assignment</Text>
                         </TouchableOpacity>
-                    </Box>
-                    <Box style={styles.box}>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
-                            {files.length ? files.map((file, index) => {
-                                return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
-                            })
-                                : <Text style={styles.text_upload}>No Uploaded PDF Files</Text>}
-                        </View>
-                        <TouchableOpacity style={styles.uploadFilebutton} onPress={() => {
-                            pickDocument()
-                        }}>
-                            <Stack direction="row">
-                                <Stack direction="column" style={{ flex: 1 }}>
-                                    <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
-                                </Stack>
-                                <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
-                                    <Text style={styles.text_button}>Upload PDF Files</Text>
-                                </Stack>
-                            </Stack>
-                        </TouchableOpacity>
-                    </Box>
-                    <ReactNativeChipInput
-                        variant="contained"
-                        inputVarint="outlined"
-                        showChipIcon={true}
-                        onDelete={e => remove(e)}
-                        label="Add Tag Here"
-                        placeholder="Add Tag Here"
-                        primaryColor="#1976d2"
-                        secondaryColor="#ffffff"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        autoFocus={true}
-                        onAdd={(value) => value !== null ? setTags([...tags, value]) :null}
-                    />
-                    <TouchableOpacity style={styles.button} onPress={() => {
-                        createAssignment()
-                    }}>
-                        <Text style={styles.text_button}>Create Assignment</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView >
-        </SafeAreaView>
+                    </View>
+                </ScrollView >
+            </SafeAreaView>
+        </KeyboardAvoidingView>
     );
 }
 

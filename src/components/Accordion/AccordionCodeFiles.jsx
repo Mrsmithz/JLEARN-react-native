@@ -20,7 +20,9 @@ const AccordionCodeFiles = (props) => {
         setFiles(result)
     }
     useEffect(() => {
-        getFiles()
+        if (props.files) {
+            getFiles()
+        }
     }, [props.files])
     return (
         <List.Section >
@@ -29,6 +31,7 @@ const AccordionCodeFiles = (props) => {
                 title={props.title}
                 expanded={expanded}
                 onPress={handlePress}
+                theme={{colors:{background:'transparent', primary:'#AE4CCF'}}}
                 left={props => <List.Icon {...props} icon={icon} />}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     {files.map((file, index) => {
@@ -78,8 +81,8 @@ const styles = StyleSheet.create({
         width: "100%",
         alignSelf: "center",
     },
-    files:{
-        marginBottom:10
+    files: {
+        marginBottom: 10
     }
 });
 

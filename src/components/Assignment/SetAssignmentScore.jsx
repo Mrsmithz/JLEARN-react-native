@@ -50,7 +50,7 @@ function SetAssignmentScore(props) {
         },
         container: {
             height: "100%",
-            backgroundColor: "snow",
+            backgroundColor: "#F3E1E1",
             flex: 1
         },
         textinput: {

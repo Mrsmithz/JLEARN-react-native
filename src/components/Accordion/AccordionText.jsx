@@ -3,6 +3,7 @@ import { List } from 'react-native-paper';
 import { Box, NativeBaseProvider, Center, Stack, HStack, Text } from 'native-base';
 import {
   StyleSheet,
+  View
 } from "react-native";
 const AccordionText = (props) => {
   const [expanded, setExpanded] = React.useState(false);
@@ -18,6 +19,7 @@ const AccordionText = (props) => {
         title={props.title}
         expanded={expanded}
         onPress={handlePress}
+        theme={{colors:{background:'transparent', primary:'#0C7B93'}}}
         left={props => <List.Icon {...props} icon={icon} />}>
         <Box style={[styles.Box, {backgroundColor:color}]}>
           <Text style={styles.text}>{text}</Text>
@@ -28,33 +30,18 @@ const AccordionText = (props) => {
   );
 };
 const styles = StyleSheet.create({
-  cardLayout: {
-    width: "90%",
-    alignSelf: "center",
-  },
   card: {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     marginTop: 5,
     flex: 1,
     height:50,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderBottomColor:'red',
   },
   Box: {
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-  },
-  container: {
-    height: "100%",
-    backgroundColor: "snow",
-    flex: 1
-  },
-  image: {
-    flex: 2, height: 120
-  },
-  assignmentLayout: {
-    width: "100%",
-    alignSelf: "center",
   },
   text:{
     marginBottom:10

@@ -59,8 +59,7 @@ function Navbar(props) {
   const styles = StyleSheet.create({
     text: {
       fontWeight: 'bold',
-      fontFamily: "serif"
-      // fontFamily: "Palatino"
+      fontFamily: "Palatino"
     }
 
   });

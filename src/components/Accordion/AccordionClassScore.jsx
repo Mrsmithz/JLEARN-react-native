@@ -26,6 +26,7 @@ const AccordionClassScore = (props) => {
                 style={[styles.card, !expandedClass ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
                 expanded={expandedClass}
+                theme={{colors:{background:'transparent', primary:'#FF5DA2'}}}
                 onPress={handlePressClass}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>

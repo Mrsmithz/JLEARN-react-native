@@ -19,6 +19,7 @@ import {
     Dimensions,
     RefreshControl,
     KeyboardAvoidingView,
+    Platform
 } from "react-native";
 import { TextInput, RadioButton } from 'react-native-paper';
 import { Button, Card, Layout, Text, Tab, TabBar } from "@ui-kitten/components";
@@ -56,7 +57,7 @@ function EditAssignment(props) {
         },
         container: {
             height: "100%",
-            backgroundColor: "snow",
+            backgroundColor: "#F3E1E1",
             flex: 1
         },
         textinput: {
@@ -223,23 +224,23 @@ function EditAssignment(props) {
                 })
                 form.append('VeSON', JSON.stringify(assignment.veSON))
             }
-            if(files.length){
+            if (files.length) {
                 files.map((file) => {
                     form.append('files', file.id)
                 })
-            }else{
+            } else {
                 form.append('files', "")
             }
 
-            newPdfFiles.map((file)=>{
+            newPdfFiles.map((file) => {
                 let filename = file.name;
                 let type = file.name.split('.').reverse()[0];
-                form.append('newPdfFiles', { uri: file.uri, name: filename, size:file.size, type })
+                form.append('newPdfFiles', { uri: file.uri, name: filename, size: file.size, type })
             })
             await AssignmentService.updateAssignment(form)
             let assign = await AssignmentService.getAssignmentById(assignment.id)
-            mutate(API.Lesson.getLessonById + assignment.lessonId, [] )
-            mutate(API.Lesson.getLessonById + assignment.lessonId )
+            mutate(API.Lesson.getLessonById + assignment.lessonId, [])
+            mutate(API.Lesson.getLessonById + assignment.lessonId)
             props.props.navigation.pop(2)
             props.props.navigation.navigate("SetAssignmentScoreScreen", assign.data)
         } catch (err) {
@@ -247,145 +248,150 @@ function EditAssignment(props) {
         }
     }
     return (
-        <SafeAreaView style={styles.container}>
-            <Navbar back={true} header={"Edit Assignment"} props={props.props}></Navbar>
-            <ScrollView>
-                <View style={styles.Layout}>
-                    {/* <Text style={styles.text}>title</Text> */}
-                    <TextInput
-                        label="Assignment Name"
-                        mode="outlined"
-                        style={styles.textinput}
-                        value={title}
-                        onChangeText={title => setTitle(title)}
-                    />
-                    {/* <Text style={styles.text}>Description</Text> */}
-                    <TextInput
-                        label="Description"
-                        mode="outlined"
-                        style={styles.textinput}
-                        value={description}
-                        onChangeText={description => setDescription(description)}
-                    />
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <SafeAreaView style={styles.container}>
+                <Navbar back={true} header={"Edit Assignment"} props={props.props}></Navbar>
+                <ScrollView>
+                    <View style={styles.Layout}>
+                        {/* <Text style={styles.text}>title</Text> */}
+                        <TextInput
+                            label="Assignment Name"
+                            mode="outlined"
+                            style={styles.textinput}
+                            value={title}
+                            onChangeText={title => setTitle(title)}
+                        />
+                        {/* <Text style={styles.text}>Description</Text> */}
+                        <TextInput
+                            label="Description"
+                            mode="outlined"
+                            style={styles.textinput}
+                            value={description}
+                            onChangeText={description => setDescription(description)}
+                        />
 
-                    {
-                        newFiles ? (
-                            <Box style={styles.box}>
-                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
-                                    {newCodefiles.length ? newCodefiles.map((file, index) => {
-                                        return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteCodeFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
-                                    })
-                                        : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
-                                </View>
-                                <TouchableOpacity style={styles.uploadFilebutton} onPress={() => {
-                                    pickCode()
+                        {
+                            newFiles ? (
+                                <Box style={styles.box}>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
+                                        {newCodefiles.length ? newCodefiles.map((file, index) => {
+                                            return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteCodeFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                        })
+                                            : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
+                                    </View>
+                                    <TouchableOpacity style={styles.uploadFilebutton} onPress={() => {
+                                        pickCode()
+                                    }}>
+                                        <Stack direction="row">
+                                            <Stack direction="column" style={{ flex: 1 }}>
+                                                <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
+                                            </Stack>
+                                            <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
+                                                <Text style={styles.text_button}>Upload Code Files</Text>
+                                            </Stack>
+                                        </Stack>
+                                    </TouchableOpacity>
+                                </Box>
+                            ) : (
+                                <Box style={styles.box}>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
+                                        {codeFiles.length ? codeFiles.map((file, index) => {
+                                            return <Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index}>{file.name}</Chip>
+                                        })
+                                            : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
+                                    </View>
+                                    <TouchableOpacity style={[styles.uploadFilebutton, { backgroundColor: "grey" }]} disabled onPress={() => {
+                                        pickCode()
+                                    }}>
+                                        <Stack direction="row">
+                                            <Stack direction="column" style={{ flex: 1 }}>
+                                                <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
+                                            </Stack>
+                                            <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
+                                                <Text style={styles.text_button}>Upload Code Files</Text>
+                                            </Stack>
+                                        </Stack>
+                                    </TouchableOpacity>
+                                </Box>
+                            )
+
+                        }
+                        <Stack direction="row">
+                            <Stack direction="column" style={{ flex: 1 }}>
+                                <TouchableOpacity style={[styles.newFilesButton, { backgroundColor: newFiles ? "grey" : "#2D82B5" }]} disabled={newFiles} onPress={() => {
+                                    setNewFiles(true)
                                 }}>
-                                    <Stack direction="row">
-                                        <Stack direction="column" style={{ flex: 1 }}>
-                                            <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
-                                        </Stack>
-                                        <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
-                                            <Text style={styles.text_button}>Upload Code Files</Text>
-                                        </Stack>
-                                    </Stack>
+                                    <Text style={styles.text_button}>Use New Code Files</Text>
                                 </TouchableOpacity>
-                            </Box>
-                        ) : (
-                            <Box style={styles.box}>
-                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
-                                    {codeFiles.length ? codeFiles.map((file, index) => {
-                                        return <Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index}>{file.name}</Chip>
-                                    })
-                                        : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
-                                </View>
-                                <TouchableOpacity style={[styles.uploadFilebutton, { backgroundColor: "grey" }]} disabled onPress={() => {
-                                    pickCode()
-                                }}>
-                                    <Stack direction="row">
-                                        <Stack direction="column" style={{ flex: 1 }}>
-                                            <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
-                                        </Stack>
-                                        <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
-                                            <Text style={styles.text_button}>Upload Code Files</Text>
-                                        </Stack>
-                                    </Stack>
-                                </TouchableOpacity>
-                            </Box>
-                        )
-
-                    }
-                    <Stack direction="row">
-                        <Stack direction="column" style={{ flex: 1 }}>
-                            <TouchableOpacity style={[styles.newFilesButton, { backgroundColor: newFiles ? "grey" : "#2D82B5" }]} disabled={newFiles} onPress={() => {
-                                setNewFiles(true)
-                            }}>
-                                <Text style={styles.text_button}>Use New Code Files</Text>
-                            </TouchableOpacity>
-                        </Stack>
-                        <Stack direction="column" style={{ flex: 1 }}>
-                            <TouchableOpacity style={[styles.newFilesButton, { backgroundColor: !newFiles ? "grey" : "#2D82B5" }]} disabled={!newFiles} onPress={() => {
-                                setNewFiles(false)
-                            }}>
-                                <Text style={styles.text_button}>Use Old Code Files</Text>
-                            </TouchableOpacity>
-                        </Stack>
-                    </Stack>
-
-                    <Box style={styles.box}>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
-                            {files.length ?
-                                files.map((file, index) => {
-                                    return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
-                                })
-                                : null
-                            }
-                            {newPdfFiles.length ?
-                                newPdfFiles.map((file, index) => {
-                                    return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteNewFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
-                                })
-                                : null
-                            }
-
-                            {(!files.length && !newPdfFiles.length) ?
-                                <Text style={styles.text_upload}>No Uploaded PDF Files</Text> : null
-                            }
-                        </View>
-                        <TouchableOpacity style={styles.uploadFilebutton} onPress={() => {
-                            pickDocument()
-                        }}>
-                            <Stack direction="row">
-                                <Stack direction="column" style={{ flex: 1 }}>
-                                    <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
-                                </Stack>
-                                <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
-                                    <Text style={styles.text_button}>Upload PDF Files</Text>
-                                </Stack>
                             </Stack>
+                            <Stack direction="column" style={{ flex: 1 }}>
+                                <TouchableOpacity style={[styles.newFilesButton, { backgroundColor: !newFiles ? "grey" : "#2D82B5" }]} disabled={!newFiles} onPress={() => {
+                                    setNewFiles(false)
+                                }}>
+                                    <Text style={styles.text_button}>Use Old Code Files</Text>
+                                </TouchableOpacity>
+                            </Stack>
+                        </Stack>
+
+                        <Box style={styles.box}>
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
+                                {files.length ?
+                                    files.map((file, index) => {
+                                        return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                    })
+                                    : null
+                                }
+                                {newPdfFiles.length ?
+                                    newPdfFiles.map((file, index) => {
+                                        return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteNewFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                    })
+                                    : null
+                                }
+
+                                {(!files.length && !newPdfFiles.length) ?
+                                    <Text style={styles.text_upload}>No Uploaded PDF Files</Text> : null
+                                }
+                            </View>
+                            <TouchableOpacity style={styles.uploadFilebutton} onPress={() => {
+                                pickDocument()
+                            }}>
+                                <Stack direction="row">
+                                    <Stack direction="column" style={{ flex: 1 }}>
+                                        <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
+                                    </Stack>
+                                    <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
+                                        <Text style={styles.text_button}>Upload PDF Files</Text>
+                                    </Stack>
+                                </Stack>
+                            </TouchableOpacity>
+                        </Box>
+                        <ReactNativeChipInput
+                            variant="contained"
+                            inputVarint="outlined"
+                            showChipIcon={true}
+                            onDelete={e => remove(e)}
+                            label="Add Tag Here"
+                            placeholder="Add Tag Here"
+                            primaryColor="#1976d2"
+                            secondaryColor="#ffffff"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            autoFocus={true}
+                            initialInput={tags}
+                            onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
+                        />
+                        <TouchableOpacity style={styles.button} onPress={() => {
+                            editAssignment()
+                        }}>
+                            <Text style={styles.text_button}>Confirm Edit and Set Score</Text>
                         </TouchableOpacity>
-                    </Box>
-                    <ReactNativeChipInput
-                        variant="contained"
-                        inputVarint="outlined"
-                        showChipIcon={true}
-                        onDelete={e => remove(e)}
-                        label="Add Tag Here"
-                        placeholder="Add Tag Here"
-                        primaryColor="#1976d2"
-                        secondaryColor="#ffffff"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        autoFocus={true}
-                        initialInput={tags}
-                        onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
-                    />
-                    <TouchableOpacity style={styles.button} onPress={() => {
-                        editAssignment()
-                    }}>
-                        <Text style={styles.text_button}>Confirm Edit and Set Score</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView >
-        </SafeAreaView >
+                    </View>
+                </ScrollView >
+            </SafeAreaView >
+        </KeyboardAvoidingView>
     );
 }
 

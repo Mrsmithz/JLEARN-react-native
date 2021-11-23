@@ -41,11 +41,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { addToken } from "../../store/actions/tokenAction"
 import useSWR from 'swr'
 import AuthService from "../../service/AuthService"
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 
 function LoginScreen(props) {
-  const dispatch = useDispatch() 
+  const dispatch = useDispatch()
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
@@ -65,17 +66,17 @@ function LoginScreen(props) {
       },
       shadowRadius: 20,
       shadowOpacity: 1,
-      shadowColor: "#ffb380",
+      shadowColor: "#FFC898",
       elevation: 1,
-      // borderBottomWidth: 0,
-      // borderTopWidth: 0,
-      borderColor: "#000",
-      borderWidth: 2,
-      // backgroundColor: "snow",
+      tintColor:'red',
+      borderTopColor:'#FF79CD',
+      borderLeftColor: '#FF87CA',
+      borderEndColor:'#C490E4',
+      borderBottomColor:'#C67ACE',
+      borderWidth: 1,
       borderRadius: Math.round(288) / 2,
     },
   });
-  // Somewhere in your code
 
   signInAsync = async () => {
     const config = {
@@ -105,10 +106,22 @@ function LoginScreen(props) {
     <SafeAreaView>
       <StatusBar />
       <View style={styles.container}>
-        <ImageBackground
+        {/* <ImageBackground
           source={back}
           style={{ width: "100%", height: "100%" }}
-        ></ImageBackground>
+        ></ImageBackground> */}
+        <LinearGradient
+          // Background Linear Gradient
+          // colors={['#316B83', '#94B3FD', "#6D8299"]}
+          colors={['#6886C5', "#DCD6F7", '#A6B1E1']}  
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height:"100%"
+          }}
+        />
         <TouchableOpacity
           style={styles.shadow}
           onPress={() => {
@@ -129,7 +142,7 @@ function LoginScreen(props) {
                 height: Dimensions.get("window").width * 0.7,
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#ffb380",
+                backgroundColor: "#FFBF86",
                 shadowOffset: {
                   width: -100,
                   height: 50,

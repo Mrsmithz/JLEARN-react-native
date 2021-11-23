@@ -25,6 +25,7 @@ import Navbar from '../Navbar/Navbar'
 import Carousel from '../Carousel/AssignmentCarousel'
 import { Icon } from 'react-native-eva-icons';
 import EditIcon from '../Icon/EditIcon'
+import DeleteIcon from "../Icon/DeleteIcon"
 import useSWR from 'swr'
 import API from "../../service/API"
 import { Fetcher } from "../../service/Fetcher";
@@ -89,7 +90,7 @@ function Assignment(props) {
         },
         container: {
             height: "100%",
-            backgroundColor: "snow",
+            backgroundColor: "#F3E1E1",
             flex: 1
         },
         image: {
@@ -175,6 +176,10 @@ function Assignment(props) {
                 </ScrollView >
                 {userRole !== "LEARNER" &&
                     <>
+                        <DeleteIcon props={props} goto={() => {
+                            console.log("Delete")
+                            // props.props.navigation.navigate("EditLessonScreen", data)
+                        }}></DeleteIcon>
                         <EditIcon props={props} goto={() => {
                             props.props.navigation.navigate("EditLessonScreen", data)
                         }}></EditIcon>

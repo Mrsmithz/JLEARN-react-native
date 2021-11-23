@@ -33,6 +33,7 @@ const AccordionRelation = (props) => {
                 style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
                 expanded={expanded}
+                theme={{colors:{background:'transparent', primary:'#000D6B'}}}
                 onPress={handlePress}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>

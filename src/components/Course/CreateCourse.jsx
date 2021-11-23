@@ -18,7 +18,8 @@ import {
     Image,
     Dimensions,
     RefreshControl,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Platform
 } from "react-native";
 import { TextInput } from 'react-native-paper';
 import { Button, Card, Layout, Text, Tab, TabBar } from "@ui-kitten/components";
@@ -49,7 +50,7 @@ function CreateCourse(props) {
         },
         container: {
             height: "100%",
-            backgroundColor: "snow",
+            backgroundColor: "#F3E1E1",
             flex: 1
         },
         textinput: {
@@ -106,7 +107,7 @@ function CreateCourse(props) {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
-          });
+        });
         setImage({ localUri: pickerResult.uri });
 
     }
@@ -117,12 +118,12 @@ function CreateCourse(props) {
         // }
         try {
             let form = new FormData()
-            if(image){
+            if (image) {
                 let localUri = image.localUri;
                 let filename = localUri.split('/').pop();
                 let match = /\.(\w+)$/.exec(filename);
                 let type = match ? `image/${match[1]}` : `image`;
-                form.append('image',{ uri: localUri, name: filename, type })
+                form.append('image', { uri: localUri, name: filename, type })
             }
             form.append('title', title)
             form.append('description', description)
@@ -132,68 +133,73 @@ function CreateCourse(props) {
             mutate(API.Course.getAllCourse)
             props.navigation.navigate("CourseScreen")
         } catch (err) {
-            console.log(err.response.data)
+            console.log(err)
         }
     }
     return (
-        <SafeAreaView style={styles.container}>
-            <KeyboardAvoidingView style={{ flex: 1 }}>
-                <Navbar back={true} header={"Create Courses"} props={props}></Navbar>
-                <ScrollView>
-                    <View style={styles.Layout}>
-                        {/* <Text style={styles.text}>title</Text> */}
-                        <TextInput
-                            label="Title"
-                            mode="outlined"
-                            style={styles.textinput}
-                            value={title}
-                            onChangeText={title => setTitle(title)}
-                        />
-                        {/* <Text style={styles.text}>Description</Text> */}
-                        <TextInput
-                            label="Description"
-                            mode="outlined"
-                            style={styles.textinput}
-                            value={description}
-                            onChangeText={description => setDescription(description)}
-                        />
-                        <TextInput
-                            label="Enroll Key"
-                            mode="outlined"
-                            style={styles.textinput}
-                            secureTextEntry={true}
-                            value={enroll}
-                            onChangeText={enroll => setEnroll(enroll)}
-                        />
-                        <Stack direction="row" style={{ marginTop: 5 }}>
-                            <Text style={styles.text}>Hide</Text>
-                            <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" onPress={() => setIsHide(!isHide)} />
-                        </Stack>
-                        <Text style={styles.text}>Course Image</Text>
-                        <Image source={image !== null ? { uri: image.localUri } : Logo} style={styles.logo} />
-                        <TouchableOpacity style={styles.uploadimagebutton} onPress={() => {
-                            openImagePickerAsync()
-                        }}>
-                            <Stack direction="row">
-                                <Stack direction="column" style={{ flex: 1 }}>
-                                    <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
-                                </Stack>
-                                <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
-                                    <Text style={styles.text_button}>Upload Image</Text>
-                                </Stack>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <SafeAreaView style={styles.container}>
+                <KeyboardAvoidingView style={{ flex: 1 }}>
+                    <Navbar back={true} header={"Create Courses"} props={props}></Navbar>
+                    <ScrollView>
+                        <View style={styles.Layout}>
+                            {/* <Text style={styles.text}>title</Text> */}
+                            <TextInput
+                                label="Title"
+                                mode="outlined"
+                                style={styles.textinput}
+                                value={title}
+                                onChangeText={title => setTitle(title)}
+                            />
+                            {/* <Text style={styles.text}>Description</Text> */}
+                            <TextInput
+                                label="Description"
+                                mode="outlined"
+                                style={styles.textinput}
+                                value={description}
+                                onChangeText={description => setDescription(description)}
+                            />
+                            <TextInput
+                                label="Enroll Key"
+                                mode="outlined"
+                                style={styles.textinput}
+                                secureTextEntry={true}
+                                value={enroll}
+                                onChangeText={enroll => setEnroll(enroll)}
+                            />
+                            <Stack direction="row" style={{ marginTop: 5 }}>
+                                <Text style={styles.text}>Hide</Text>
+                                <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" onPress={() => setIsHide(!isHide)} />
                             </Stack>
+                            <Text style={styles.text}>Course Image</Text>
+                            <Image source={image !== null ? { uri: image.localUri } : Logo} style={styles.logo} />
+                            <TouchableOpacity style={styles.uploadimagebutton} onPress={() => {
+                                openImagePickerAsync()
+                            }}>
+                                <Stack direction="row">
+                                    <Stack direction="column" style={{ flex: 1 }}>
+                                        <Icon name="cloud-upload" fill='#E4DFD9' style={{ height: 30, marginTop: 4 }} />
+                                    </Stack>
+                                    <Stack direction="column" style={{ flex: 7, marginRight: "12%" }}>
+                                        <Text style={styles.text_button}>Upload Image</Text>
+                                    </Stack>
+                                </Stack>
 
-                        </TouchableOpacity>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.button} onPress={() => {
-                            createCourse()
-                        }}>
-                            <Text style={styles.text_button}>Create Course</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView >
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+                            <TouchableOpacity style={styles.button} onPress={() => {
+                                createCourse()
+                            }}>
+                                <Text style={styles.text_button}>Create Course</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView >
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        </KeyboardAvoidingView>
     );
 }
 

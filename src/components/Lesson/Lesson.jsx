@@ -29,6 +29,7 @@ import { Avatar } from 'react-native-elements';
 import Navbar from '../Navbar/Navbar'
 import AddIcon from '../Icon/AddIcon'
 import EditIcon from '../Icon/EditIcon'
+import DeleteIcon from '../Icon/DeleteIcon'
 import API from "../../service/API"
 import useSWR from 'swr'
 import Fetcher from "../../service/Fetcher"
@@ -91,7 +92,7 @@ function Lesson(props) {
     },
     container: {
       height: "100%",
-      backgroundColor: "snow",
+      backgroundColor: "#F3E1E1",
       flex: 1
     },
     card_col: {
@@ -126,7 +127,7 @@ function Lesson(props) {
         <View style={styles.cardLayout}>
           {lessonList ? lessonList.map((lesson, index) => (
             <TouchableOpacity style={styles.card} key={index} onPress={() => {
-              props.props.navigation.navigate("AssignmentScreen", {lesson:lesson, userRole: userRole});
+              props.props.navigation.navigate("AssignmentScreen", { lesson: lesson, userRole: userRole });
             }}>
               <Stack direction="row" style={{ flex: 1 }}>
                 <Stack direction="column" style={{ flex: 1, marginTop: 10, marginLeft: 5, alignItems: "center" }}>
@@ -142,7 +143,7 @@ function Lesson(props) {
                   />
                 </Stack>
                 <Stack direction="column" style={styles.text}>
-                  <Text style={{ flex: 1, marginTop: 13 }}>{`${lesson.creator.firstName} ${lesson.creator.lastName}`}</Text>
+                  <Text style={{ flex: 1, marginTop: 13, color: '#928A97' }}>{`${lesson.creator.firstName} ${lesson.creator.lastName}`}</Text>
                   <Text style={{ flex: 1, fontWeight: 'bold' }} numberOfLines={4}>{lesson.title}</Text>
                   <Text style={{ flex: 3 }} numberOfLines={3}>{lesson.description}</Text>
                 </Stack>
@@ -153,12 +154,17 @@ function Lesson(props) {
       </ScrollView >
       {userRole === "LECTURER" &&
         <>
+          <DeleteIcon props={props} goto={() => {
+            console.log("Delete")
+            // props.props.navigation.navigate("EditLessonScreen", data)
+          }}></DeleteIcon>
+                    <EditIcon props={props} goto={() => {
+            props.props.navigation.navigate("EditCourseScreen", data)
+          }}></EditIcon>
           <AddIcon props={props.props} goto={() => {
             props.props.navigation.navigate("CreateLessonScreen", courseId)
           }}></AddIcon>
-          <EditIcon props={props} goto={() => {
-            props.props.navigation.navigate("EditCourseScreen", data)
-          }}></EditIcon>
+
         </>
       }
     </SafeAreaView>

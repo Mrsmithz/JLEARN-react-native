@@ -86,6 +86,7 @@ const AccordionClass = (props) => {
                 style={[styles.card, !expandedClass ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
                 expanded={expandedClass}
+                theme={{colors:{background:'transparent', primary:'#D06224'}}}
                 onPress={handlePressClass}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
@@ -107,6 +108,7 @@ const AccordionClass = (props) => {
                 style={[styles.card, !expandedAttr ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={"Attributes"}
                 expanded={expandedAttr}
+                theme={{colors:{background:'transparent', primary:'#892CDC'}}}
                 onPress={handlePressAttr}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
@@ -129,6 +131,7 @@ const AccordionClass = (props) => {
                 style={[styles.card, !expandedMethods ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={"Methods"}
                 expanded={expandedMethods}
+                theme={{colors:{background:'transparent', primary:'#0C7B93'}}}
                 onPress={handlePressMethods}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
