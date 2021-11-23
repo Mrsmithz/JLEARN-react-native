@@ -81,6 +81,13 @@ function AllCourse(props) {
       height: 120,
       marginBottom: 2,
       backgroundColor: "#86E3CE",
+      shadowOffset: {
+        width:7,
+        height: 7,
+      },
+      shadowRadius: 10,
+      shadowOpacity: 0.5,
+      shadowColor: "#6D8299",
     },
     container: {
       height: "100%",

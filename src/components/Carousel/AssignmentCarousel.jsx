@@ -19,27 +19,35 @@ const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.5);
 const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 
-const color= ['#86E3CE', '#FFDD94', '#D0E6A5', '#FA897B', '#CCABD8']
+const color = ['#86E3CE', '#FFDD94', '#D0E6A5', '#FA897B', '#CCABD8']
 const DATA = [];
 for (let i = 0; i < 5; i++) {
     DATA.push(i)
 }
 
 function AssingmentCarousel(props) {
-    const _renderItem = ({ item,  index }) => {
+    const _renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity style={[styles.card, {backgroundColor:color[index%5]}]} onPress={() => {
+            <TouchableOpacity style={[styles.card, {
+                backgroundColor: color[index % 5], shadowOffset: {
+                    width: 1,
+                    height: 1,
+                },
+                shadowRadius: 3,
+                shadowOpacity: 0.5,
+                shadowColor: "#6D8299",
+            }]} onPress={() => {
                 props.props.navigation.navigate("SubmitAssignmentScreen", item);
             }}>
                 <View style={styles.cardLayout}>
-                    <Text style={{fontWeight:'bold', marginTop:5}}>{item.title}</Text>
-                    <Text style={{fontSize:11}}numberOfLines={4}>{item.description}</Text>
+                    <Text style={{ fontWeight: 'bold', marginTop: 5 }}>{item.title}</Text>
+                    <Text style={{ fontSize: 11 }} numberOfLines={4}>{item.description}</Text>
                 </View>
             </TouchableOpacity>
         );
     }
     return (
-        <View style={{width: '100%'}}>
+        <View style={{ width: '100%' }}>
             <Carousel
                 data={props.assignment ? props.assignment : []}
                 renderItem={_renderItem}

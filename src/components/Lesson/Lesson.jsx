@@ -89,6 +89,13 @@ function Lesson(props) {
       height: 140,
       marginBottom: 2,
       backgroundColor: "#B4B4F5",
+      shadowOffset: {
+        width:7,
+        height: 7,
+      },
+      shadowRadius: 10,
+      shadowOpacity: 0.5,
+      shadowColor: "#6D8299",
     },
     container: {
       height: "100%",
