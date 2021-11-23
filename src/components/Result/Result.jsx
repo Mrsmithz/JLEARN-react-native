@@ -116,7 +116,7 @@ function Result(props) {
         wait(2000).then(() => setRefreshing(false));
     }, []);
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Navbar back={true} header={"Result"} props={props.props}></Navbar>
 
             <ScrollView
@@ -165,7 +165,7 @@ function Result(props) {
                 </View>
             </ScrollView >
 
-        </SafeAreaView>
+        </View>
     );
 }
 

@@ -84,6 +84,8 @@ function LinkTable(props){
                 onChangeText={score => {
                     if (parseInt(score) >= 0) {
                         setLinkScore(parseInt(score))
+                    }else{
+                        setLinkScore(parseInt(0))
                     }
                 }}
                 value={score.toString()}

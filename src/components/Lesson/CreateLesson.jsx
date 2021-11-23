@@ -160,7 +160,7 @@ function CreateLesson(props) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <Navbar back={true} header={"Create Lesson"} props={props}></Navbar>
                 <ScrollView>
                     <View style={styles.Layout}>
@@ -222,7 +222,6 @@ function CreateLesson(props) {
                             secondaryColor="#ffffff"
                             autoCapitalize="none"
                             autoCorrect={false}
-                            autoFocus={true}
                             onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
                         />
                         <TouchableOpacity style={styles.button} onPress={() => {
@@ -232,7 +231,7 @@ function CreateLesson(props) {
                         </TouchableOpacity>
                     </View>
                 </ScrollView >
-            </SafeAreaView>
+            </View>
         </KeyboardAvoidingView>
     );
 }

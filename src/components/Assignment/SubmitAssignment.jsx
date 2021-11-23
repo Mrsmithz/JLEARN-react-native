@@ -104,23 +104,26 @@ function SubmitAssignment(props) {
         setFiles([...allFiles])
     }
     const submitAssignment = async () => {
-
-        let form = new FormData()
-        files.map((file) => {
-            let filename = file.name;
-            let type = file.name.split('.').reverse()[0];
-            form.append('codeFiles', { uri: file.uri, name: filename, size: file.size, type })
-        })
-        form.append('assignmentId', assignment.id)
-        let result = await AssignmentService.validateAssignment(form)
-        props.props.navigation.navigate("ResultScreen", result.data)
+        try{
+            let form = new FormData()
+            files.map((file) => {
+                let filename = file.name;
+                let type = file.name.split('.').reverse()[0];
+                form.append('codeFiles', { uri: file.uri, name: filename, size: file.size, type })
+            })
+            form.append('assignmentId', assignment.id)
+            let result = await AssignmentService.validateAssignment(form)
+            props.props.navigation.navigate("ResultScreen", result.data)
+        }catch(err){
+            console.log(err)
+        }
     }
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
     }, []);
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Navbar back={true} header={"Submit Assignment"} props={props.props}></Navbar>
 
             <ScrollView
@@ -165,7 +168,7 @@ function SubmitAssignment(props) {
                 </>
                 : null
             }
-        </SafeAreaView>
+        </View>
     );
 }
 

@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { scrollInterpolator, animatedStyles } from '../../utils/animation';
 import { Text } from "@ui-kitten/components";
+import { Chip } from 'react-native-paper';
 const SLIDER_WIDTH = Dimensions.get('window').width;
 
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.5);
@@ -40,8 +41,13 @@ function AssingmentCarousel(props) {
                 props.props.navigation.navigate("SubmitAssignmentScreen", item);
             }}>
                 <View style={styles.cardLayout}>
-                    <Text style={{ fontWeight: 'bold', marginTop: 5 }}>{item.title}</Text>
-                    <Text style={{ fontSize: 11 }} numberOfLines={4}>{item.description}</Text>
+                    <Text style={{ fontWeight: 'bold', marginTop: 5, flex: 1 }}>{item.title}</Text>
+                    <Text style={{ fontSize: 11, flex: 3 }} numberOfLines={4}>{item.description}</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
+                        {item.tags && item.tags.map((tag, index) => {
+                            return (<Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index}>{tag}</Chip>)
+                        })}
+                    </View>
                 </View>
             </TouchableOpacity>
         );
@@ -96,12 +102,19 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         width: "95%",
         alignSelf: "center",
+        flexDirection: "column",
+        flex: 1
     },
     card: {
         borderRadius: 10,
         marginTop: 11,
         height: 120,
         marginBottom: 2,
+    },
+    chip: {
+        height: 30,
+        alignItems: "center",
+        backgroundColor: "#CAB8FF"
     },
 });
 

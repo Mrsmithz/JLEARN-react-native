@@ -71,7 +71,7 @@ function MyCourse(props) {
       marginBottom: 2,
       backgroundColor: "#86E3CE",
       shadowOffset: {
-        width:7,
+        width: 7,
         height: 7,
       },
       shadowRadius: 10,
@@ -89,15 +89,15 @@ function MyCourse(props) {
       justifyContent: "flex-start"
     },
     image: {
-      flex: 2, 
+      flex: 2,
       height: 115,
-      borderRadius:10,
-      margin:2
+      borderRadius: 10,
+      margin: 2
     },
     text: {
       flex: 3,
       marginLeft: 4
-    }
+    },
   });
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
@@ -105,7 +105,7 @@ function MyCourse(props) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Navbar back={false} header={"J:LEARN"} props={props}></Navbar>
       <ScrollView
         refreshControl={
@@ -115,22 +115,22 @@ function MyCourse(props) {
           />
         } >
         <View style={styles.cardLayout}>
-        {courseList && courseList.map((course, index) => (
+          {courseList && courseList.map((course, index) => (
             <TouchableOpacity style={styles.card} key={index} onPress={() => {
               props.navigation.navigate("LessonScreen", course);
             }}>
               <Stack direction="row" style={{ marginRight: 20 }}>
-                <Image source={course.image ? {uri:API.File.getImage+course.image} : Logo} style={styles.image}></Image>
+                <Image source={course.image ? { uri: API.File.getImage + course.image } : Logo} style={styles.image}></Image>
                 <Stack direction="column" style={styles.text}>
                   <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
-                  <Text style={{ flex: 3, fontSize:12, paddingBottom:30 }} numberOfLines={4}>{course.description}</Text>
+                  <Text style={{ flex: 3, fontSize: 12, paddingBottom: 30 }} numberOfLines={4}>{course.description}</Text>
                 </Stack>
               </Stack>
             </TouchableOpacity>
           ))}
         </View>
       </ScrollView >
-    </SafeAreaView>
+    </View>
   );
 }
 

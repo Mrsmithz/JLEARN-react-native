@@ -37,6 +37,7 @@ import axios from "axios"
 import LessonService from "../../service/LessonService"
 import UserService from "../../service/UserService"
 import { getMediaLibraryPermissionsAsync } from "expo-image-picker";
+import { Chip } from 'react-native-paper';
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -90,7 +91,7 @@ function Lesson(props) {
       marginBottom: 2,
       backgroundColor: "#B4B4F5",
       shadowOffset: {
-        width:7,
+        width: 7,
         height: 7,
       },
       shadowRadius: 10,
@@ -112,7 +113,13 @@ function Lesson(props) {
     },
     text: {
       flex: 6,
-    }
+    },
+    chip: {
+      height: 30,
+      alignItems: "center",
+
+      backgroundColor:"#FCFFA6"
+    },
   });
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -121,7 +128,7 @@ function Lesson(props) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Navbar back={true} header={data !== undefined ? data.title : ""} props={props.props}></Navbar>
 
       <ScrollView
@@ -150,9 +157,14 @@ function Lesson(props) {
                   />
                 </Stack>
                 <Stack direction="column" style={styles.text}>
-                  <Text style={{ flex: 1, marginTop: 13, color: '#928A97' }}>{`${lesson.creator.firstName} ${lesson.creator.lastName}`}</Text>
-                  <Text style={{ flex: 1, fontWeight: 'bold' }} numberOfLines={4}>{lesson.title}</Text>
-                  <Text style={{ flex: 3 }} numberOfLines={3}>{lesson.description}</Text>
+                  <Text style={{ flex: 1, marginTop: 8, color: '#928A97' }}>{`${lesson.creator.firstName} ${lesson.creator.lastName}`}</Text>
+                  <Text style={{ flex: 1, fontWeight: 'bold', marginTop:3 }} numberOfLines={4}>{lesson.title}</Text>
+                  <Text style={{ flex: 3, fontSize:13, marginTop:3 }} numberOfLines={3}>{lesson.description}</Text>
+                  <Stack direction="row" style={{ flexWrap: 'wrap', flex:1, paddingBottom:15}}>
+                    {lesson.tags && lesson.tags.map((tag, index) => {
+                      return(<Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index}>{tag}</Chip>)
+                    })}
+                  </Stack>
                 </Stack>
               </Stack>
             </TouchableOpacity>
@@ -165,7 +177,7 @@ function Lesson(props) {
             console.log("Delete")
             // props.props.navigation.navigate("EditLessonScreen", data)
           }}></DeleteIcon>
-                    <EditIcon props={props} goto={() => {
+          <EditIcon props={props} goto={() => {
             props.props.navigation.navigate("EditCourseScreen", data)
           }}></EditIcon>
           <AddIcon props={props.props} goto={() => {
@@ -174,7 +186,7 @@ function Lesson(props) {
 
         </>
       }
-    </SafeAreaView>
+    </View>
   );
 }
 

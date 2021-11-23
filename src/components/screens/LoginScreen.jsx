@@ -103,7 +103,7 @@ function LoginScreen(props) {
     }
   };
   return (
-    <SafeAreaView>
+    <View>
       <StatusBar />
       <View style={styles.container}>
         {/* <ImageBackground
@@ -157,7 +157,7 @@ function LoginScreen(props) {
           </View>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

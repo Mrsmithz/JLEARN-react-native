@@ -180,6 +180,8 @@ function ClassTable(props) {
                 onChangeText={score => {
                     if (parseInt(score) >= 0) {
                         setClassScore(parseInt(score))
+                    }else{
+                        setClassScore(parseInt(0))
                     }
                 }}
                 value={score.toString()}
@@ -245,6 +247,8 @@ function Attribute(props) {
                 onChangeText={score => {
                     if (parseInt(score) >= 0) {
                         setAttrScore(parseInt(score))
+                    }else{
+                        setAttrScore(parseInt(0))
                     }
                 }}
                 value={score.toString()}
@@ -309,6 +313,8 @@ function Method(props) {
                 onChangeText={score => {
                     if (parseInt(score) >= 0) {
                         setMethodScore(parseInt(score))
+                    }else{
+                        setMethodScore(parseInt(0))
                     }
                 }}
                 value={score.toString()}

@@ -125,7 +125,7 @@ function AllCourse(props) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Navbar back={false} header={"J:LEARN"} props={props}></Navbar>
       <ScrollView
         refreshControl={
@@ -179,7 +179,7 @@ function AllCourse(props) {
           props.navigation.navigate("CreateCourseScreen")
         }} ></AddIcon> : null
       }
-    </SafeAreaView>
+    </View>
   );
 }
 

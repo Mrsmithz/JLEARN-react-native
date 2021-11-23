@@ -127,8 +127,12 @@ function EditAssignment(props) {
         },
     });
     useEffect(() => {
-        getCodeFilesName()
-        getPdfFilesName()
+        if(assignment.files){
+            getPdfFilesName()
+        }
+        if(assignment.javaCode){
+            getCodeFilesName()
+        }
     }, [assignment])
     useEffect(() => {
 
@@ -252,7 +256,7 @@ function EditAssignment(props) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <Navbar back={true} header={"Edit Assignment"} props={props.props}></Navbar>
                 <ScrollView>
                     <View style={styles.Layout}>
@@ -379,7 +383,6 @@ function EditAssignment(props) {
                             secondaryColor="#ffffff"
                             autoCapitalize="none"
                             autoCorrect={false}
-                            autoFocus={true}
                             initialInput={tags}
                             onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
                         />
@@ -390,7 +393,7 @@ function EditAssignment(props) {
                         </TouchableOpacity>
                     </View>
                 </ScrollView >
-            </SafeAreaView >
+            </View >
         </KeyboardAvoidingView>
     );
 }

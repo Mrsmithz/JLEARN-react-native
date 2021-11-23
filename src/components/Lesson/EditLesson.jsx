@@ -39,7 +39,7 @@ function EditLesson(props) {
     props = props.props
     let data = props.route.params
     const { mutate } = useSWRConfig()
-    let [files, setFiles] = React.useState(data.files);
+    let [files, setFiles] = React.useState(data.files ? data.files : []);
     let [type, setType] = React.useState(data.type);
     let [tags, setTags] = React.useState(data.tags ? data.tags : []);
     let [title, setTitle] = React.useState(data.title);
@@ -178,6 +178,7 @@ function EditLesson(props) {
             // mutate(API.Course.getCourseById + props.route.params.courseId, [])
             mutate(API.Course.getCourseById + props.route.params.courseId, result.data)
             // mutate(API.Course.getCourseById + props.route.params.courseId, les.data)
+            mutate(API.Lesson.getLessonById + data.id, [])
             mutate(API.Lesson.getLessonById + data.id)
             props.navigation.goBack()
             // props.navigation.navigate("AssignmentScreen", result.data)
@@ -190,7 +191,7 @@ function EditLesson(props) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <Navbar back={true} header={"Edit Lesson"} props={props}></Navbar>
                 <ScrollView>
                     <View style={styles.Layout}>
@@ -252,7 +253,6 @@ function EditLesson(props) {
                             secondaryColor="#ffffff"
                             autoCapitalize="none"
                             autoCorrect={false}
-                            autoFocus={true}
                             initialInput={tags}
                             onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
                         />
@@ -263,7 +263,7 @@ function EditLesson(props) {
                         </TouchableOpacity>
                     </View>
                 </ScrollView >
-            </SafeAreaView>
+            </View>
         </KeyboardAvoidingView>
     );
 }

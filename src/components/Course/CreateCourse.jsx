@@ -141,7 +141,7 @@ function CreateCourse(props) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <KeyboardAvoidingView style={{ flex: 1 }}>
                     <Navbar back={true} header={"Create Courses"} props={props}></Navbar>
                     <ScrollView>
@@ -198,7 +198,7 @@ function CreateCourse(props) {
                         </View>
                     </ScrollView >
                 </KeyboardAvoidingView>
-            </SafeAreaView>
+            </View>
         </KeyboardAvoidingView>
     );
 }

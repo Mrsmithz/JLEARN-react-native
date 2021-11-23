@@ -111,6 +111,9 @@ function EditCourse(props) {
             aspect: [4, 3],
             quality: 1,
         });
+        if (pickerResult.cancelled === true) {
+            return;
+          }
         setImage(pickerResult.uri);
         setChangeImage(true)
     }
@@ -162,7 +165,7 @@ function EditCourse(props) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <KeyboardAvoidingView style={{ flex: 1 }}>
                     <Navbar back={true} header={"Edit Courses"} props={props}></Navbar>
                     <ScrollView>
@@ -219,7 +222,7 @@ function EditCourse(props) {
                         </View>
                     </ScrollView >
                 </KeyboardAvoidingView>
-            </SafeAreaView>
+            </View>
         </KeyboardAvoidingView>
     );
 }

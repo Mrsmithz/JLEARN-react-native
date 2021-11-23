@@ -72,6 +72,8 @@ function Assignment(props) {
             getLesson()
             if(data.files) {
                 getFiles()
+            }else{
+                setFiles([])
             }
         }
     }, [data])
@@ -117,7 +119,7 @@ function Assignment(props) {
     }, []);
     if (data) {
         return (
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <Navbar back={true} header={data.title} props={props.props}></Navbar>
 
                 <ScrollView
@@ -192,7 +194,7 @@ function Assignment(props) {
                         }}></EditIcon>
                     </>
                 }
-            </SafeAreaView>
+            </View>
         );
     } else {
         return <View></View>

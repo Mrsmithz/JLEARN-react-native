@@ -35,10 +35,12 @@ import FilesService from "../../service/FilesService"
 import AccordionClass from "../Accordion/AccordionClass"
 import AssignmentService from "../../service/AssignmentService"
 import AccordionRelation from "../Accordion/AccordionRelation"
-
+import useSWR, { useSWRConfig } from 'swr'
+import API from "../../service/API"
 
 function SetAssignmentScore(props) {
     props = props.props
+    const { mutate } = useSWRConfig()
     const [veSON, setVeSON] = React.useState(props.route.params.veSON)
     const [jaSon, setJaSon] = React.useState(props.route.params.veSON.jaSon)
     const [reSon, setReSon] = React.useState(props.route.params.veSON.reSon)
@@ -149,6 +151,8 @@ function SetAssignmentScore(props) {
             form.append('VeSON', JSON.stringify(veson))
             // console.log(assign.id, assign.lessonId, assign.title, assign.description, assign.type, assign.tags, assign.javaCode, assign.files, veson)
             let result = await AssignmentService.updateAssignment(form)
+            mutate(API.Lesson.getLessonById + assign.lessonId, [])
+            mutate(API.Lesson.getLessonById + assign.lessonId)
             props.navigation.goBack()
         } catch (err) {
             console.log(err)
@@ -160,7 +164,7 @@ function SetAssignmentScore(props) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <Navbar back={true} header={"Set Score"} props={props}></Navbar>
                 <ScrollView>
                     <View style={styles.Layout}>
@@ -173,7 +177,7 @@ function SetAssignmentScore(props) {
                         <Text style={styles.text_button}>Confirm</Text>
                     </TouchableOpacity>
                 </ScrollView >
-            </SafeAreaView>
+            </View>
         </KeyboardAvoidingView>
     );
 }

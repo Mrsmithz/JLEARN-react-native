@@ -182,7 +182,7 @@ function CreateAssignment(props) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <Navbar back={true} header={"Create Assignment"} props={props}></Navbar>
                 <ScrollView>
                     <View style={styles.Layout}>
@@ -254,7 +254,6 @@ function CreateAssignment(props) {
                             secondaryColor="#ffffff"
                             autoCapitalize="none"
                             autoCorrect={false}
-                            autoFocus={true}
                             onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
                         />
                         <TouchableOpacity style={styles.button} onPress={() => {
@@ -264,7 +263,7 @@ function CreateAssignment(props) {
                         </TouchableOpacity>
                     </View>
                 </ScrollView >
-            </SafeAreaView>
+            </View>
         </KeyboardAvoidingView>
     );
 }
