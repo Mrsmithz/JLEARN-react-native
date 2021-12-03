@@ -14,5 +14,8 @@ class CourseService {
   static async updateCourse(form){
     return await axios.put(API.Course.updateCourse, form)
   }
+  static async deleteCourse(id){
+    return await axios.delete(API.Course.deleteCourse + id)
+  }
 }
 export default CourseService;

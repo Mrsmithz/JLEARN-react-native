@@ -21,19 +21,23 @@ const AccordionTable = (props) => {
     const color = props.color
     const files = props.files
     const generateTable = async (files) => {
-        if (files.length) {
-            let form = new FormData()
-            files.map((file) => {
-                let filename = file.name;
-                let type = file.name.split('.').reverse()[0];
-                form.append('files[]', { uri: file.uri, name: filename, size: file.size, type })
-            })
-            let result = await ValidateService.getPreview(form)
-            setJaSon(result.data.jaSon)
-        } else {
-            setJaSon([])
-        }
+        try {
+            if (files.length) {
+                let form = new FormData()
+                files.map((file) => {
+                    let filename = file.name;
+                    let type = file.name.split('.').reverse()[0];
+                    form.append('files[]', { uri: file.uri, name: filename, size: file.size, type })
+                })
+                let result = await ValidateService.getPreview(form)
+                setJaSon(result.data.jaSon)
+            } else {
+                setJaSon([])
+            }
 
+        } catch (err) {
+            console.log(err.response.data)
+        }
     }
     useEffect(() => {
         generateTable(files)
@@ -43,16 +47,29 @@ const AccordionTable = (props) => {
             <List.Accordion
                 style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
+                titleStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif", marginTop: 2 }}
                 expanded={expanded}
                 onPress={handlePress}
-                theme={{colors:{background:'transparent'}}}>
+                theme={{ colors: { background: 'transparent' } }}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     {jaSon.length ?
                         <DataTable>
                             <DataTable.Header>
-                                <DataTable.Title>Name</DataTable.Title>
-                                <DataTable.Title>Stereotype</DataTable.Title>
-                                <DataTable.Title>Score</DataTable.Title>
+                                <DataTable.Title>
+                                    <Text style={styles.table_title}>
+                                        Name
+                                    </Text>
+                                </DataTable.Title>
+                                <DataTable.Title>
+                                    <Text style={styles.table_title}>
+                                        Stereotype
+                                    </Text>
+                                </DataTable.Title>
+                                <DataTable.Title>
+                                    <Text style={styles.table_title}>
+                                        Score
+                                    </Text>
+                                </DataTable.Title>
                                 {/* <DataTable.Title>Score</DataTable.Title> */}
                             </DataTable.Header>
 
@@ -60,13 +77,19 @@ const AccordionTable = (props) => {
                                 return (
                                     <DataTable.Row key={index}>
                                         <DataTable.Cell>
-                                            {jason.name}
+                                            <Text style={styles.table_title}>
+                                                {jason.name}
+                                            </Text>
                                         </DataTable.Cell>
-                                        <DataTable.Cell>
-                                            {jason.stereotype.value}
+                                        <DataTable.Cell style={styles.table_info}>
+                                            <Text style={styles.table_title}>
+                                                {jason.stereotype.value}
+                                            </Text>
                                         </DataTable.Cell>
-                                        <DataTable.Cell>
-                                            {jason.allScore}
+                                        <DataTable.Cell >
+                                            <Text style={styles.table_title}>
+                                                {jason.allScore}
+                                            </Text>
                                         </DataTable.Cell>
                                     </DataTable.Row>
                                 )
@@ -128,6 +151,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#478BA2",
         marginLeft: 20,
         alignItems: "center"
+    },
+    table_title: {
+        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+        marginTop: 2,
+    },
+    table_info: {
+        marginLeft:25
     },
 });
 

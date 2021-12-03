@@ -89,6 +89,7 @@ function LoginScreen(props) {
       if (result.type === 'success') {
         console.log(result.idToken)
         const accessToken = await AuthService.getAccessToken(result.idToken)
+        console.log(accessToken.data, "z")
         dispatch(addToken(accessToken.data.accessToken));
         axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken.data.accessToken}`
         // console.log(accessToken.data.accessToken)

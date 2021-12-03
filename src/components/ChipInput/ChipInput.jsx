@@ -95,7 +95,7 @@ const styles = (primaryColor, secondaryColor, variant) => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        marginLeft: 16,
+        marginLeft: 8,
         borderWidth: 1,
         borderColor: 'transparent',
     },
@@ -132,6 +132,8 @@ const styles = (primaryColor, secondaryColor, variant) => StyleSheet.create({
     },
     chipText: {
         color: variant === chipVariant.CONTAINED ? secondaryColor : primaryColor,
+        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+        marginTop:2
     },
     chipTextLarge: {
         fontSize: 18,
@@ -315,7 +317,7 @@ function ReactNativeChipInput(props) {
                 }
             </View>
             <TextInput
-                style={[inputTextStyle ? inputTextStyle : themedStyles.input]}
+                style={[inputTextStyle ? inputTextStyle : themedStyles.input, {      fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"}]}
                 onKeyPress={enableBackspaceDelete ? e => onBackKeyPress(e) : null}
                 placeholderStyle={placeholderStyle ? placeholderStyle : themedStyles.input}
                 onChangeText={(value) => setCurrentInputValue(value)}

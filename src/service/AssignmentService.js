@@ -17,5 +17,8 @@ class AssignmentService {
   static async validateAssignment(form){
     return await axios.post(API.Assignment.validateAssignment, form)
   }
+  static async deleteAssignment(id){
+    return await axios.delete(API.Assignment.deleteAssignment + id)
+  }
 }
 export default AssignmentService;

@@ -117,8 +117,8 @@ function Lesson(props) {
     chip: {
       height: 30,
       alignItems: "center",
-
-      backgroundColor:"#FCFFA6"
+      marginRight:3,
+      backgroundColor: "#FCFFA6"
     },
   });
   const [refreshing, setRefreshing] = React.useState(false);
@@ -157,12 +157,12 @@ function Lesson(props) {
                   />
                 </Stack>
                 <Stack direction="column" style={styles.text}>
-                  <Text style={{ flex: 1, marginTop: 8, color: '#928A97' }}>{`${lesson.creator.firstName} ${lesson.creator.lastName}`}</Text>
-                  <Text style={{ flex: 1, fontWeight: 'bold', marginTop:3 }} numberOfLines={4}>{lesson.title}</Text>
-                  <Text style={{ flex: 3, fontSize:13, marginTop:3 }} numberOfLines={3}>{lesson.description}</Text>
-                  <Stack direction="row" style={{ flexWrap: 'wrap', flex:1, paddingBottom:15}}>
+                  <Text style={{ flex: 1, marginTop: 8, color: '#928A97', fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>{`${lesson.creator.firstName} ${lesson.creator.lastName}`}</Text>
+                  <Text style={{ flex: 1, fontWeight: 'bold', marginTop: 3, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} numberOfLines={4}>{lesson.title}</Text>
+                  <Text style={{ flex: 3, fontSize: 13, marginTop: 3, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} numberOfLines={3}>{lesson.description}</Text>
+                  <Stack direction="row" style={{ flexWrap: 'wrap', flex: 1, paddingBottom: 15 }}>
                     {lesson.tags && lesson.tags.map((tag, index) => {
-                      return(<Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index}>{tag}</Chip>)
+                      return (<Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index} textStyle={{marginTop:3, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"}}>{tag}</Chip>)
                     })}
                   </Stack>
                 </Stack>
@@ -173,13 +173,15 @@ function Lesson(props) {
       </ScrollView >
       {userRole === "LECTURER" &&
         <>
-          <DeleteIcon props={props} goto={() => {
+          <DeleteIcon props={props} type={'course'} id={courseId} title={data.title} goto={() => {
             console.log("Delete")
             // props.props.navigation.navigate("EditLessonScreen", data)
           }}></DeleteIcon>
           <EditIcon props={props} goto={() => {
             props.props.navigation.navigate("EditCourseScreen", data)
-          }}></EditIcon>
+          }}
+
+          ></EditIcon>
           <AddIcon props={props.props} goto={() => {
             props.props.navigation.navigate("CreateLessonScreen", courseId)
           }}></AddIcon>

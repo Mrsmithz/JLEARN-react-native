@@ -85,15 +85,29 @@ const AccordionClass = (props) => {
             <List.Accordion
                 style={[styles.card, !expandedClass ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
+                titleStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}
                 expanded={expandedClass}
-                theme={{colors:{background:'transparent', primary:'#D06224'}}}
+                theme={{ colors: { background: 'transparent' } }}
+                // theme={{ colors: { background: 'transparent', primary: '#0C7B93' } }}
                 onPress={handlePressClass}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
                         <DataTable.Header>
-                            <DataTable.Title>Name</DataTable.Title>
-                            <DataTable.Title>Stereotype</DataTable.Title>
-                            <DataTable.Title style={{ justifyContent: 'center' }}>Score</DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Name
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Stereotype
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ justifyContent: 'center' }}>
+                                <Text style={styles.table_title}>
+                                    Score
+                                </Text>
+                            </DataTable.Title>
 
                         </DataTable.Header>
 
@@ -108,16 +122,36 @@ const AccordionClass = (props) => {
                 style={[styles.card, !expandedAttr ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={"Attributes"}
                 expanded={expandedAttr}
-                theme={{colors:{background:'transparent', primary:'#892CDC'}}}
+                theme={{ colors: { background: 'transparent' } }}
                 onPress={handlePressAttr}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
                         <DataTable.Header>
-                            <DataTable.Title>Class</DataTable.Title>
-                            <DataTable.Title>Name</DataTable.Title>
-                            <DataTable.Title>accessModifier</DataTable.Title>
-                            <DataTable.Title>Type</DataTable.Title>
-                            <DataTable.Title>Score</DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Class
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Name
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    accessModifier
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Type
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Score
+                                </Text>
+                            </DataTable.Title>
                         </DataTable.Header>
 
                         {jaSon.map((jason, index) => {
@@ -131,16 +165,36 @@ const AccordionClass = (props) => {
                 style={[styles.card, !expandedMethods ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={"Methods"}
                 expanded={expandedMethods}
-                theme={{colors:{background:'transparent', primary:'#0C7B93'}}}
+                theme={{ colors: { background: 'transparent' } }}
                 onPress={handlePressMethods}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
                         <DataTable.Header>
-                            <DataTable.Title>Class</DataTable.Title>
-                            <DataTable.Title>Name</DataTable.Title>
-                            <DataTable.Title>accessModifier</DataTable.Title>
-                            <DataTable.Title>returnType</DataTable.Title>
-                            <DataTable.Title>Score</DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Class
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Name
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    accessModifier
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    returnType
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Score
+                                </Text>
+                            </DataTable.Title>
                         </DataTable.Header>
 
                         {jaSon.map((jason, index) => {
@@ -168,10 +222,14 @@ function ClassTable(props) {
     return (
         <DataTable.Row>
             <DataTable.Cell>
-                {jason.name}
+                <Text style={styles.table_title}>
+                    {jason.name}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell>
-                {jason.stereotype.value}
+                <Text style={styles.table_title}>
+                    {jason.stereotype.value}
+                </Text>
             </DataTable.Cell>
 
 
@@ -180,7 +238,7 @@ function ClassTable(props) {
                 onChangeText={score => {
                     if (parseInt(score) >= 0) {
                         setClassScore(parseInt(score))
-                    }else{
+                    } else {
                         setClassScore(parseInt(0))
                     }
                 }}
@@ -229,16 +287,24 @@ function Attribute(props) {
     return (
         <DataTable.Row>
             <DataTable.Cell>
-                {props.class}
+                <Text style={styles.table_title}>
+                    {props.class}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell>
-                {attr.attributeName}
+                <Text style={styles.table_title}>
+                    {attr.attributeName}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ justifyContent: 'center' }}>
-                {attr.accessModifier}
+                <Text style={styles.table_title}>
+                    {attr.accessModifier}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ justifyContent: 'center' }}>
-                {attr.type}
+                <Text style={styles.table_title}>
+                    {attr.type}
+                </Text>
             </DataTable.Cell>
 
 
@@ -247,7 +313,7 @@ function Attribute(props) {
                 onChangeText={score => {
                     if (parseInt(score) >= 0) {
                         setAttrScore(parseInt(score))
-                    }else{
+                    } else {
                         setAttrScore(parseInt(0))
                     }
                 }}
@@ -295,16 +361,24 @@ function Method(props) {
     return (
         <DataTable.Row>
             <DataTable.Cell>
-                {props.class}
+                <Text style={styles.table_title}>
+                    {props.class}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell>
-                {method.methodName}
+                <Text style={styles.table_title}>
+                    {method.methodName}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ justifyContent: 'center' }}>
-                {method.accessModifier}
+                <Text style={styles.table_title}>
+                    {method.accessModifier}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ justifyContent: 'center' }}>
-                {method.returnType}
+                <Text style={styles.table_title}>
+                    {method.returnType}
+                </Text>
             </DataTable.Cell>
 
 
@@ -313,7 +387,7 @@ function Method(props) {
                 onChangeText={score => {
                     if (parseInt(score) >= 0) {
                         setMethodScore(parseInt(score))
-                    }else{
+                    } else {
                         setMethodScore(parseInt(0))
                     }
                 }}
@@ -368,7 +442,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         textAlign: "center",
         marginRight: "7.5%",
-        justifyContent: 'center'
+        justifyContent: 'center',
+        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+    },
+    table_title: {
+        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+        marginTop: 2,
     },
 });
 

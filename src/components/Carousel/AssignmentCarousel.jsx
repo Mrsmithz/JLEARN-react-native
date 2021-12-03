@@ -41,11 +41,11 @@ function AssingmentCarousel(props) {
                 props.props.navigation.navigate("SubmitAssignmentScreen", item);
             }}>
                 <View style={styles.cardLayout}>
-                    <Text style={{ fontWeight: 'bold', marginTop: 5, flex: 1 }}>{item.title}</Text>
-                    <Text style={{ fontSize: 11, flex: 3 }} numberOfLines={4}>{item.description}</Text>
+                    <Text style={{ fontWeight: 'bold', marginTop: 5, flex: 1, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>{item.title}</Text>
+                    <Text style={{ fontSize: 11, flex: 3, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} numberOfLines={4}>{item.description}</Text>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
                         {item.tags && item.tags.map((tag, index) => {
-                            return (<Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index}>{tag}</Chip>)
+                            return (<Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index} textStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>{tag}</Chip>)
                         })}
                     </View>
                 </View>
@@ -114,7 +114,9 @@ const styles = StyleSheet.create({
     chip: {
         height: 30,
         alignItems: "center",
-        backgroundColor: "#CAB8FF"
+        backgroundColor: "#CAB8FF",
+        marginRight:3
+
     },
 });
 

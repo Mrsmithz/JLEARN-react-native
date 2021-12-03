@@ -70,8 +70,9 @@ function SetAssignmentScore(props) {
         },
         text_button: {
             alignSelf: 'center',
-            marginTop: 10,
+            marginTop: 13,
             fontWeight: 'bold',
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
             color: "snow",
         },
         button: {

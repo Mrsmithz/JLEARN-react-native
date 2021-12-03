@@ -158,7 +158,7 @@ function SubmitAssignment(props) {
             </ScrollView >
             {true ?
                 <>
-                    <DeleteIcon props={props} goto={() => {
+                    <DeleteIcon props={props} type={'assignment'} id={assignment.id} lessonId={assignment.lessonId} title={assignment.title} goto={() => {
                         console.log("Delete")
                         // props.props.navigation.navigate("EditLessonScreen", data)
                     }}></DeleteIcon>

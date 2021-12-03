@@ -12,5 +12,8 @@ class LessonService {
   static async updateLesson(form){
     return await axios.put(API.Lesson.updateLesson, form)
   }
+  static async deleteLesson(id){
+    return await axios.delete(API.Lesson.deleteLesson + id)
+  }
 }
 export default LessonService;

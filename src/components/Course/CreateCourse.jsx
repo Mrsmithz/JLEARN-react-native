@@ -55,22 +55,24 @@ function CreateCourse(props) {
         },
         textinput: {
             marginTop: 10,
-            height: 45
+            height: 45,
         },
         checkbox: {
             marginTop: 11,
         },
         text: {
-            marginTop: 9,
+            marginTop: 11,
             fontSize: 18,
             marginRight: 10,
-            marginLeft: 5
+            marginLeft: 5,
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         text_button: {
             alignSelf: 'center',
-            marginTop: 10,
+            marginTop: 12,
             fontWeight: 'bold',
             color: "snow",
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         button: {
             borderRadius: 10,
@@ -130,10 +132,11 @@ function CreateCourse(props) {
             form.append('password', enroll)
             form.append('isHide', isHide)
             await CourseService.createCourse(form)
+            console.log('ee')
             mutate(API.Course.getAllCourse)
             props.navigation.navigate("CourseScreen")
         } catch (err) {
-            console.log(err)
+            console.log(err.response.data)
         }
     }
     return (
@@ -152,6 +155,15 @@ function CreateCourse(props) {
                                 mode="outlined"
                                 style={styles.textinput}
                                 value={title}
+                                theme={
+                                    {
+                                      fonts: {
+                                        regular: {
+                                          fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                      }
+                                    }
+                                  }
                                 onChangeText={title => setTitle(title)}
                             />
                             {/* <Text style={styles.text}>Description</Text> */}
@@ -160,6 +172,15 @@ function CreateCourse(props) {
                                 mode="outlined"
                                 style={styles.textinput}
                                 value={description}
+                                theme={
+                                    {
+                                      fonts: {
+                                        regular: {
+                                          fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                      }
+                                    }
+                                  }
                                 onChangeText={description => setDescription(description)}
                             />
                             <TextInput
@@ -168,6 +189,15 @@ function CreateCourse(props) {
                                 style={styles.textinput}
                                 secureTextEntry={true}
                                 value={enroll}
+                                theme={
+                                    {
+                                      fonts: {
+                                        regular: {
+                                          fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                      }
+                                    }
+                                  }
                                 onChangeText={enroll => setEnroll(enroll)}
                             />
                             <Stack direction="row" style={{ marginTop: 5 }}>

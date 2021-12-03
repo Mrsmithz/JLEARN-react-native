@@ -17,7 +17,8 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  RefreshControl
+  RefreshControl,
+  Platform
 } from "react-native";
 import { Button, Card, Layout, Text, Tab, TabBar } from "@ui-kitten/components";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -31,11 +32,6 @@ import API from "../../service/API"
 import { Fetcher } from "../../service/Fetcher";
 import CourseService from "../../service/CourseService"
 
-const wait = (timeout) => {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout)
-  });
-}
 
 function MyCourse(props) {
   const url = API.User.getUser
@@ -52,9 +48,16 @@ function MyCourse(props) {
       console.log("no course")
     }
   }
-
+  const wait = (timeout) => {
+    return new Promise(resolve => {
+      getCourse()
+      setTimeout(resolve, timeout)
+    });
+  }
   useEffect(() => {
+    console.log("refresh1")
     if (data) {
+      console.log("refresh2")
       getCourse()
     }
   }, [data])
@@ -96,13 +99,13 @@ function MyCourse(props) {
     },
     text: {
       flex: 3,
-      marginLeft: 4
+      marginLeft: 4,
     },
   });
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
   return (
     <View style={styles.container}>
@@ -122,8 +125,8 @@ function MyCourse(props) {
               <Stack direction="row" style={{ marginRight: 20 }}>
                 <Image source={course.image ? { uri: API.File.getImage + course.image } : Logo} style={styles.image}></Image>
                 <Stack direction="column" style={styles.text}>
-                  <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
-                  <Text style={{ flex: 3, fontSize: 12, paddingBottom: 30 }} numberOfLines={4}>{course.description}</Text>
+                  <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold', fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>{course.title}</Text>
+                  <Text style={{ flex: 3, fontSize: 12, paddingBottom: 30, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} numberOfLines={4}>{course.description}</Text>
                 </Stack>
               </Stack>
             </TouchableOpacity>

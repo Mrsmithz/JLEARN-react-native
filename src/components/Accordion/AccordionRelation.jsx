@@ -32,16 +32,33 @@ const AccordionRelation = (props) => {
             <List.Accordion
                 style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
+                titleStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}
                 expanded={expanded}
-                theme={{colors:{background:'transparent', primary:'#000D6B'}}}
+                theme={{ colors: { background: 'transparent' } }}
                 onPress={handlePress}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
                         <DataTable.Header>
-                            <DataTable.Title>Source</DataTable.Title>
-                            <DataTable.Title>Target</DataTable.Title>
-                            <DataTable.Title>Type</DataTable.Title>
-                            <DataTable.Title style={{ justifyContent: 'center' }}>Score</DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Source
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Target
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.table_title}>
+                                    Type
+                                </Text>
+                            </DataTable.Title>
+
+                                <Text style={[styles.table_title, {marginTop:13, marginRight:25}]}>
+                                    Score
+                                </Text>
+
 
                         </DataTable.Header>
 
@@ -55,7 +72,7 @@ const AccordionRelation = (props) => {
     );
 };
 
-function LinkTable(props){
+function LinkTable(props) {
     let index = props.index
     let reson1 = props.reSon
     let reson = props.reSon[index]
@@ -70,13 +87,19 @@ function LinkTable(props){
     return (
         <DataTable.Row>
             <DataTable.Cell>
-                {reson.source}
+                <Text style={styles.table_title}>
+                    {reson.source}
+                </Text>
             </DataTable.Cell>
-            <DataTable.Cell>
-                {reson.target}
+            <DataTable.Cell style={styles.table_info}>
+                <Text style={styles.table_title}>
+                    {reson.target}
+                </Text>
             </DataTable.Cell>
-            <DataTable.Cell>
-                {reson.type}
+            <DataTable.Cell style={styles.table_info}>
+                <Text style={styles.table_title}>
+                    {reson.type}
+                </Text>
             </DataTable.Cell>
 
             <TextInput
@@ -84,7 +107,7 @@ function LinkTable(props){
                 onChangeText={score => {
                     if (parseInt(score) >= 0) {
                         setLinkScore(parseInt(score))
-                    }else{
+                    } else {
                         setLinkScore(parseInt(0))
                     }
                 }}
@@ -135,10 +158,18 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         padding: 10,
         backgroundColor: "snow",
-        width: "15%",
+        width: 50,
         borderRadius: 5,
         textAlign: "center",
-        marginRight: "7.5%"
+        marginRight:18,
+        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+    },
+    table_title: {
+        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+        marginTop: 2,
+    },
+    table_info: {
+        marginLeft:18
     },
 });
 

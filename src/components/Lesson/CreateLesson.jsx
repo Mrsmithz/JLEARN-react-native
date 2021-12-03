@@ -65,13 +65,15 @@ function CreateLesson(props) {
             marginTop: 9,
             fontSize: 18,
             marginRight: 10,
-            marginLeft: 5
+            marginLeft: 5,
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         text_button: {
             alignSelf: 'center',
-            marginTop: 10,
+            marginTop: 12,
             fontWeight: 'bold',
             color: "snow",
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         button: {
             borderRadius: 10,
@@ -105,7 +107,8 @@ function CreateLesson(props) {
             marginLeft: 5,
             marginTop: 2,
             alignContent: 'center',
-            color: 'snow'
+            color: 'snow',
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         box: {
             backgroundColor: "#6F5F90",
@@ -170,6 +173,15 @@ function CreateLesson(props) {
                             mode="outlined"
                             style={styles.textinput}
                             value={title}
+                            theme={
+                                {
+                                    fonts: {
+                                        regular: {
+                                            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                    }
+                                }
+                            }
                             onChangeText={title => setTitle(title)}
                         />
                         {/* <Text style={styles.text}>Description</Text> */}
@@ -178,12 +190,21 @@ function CreateLesson(props) {
                             mode="outlined"
                             style={styles.textinput}
                             value={description}
+                            theme={
+                                {
+                                    fonts: {
+                                        regular: {
+                                            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                    }
+                                }
+                            }
                             onChangeText={description => setDescription(description)}
                         />
                         <Box style={styles.box}>
                             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
                                 {files.length ? files.map((file, index) => {
-                                    return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                    return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} textStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} key={index}>{file.name}</Chip>
                                 })
                                     : <Text style={styles.text_upload}>No Uploaded Files</Text>}
                             </View>
@@ -201,14 +222,14 @@ function CreateLesson(props) {
                             </TouchableOpacity>
                         </Box>
                         <Stack direction="row">
-                            <Text style={styles.text}>Hide</Text>
+                            <Text style={[styles.text, { marginTop: 11 }]}>Hide</Text>
                             <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" onPress={() => setIsHide(!isHide)} />
                         </Stack>
                         <RadioButton.Group onValueChange={value => setType(value)} value={type}>
                             <Stack direction="row">
-                                <Text style={{ marginTop: 13, fontSize: 18, marginLeft: 4 }}>Type : </Text>
-                                <RadioButton.Item label="Lesson" value="LESSON" color={'#E2D36B'} />
-                                <RadioButton.Item label="Quiz" value="QUIZ" color={'#E2D36B'} />
+                                <Text style={{ marginTop: 14, fontSize: 18, marginLeft: 4, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>Type : </Text>
+                                <RadioButton.Item label="Lesson" value="LESSON" color={'#E2D36B'} labelStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} />
+                                <RadioButton.Item label="Quiz" value="QUIZ" color={'#E2D36B'} labelStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} />
                             </Stack>
                         </RadioButton.Group>
                         <ReactNativeChipInput

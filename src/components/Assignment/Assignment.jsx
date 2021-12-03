@@ -39,6 +39,7 @@ const wait = (timeout) => {
 
 function Assignment(props) {
     let id = props.props.route.params.lesson.id
+    let courseid = props.props.route.params.lesson.courseId
 
     const url = API.Lesson.getLessonById + id
     const { data, error } = useSWR(url, Fetcher)
@@ -130,19 +131,20 @@ function Assignment(props) {
                         />
                     } >
                     <View style={styles.cardLayout}>
-                        <Text style={{ marginTop: 20, marginLeft: 6 }}>Description</Text>
+                        <Text style={{ marginTop: 20, marginLeft: 6, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"  }}>Description</Text>
                         <Card style={styles.card}>
-                            <Text>{data.description}</Text>
+                            <Text style={{fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"}}>{data.description}</Text>
                         </Card>
                     </View>
                     <View style={styles.cardLayout}>
-                        <Text style={{ marginTop: 20, marginLeft: 6 }}>Material</Text>
+                        <Text style={{ marginTop: 20, marginLeft: 6, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>Material</Text>
                         <Card style={styles.card}>
                             {files && files.map((file, index) => {
                                 return (
                                     <Link
                                         _text={{
                                             color: "blue.400",
+                                            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
                                         }}
                                         key={index}>
                                         {file.name}
@@ -155,7 +157,7 @@ function Assignment(props) {
                     <View style={styles.assignmentLayout}>
                         <View style={{ flexDirection: "row", flex: 1, marginLeft: 25 }}>
                             <View style={{ flexDirection: "column", flex: 1, marginTop: 7 }}>
-                                <Text>Assignment</Text>
+                                <Text style={{marginTop:3, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"}}>Assignment</Text>
                             </View>
                             {userRole !== "LEARNER" &&
                                 <TouchableOpacity
@@ -185,7 +187,7 @@ function Assignment(props) {
                 </ScrollView >
                 {userRole !== "LEARNER" &&
                     <>
-                        <DeleteIcon props={props} goto={() => {
+                        <DeleteIcon props={props} type={'lesson'} id={id} courseId={courseid} title={data.title} goto={() => {
                             console.log("Delete")
                             // props.props.navigation.navigate("EditLessonScreen", data)
                         }}></DeleteIcon>

@@ -64,16 +64,18 @@ function EditCourse(props) {
             marginTop: 11,
         },
         text: {
-            marginTop: 9,
+            marginTop: 11,
             fontSize: 18,
             marginRight: 10,
-            marginLeft: 5
+            marginLeft: 5,
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         text_button: {
             alignSelf: 'center',
-            marginTop: 10,
+            marginTop: 12,
             fontWeight: 'bold',
             color: "snow",
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         button: {
             borderRadius: 10,
@@ -176,6 +178,15 @@ function EditCourse(props) {
                                 mode="outlined"
                                 style={styles.textinput}
                                 value={title}
+                                theme={
+                                    {
+                                      fonts: {
+                                        regular: {
+                                          fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                      }
+                                    }
+                                  }
                                 onChangeText={title => setTitle(title)}
                             />
                             {/* <Text style={styles.text}>Description</Text> */}
@@ -184,6 +195,15 @@ function EditCourse(props) {
                                 mode="outlined"
                                 style={styles.textinput}
                                 value={description}
+                                theme={
+                                    {
+                                      fonts: {
+                                        regular: {
+                                          fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                      }
+                                    }
+                                  }
                                 onChangeText={description => setDescription(description)}
                             />
                             <TextInput
@@ -192,6 +212,15 @@ function EditCourse(props) {
                                 style={styles.textinput}
                                 secureTextEntry={true}
                                 value={enroll}
+                                theme={
+                                    {
+                                      fonts: {
+                                        regular: {
+                                          fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                      }
+                                    }
+                                  }
                                 onChangeText={enroll => setEnroll(enroll)}
                             />
                             <Stack direction="row" style={{ marginTop: 5 }}>

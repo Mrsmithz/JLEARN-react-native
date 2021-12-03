@@ -82,7 +82,7 @@ function AllCourse(props) {
       marginBottom: 2,
       backgroundColor: "#86E3CE",
       shadowOffset: {
-        width:7,
+        width: 7,
         height: 7,
       },
       shadowRadius: 10,
@@ -114,7 +114,7 @@ function AllCourse(props) {
       alignSelf: 'center',
     },
   });
-  if(data){
+  if (data) {
 
   }
 
@@ -143,8 +143,8 @@ function AllCourse(props) {
               <Stack direction="row" style={{ marginRight: 20 }}>
                 <Image source={course.image ? { uri: API.File.getImage + course.image } : Logo} style={styles.image}  ></Image>
                 <Stack direction="column" style={styles.text}>
-                  <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold' }}>{course.title}</Text>
-                  <Text style={{ flex: 3}} numberOfLines={4}>{course.description}</Text>
+                  <Text style={{ flex: 1, marginTop: 10, fontWeight: 'bold', fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>{course.title}</Text>
+                  <Text style={{ flex: 3, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} numberOfLines={4}>{course.description}</Text>
                 </Stack>
               </Stack>
             </TouchableOpacity>

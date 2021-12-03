@@ -62,7 +62,7 @@ function EnrollCourse(props) {
       props.close()
       props.navigation.navigate("LessonScreen", props.course)
     }catch(err){
-      console.log(err)
+      console.log(err.response.data)
     }
   };
   return (
