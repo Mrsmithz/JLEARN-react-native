@@ -11,6 +11,9 @@ import EditAssignmentScreen from "../components/screens/EditAssignmentScreen";
 import CreateCourseScreen from "../components/screens/CreateCourseScreen";
 import CreateLessonScreen from "../components/screens/CreateLessonScreen";
 import { NavigationContainer } from "@react-navigation/native";
+import EditCourseScreen from "../components/screens/EditCourseScreen";
+import EditLessonScreen from "../components/screens/EditLessonScreen";
+import SetAssignmentScoreScreen from "../components/screens/SetAssignmentScoreScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -54,11 +57,6 @@ function Router(props) {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="EditAssignmentScreen"
-          component={EditAssignmentScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="CreateCourseScreen"
           component={CreateCourseScreen}
           options={{ headerShown: false }}
@@ -66,6 +64,26 @@ function Router(props) {
         <Stack.Screen
           name="CreateLessonScreen"
           component={CreateLessonScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditAssignmentScreen"
+          component={EditAssignmentScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditCourseScreen"
+          component={EditCourseScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditLessonScreen"
+          component={EditLessonScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SetAssignmentScoreScreen"
+          component={SetAssignmentScoreScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

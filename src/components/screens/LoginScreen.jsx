@@ -32,15 +32,21 @@ import {
 } from "react-native/Libraries/NewAppScreen";
 import Logo from "../../assets/j-learn.png";
 import back from "../../assets/back2.png";
-import ParticleBackground from "react-native-particle-background";
 import { BackgroundImage } from "react-native-elements/dist/config";
 import { BoxShadow } from "react-native-shadow";
 import * as GoogleSignIn from 'expo-google-sign-in';
 import * as Google from 'expo-google-app-auth';
+import axios from 'axios';
+import { useSelector, useDispatch } from "react-redux";
+import { addToken } from "../../store/actions/tokenAction"
+import useSWR from 'swr'
+import AuthService from "../../service/AuthService"
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 
 function LoginScreen(props) {
+  const dispatch = useDispatch()
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
@@ -60,44 +66,63 @@ function LoginScreen(props) {
       },
       shadowRadius: 20,
       shadowOpacity: 1,
-      shadowColor: "#ffb380",
+      shadowColor: "#FFC898",
       elevation: 1,
-      // borderBottomWidth: 0,
-      // borderTopWidth: 0,
-      borderColor: "#000",
-      borderWidth: 2,
-      // backgroundColor: "snow",
+      tintColor:'red',
+      borderTopColor:'#FF79CD',
+      borderLeftColor: '#FF87CA',
+      borderEndColor:'#C490E4',
+      borderBottomColor:'#C67ACE',
+      borderWidth: 1,
       borderRadius: Math.round(288) / 2,
     },
   });
-  // Somewhere in your code
 
   signInAsync = async () => {
-    // const config = {
-    //   androidClientId: "1078651650648-hi0rvrcbhb6geg8aogb1um3kbc8di1pl.apps.googleusercontent.com"
-    // }
-    // try {
-    //   const result = await Google.logInAsync(
-    //     config
-    //   );
-    //   if (result.type === 'success') {
-        // return result.accessToken;
+    const config = {
+      clientId: "1078651650648-hi0rvrcbhb6geg8aogb1um3kbc8di1pl.apps.googleusercontent.com",
+    }
+    try {
+      const result = await Google.logInAsync(
+        config
+      );
+      if (result.type === 'success') {
+        console.log(result.idToken)
+        const accessToken = await AuthService.getAccessToken(result.idToken)
+        console.log(accessToken.data, "z")
+        dispatch(addToken(accessToken.data.accessToken));
+        axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken.data.accessToken}`
+        // console.log(accessToken.data.accessToken)
         props.navigation.navigate("CourseScreen")
-    //   } else {
-    //     return { cancelled: true };
-    //   }
-    // } catch (e) {
-    //   return { error: true };
-    // }
+        return result.accessToken;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log(e)
+      return { error: true };
+    }
   };
   return (
-    <SafeAreaView>
+    <View>
       <StatusBar />
       <View style={styles.container}>
-        <ImageBackground
+        {/* <ImageBackground
           source={back}
           style={{ width: "100%", height: "100%" }}
-        ></ImageBackground>
+        ></ImageBackground> */}
+        <LinearGradient
+          // Background Linear Gradient
+          // colors={['#316B83', '#94B3FD', "#6D8299"]}
+          colors={['#6886C5', "#DCD6F7", '#A6B1E1']}  
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height:"100%"
+          }}
+        />
         <TouchableOpacity
           style={styles.shadow}
           onPress={() => {
@@ -118,7 +143,7 @@ function LoginScreen(props) {
                 height: Dimensions.get("window").width * 0.7,
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#ffb380",
+                backgroundColor: "#FFBF86",
                 shadowOffset: {
                   width: -100,
                   height: 50,
@@ -131,15 +156,9 @@ function LoginScreen(props) {
               width={300}
             ></Image>
           </View>
-          {/* <GoogleSigninButton
-            style={{ width: 192, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={signIn} */}
-          {/* />; */}
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

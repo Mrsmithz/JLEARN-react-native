@@ -21,16 +21,27 @@ import {
 } from "react-native";
 import { Chip, Text } from 'react-native-paper';
 import Navbar from '../Navbar/Navbar'
-import According from '../According/According'
+import Accordion from '../Accordion/Accordion'
+import AccordionCodeFiles from '../Accordion/AccordionCodeFiles'
+import AccordionRelationScore from '../Accordion/AccordionRelationScore'
+import AccordionClassScore from '../Accordion/AccordionClassScore'
 import { Icon } from 'react-native-eva-icons';
 import { Button, Card, Layout, Tab, TabBar } from "@ui-kitten/components";
 import * as Progress from 'react-native-progress';
 import { Box, NativeBaseProvider, Center, Stack, HStack } from 'native-base';
+import UserService from "../../service/UserService"
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 function Result(props) {
+    const assignmentHistory = props.props.route.params
+    const [sender, setSender] = React.useState("")
+    const getSender = async() =>{
+        let result = await UserService.getUser()
+        setSender(`${result.data.firstName} ${result.data.lastName}`)
+    }
+    getSender()
     const styles = StyleSheet.create({
         cardLayout: {
             width: "95%",
@@ -45,7 +56,7 @@ function Result(props) {
         },
         container: {
             height: "100%",
-            backgroundColor: "snow",
+            backgroundColor: "#F3E1E1",
             flex: 1
         },
         button: {
@@ -81,7 +92,7 @@ function Result(props) {
             flexWrap: 'wrap',
         },
         subtext: {
-            marginTop: 13,
+            marginTop: 8.5,
             flexWrap: 'nowrap',
             flex: 1
         },
@@ -90,11 +101,11 @@ function Result(props) {
             flex: 1
         },
         score: {
-            marginBottom: 20
+            marginBottom: 25
         },
         icon: {
             height: 30,
-            marginRight: 100,
+            marginRight: "70%",
             marginTop: 5
         }
     });
@@ -105,8 +116,8 @@ function Result(props) {
         wait(2000).then(() => setRefreshing(false));
     }, []);
     return (
-        <SafeAreaView style={styles.container}>
-            <Navbar back={true} header={"Submit Assignment"} props={props.props}></Navbar>
+        <View style={styles.container}>
+            <Navbar back={true} header={"Result"} props={props.props}></Navbar>
 
             <ScrollView
                 refreshControl={
@@ -125,38 +136,36 @@ function Result(props) {
                             </Stack>
                             <Stack direction="column" style={{ flex: 2, marginTop: 10 }}>
                                 <Icon name={false ? "checkmark-circle-2" : "close-circle"} fill={false ? '#94B447' : '#ff3333'} style={styles.icon} />
-                                <Text style={styles.subtext} numberOfLines={1} >นาย กขค วย</Text>
-                                <Text style={styles.score} >15/20</Text>
+                                <Text style={styles.subtext} numberOfLines={1} >{sender}</Text>
+                                <Text style={styles.score} >{`${assignmentHistory.assignmentScore}/${assignmentHistory.fullAssignmentScore}`}</Text>
                             </Stack>
                             <Stack direction="column" style={{ flex: 2 }}>
                                 <Progress.Circle
                                     size={130}
-                                    progress={0.75}
+                                    progress={assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore}
                                     showsText
-                                    color={true ? '#CBE54E' : '#E06C78'}
+                                    color={(assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore) >= 0.5 ? '#CBE54E' : '#E06C78'}
                                     textStyle={{ 
-                                        color: true ? "#94B447" : '#E06C78'
+                                        color: (assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore) >= 0.5 ? "#94B447" : '#E06C78'
                                     }}
                                     formatText={() => {
-                                        return `15/20`
+                                        return `${assignmentHistory.assignmentScore}/${assignmentHistory.fullAssignmentScore}`
                                     }} />
                             </Stack>
                         </Stack>
                     </Card>
-                    <According title={"Class"} icon={"clipboard"} color={'#E79796'}></According>
-                    <According title={"Relations"} icon={"folder"} color={'#E79796'}></According>
-                    <According title={"Test Case"} icon={"chart-tree"} color={'#E79796'}></According>
-                    <According title={"Diagram"} icon={"chart-tree"} color={'#E79796'}></According>
-                    <According title={"Code"} icon={"chart-tree"} color={'#E79796'}></According>
+                    <AccordionClassScore title={"Class"} icon={"clipboard"} color={'#B4B4F5'} jaSon={assignmentHistory.scSON.jaSon}></AccordionClassScore>
+                    <AccordionRelationScore title={"Relations"} icon={"folder"} color={'#B4B4F5'} reSon={assignmentHistory.scSON.reSon}></AccordionRelationScore>
+                    <AccordionCodeFiles title={"Files"} icon={"folder"} color={"#B4B4F5"} files={assignmentHistory.code}></AccordionCodeFiles>
                     <TouchableOpacity style={styles.button} onPress={() => {
-                        props.props.navigation.navigate("AssignmentScreen");
+                        props.props.navigation.pop(2)
                     }}>
                         <Text style={styles.text_button}>Return to lesson</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView >
 
-        </SafeAreaView>
+        </View>
     );
 }
 

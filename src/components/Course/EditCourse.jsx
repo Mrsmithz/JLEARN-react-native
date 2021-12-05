@@ -31,17 +31,20 @@ import Navbar from '../Navbar/Navbar'
 import { Icon } from 'react-native-eva-icons';
 import * as ImagePicker from 'expo-image-picker'
 import CourseService from "../../service/CourseService"
+import UserService from "../../service/UserService"
 import useSWR, { useSWRConfig } from 'swr'
 import API from "../../service/API"
 
-function CreateCourse(props) {
+function EditCourse(props) {
     props = props.props
+    let data = props.route.params
     const { mutate } = useSWRConfig()
-    let [image, setImage] = React.useState(null);
-    let [title, setTitle] = React.useState("");
-    let [description, setDescription] = React.useState("");
-    let [enroll, setEnroll] = React.useState("");
-    let [isHide, setIsHide] = React.useState(false);
+    let [image, setImage] = React.useState(API.File.getImage + data.image);
+    let [title, setTitle] = React.useState(data.title);
+    let [description, setDescription] = React.useState(data.description);
+    let [enroll, setEnroll] = React.useState(data.password);
+    let [isHide, setIsHide] = React.useState(data.isHide);
+    let [changeImage, setChangeImage] = React.useState(false);
     const styles = StyleSheet.create({
         Layout: {
             marginTop: 10,
@@ -55,7 +58,7 @@ function CreateCourse(props) {
         },
         textinput: {
             marginTop: 10,
-            height: 45,
+            height: 45
         },
         checkbox: {
             marginTop: 11,
@@ -110,33 +113,53 @@ function CreateCourse(props) {
             aspect: [4, 3],
             quality: 1,
         });
-        setImage({ localUri: pickerResult.uri });
-
+        if (pickerResult.cancelled === true) {
+            return;
+          }
+        setImage(pickerResult.uri);
+        setChangeImage(true)
     }
-    const createCourse = async () => {
+    const updateCourse = async () => {
         // if (title === '') {
         //     this.setState({ errorName: true, dialogError: true })
         //     return 0
         // }
         try {
             let form = new FormData()
-            if (image) {
-                let localUri = image.localUri;
+            if (image && changeImage) {
+                let localUri = image;
                 let filename = localUri.split('/').pop();
                 let match = /\.(\w+)$/.exec(filename);
                 let type = match ? `image/${match[1]}` : `image`;
-                form.append('image', { uri: localUri, name: filename, type })
+                form.append('newImage', { uri: localUri, name: filename, type })
+            } else {
+                form.append('image', data.image !== null ? data.image : "")
             }
+            form.append('id', data.id)
             form.append('title', title)
             form.append('description', description)
             form.append('password', enroll)
             form.append('isHide', isHide)
-            await CourseService.createCourse(form)
-            console.log('ee')
+            //  data.lessons.map((lesson)=>{
+            //      console.log(lesson)
+            //      form.append('lessons', lesson)
+            //  })
+            // form.append('lessons', JSON.stringify(data.lessons))
+            // form.append('users', JSON.stringify(data.users))
+            //  data.users.map((user)=>{
+            //      console.log(user)
+            //     form.append('users', user)
+            // })
+            await CourseService.updateCourse(form)
+            let result = await UserService.getUser()
             mutate(API.Course.getAllCourse)
+            mutate(API.Course.getCourseById + data.id)
+            mutate(API.User.getUser, []) // หลอกมัน
+            mutate(API.User.getUser, result.data)
             props.navigation.navigate("CourseScreen")
+            // props.navigation.goBack()
         } catch (err) {
-            console.log(err.response.data)
+            console.log(err)
         }
     }
     return (
@@ -146,7 +169,7 @@ function CreateCourse(props) {
         >
             <View style={styles.container}>
                 <KeyboardAvoidingView style={{ flex: 1 }}>
-                    <Navbar back={true} header={"Create Courses"} props={props}></Navbar>
+                    <Navbar back={true} header={"Edit Courses"} props={props}></Navbar>
                     <ScrollView>
                         <View style={styles.Layout}>
                             {/* <Text style={styles.text}>title</Text> */}
@@ -205,7 +228,7 @@ function CreateCourse(props) {
                                 <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" onPress={() => setIsHide(!isHide)} />
                             </Stack>
                             <Text style={styles.text}>Course Image</Text>
-                            <Image source={image !== null ? { uri: image.localUri } : Logo} style={styles.logo} />
+                            <Image source={(data.image || changeImage) ? { uri: image } : Logo} style={styles.logo} />
                             <TouchableOpacity style={styles.uploadimagebutton} onPress={() => {
                                 openImagePickerAsync()
                             }}>
@@ -221,9 +244,9 @@ function CreateCourse(props) {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.button} onPress={() => {
-                                createCourse()
+                                updateCourse()
                             }}>
-                                <Text style={styles.text_button}>Create Course</Text>
+                                <Text style={styles.text_button}>Confirm</Text>
                             </TouchableOpacity>
                         </View>
                     </ScrollView >
@@ -233,4 +256,4 @@ function CreateCourse(props) {
     );
 }
 
-export default CreateCourse;
+export default EditCourse;

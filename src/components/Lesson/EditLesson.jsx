@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
     SafeAreaView,
     StatusBar,
@@ -33,16 +33,18 @@ import ReactNativeChipInput from '../ChipInput/ChipInput';
 import LessonService from "../../service/LessonService"
 import API from "../../service/API"
 import useSWR, { useSWRConfig } from 'swr'
+import FilesService from '../../service/FilesService'
 
-function CreateLesson(props) {
+function EditLesson(props) {
     props = props.props
+    let data = props.route.params
     const { mutate } = useSWRConfig()
-    let [files, setFiles] = React.useState([]);
-    let [type, setType] = React.useState("LESSON");
-    let [tags, setTags] = React.useState([]);
-    let [title, setTitle] = React.useState("");
-    let [description, setDescription] = React.useState("");
-    let [isHide, setIsHide] = React.useState(false)
+    let [files, setFiles] = React.useState(data.files ? data.files : []);
+    let [type, setType] = React.useState(data.type);
+    let [tags, setTags] = React.useState(data.tags ? data.tags : []);
+    let [title, setTitle] = React.useState(data.title);
+    let [description, setDescription] = React.useState(data.description);
+    let [isHide, setIsHide] = React.useState(data.isHide)
     const styles = StyleSheet.create({
         Layout: {
             marginTop: 10,
@@ -62,7 +64,7 @@ function CreateLesson(props) {
             marginTop: 11,
         },
         text: {
-            marginTop: 9,
+            marginTop: 12,
             fontSize: 18,
             marginRight: 10,
             marginLeft: 5,
@@ -70,10 +72,10 @@ function CreateLesson(props) {
         },
         text_button: {
             alignSelf: 'center',
-            marginTop: 12,
+            marginTop: 13,
             fontWeight: 'bold',
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
             color: "snow",
-            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         button: {
             borderRadius: 10,
@@ -107,8 +109,7 @@ function CreateLesson(props) {
             marginLeft: 5,
             marginTop: 2,
             alignContent: 'center',
-            color: 'snow',
-            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+            color: 'snow'
         },
         box: {
             backgroundColor: "#6F5F90",
@@ -116,6 +117,16 @@ function CreateLesson(props) {
             marginTop: 10,
         },
     });
+    const getPdfFiles = async () => {
+        let result = await Promise.all(files.map(async (file) => {
+            let detail = await FilesService.getPdfDetail(file.id)
+            return { id: file.id, name: detail.data.filename }
+        }))
+        setFiles(result)
+    }
+    useEffect(() => {
+        getPdfFiles()
+    }, [data])
     const pickDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({});
         if (result.type === "success") {
@@ -134,26 +145,45 @@ function CreateLesson(props) {
         setFiles([...allFiles])
     }
 
-    const createLesson = async () => {
+    const editLesson = async () => {
         try {
             let form = new FormData()
+            form.append('id', data.id)
             form.append('title', title)
             form.append('description', description)
             form.append('isHide', isHide)
-            form.append('courseId', props.route.params)
+            form.append('courseId', props.route.params.courseId)
             form.append('type', type)
-            tags.map((tag) => {
-                form.append('tags', tag)
-            })
+            if (data.assignmentList) {
+                data.assignmentList.map((assignment) => {
+                    form.append("assignmentList", assignment.id)
+                })
+            }
+            if (tags.length) {
+                tags.map((tag) => {
+                    form.append('tags', tag)
+                })
+            } else {
+                form.append('tags', "")
+            }
             files.map((file) => {
-                let filename = file.name;
-                let type = file.name.split('.').reverse()[0];
-                form.append('pdfFiles', { uri: file.uri, name: filename, size: file.size, type })
+                if (file.id === undefined) {
+                    let filename = file.name;
+                    let type = file.name.split('.').reverse()[0];
+                    form.append('newFilesUpload', { uri: file.uri, name: filename, size: file.size, type })
+                } else {
+                    form.append('files', file.id)
+                }
             })
-            let result = await LessonService.createLesson(form)
-            mutate(API.Course.getCourseById + props.route.params)
+            let result = await LessonService.updateLesson(form)
+            let les = await LessonService.getLessonById(data.id)
+            // mutate(API.Course.getCourseById + props.route.params.courseId, [])
+            mutate(API.Course.getCourseById + props.route.params.courseId, result.data)
+            // mutate(API.Course.getCourseById + props.route.params.courseId, les.data)
+            mutate(API.Lesson.getLessonById + data.id, [])
+            mutate(API.Lesson.getLessonById + data.id)
             props.navigation.goBack()
-            props.navigation.navigate("AssignmentScreen", { lesson: result.data })
+            // props.navigation.navigate("AssignmentScreen", result.data)
         } catch (err) {
             console.log(err)
         }
@@ -164,7 +194,7 @@ function CreateLesson(props) {
             style={{ flex: 1 }}
         >
             <View style={styles.container}>
-                <Navbar back={true} header={"Create Lesson"} props={props}></Navbar>
+                <Navbar back={true} header={"Edit Lesson"} props={props}></Navbar>
                 <ScrollView>
                     <View style={styles.Layout}>
                         {/* <Text style={styles.text}>title</Text> */}
@@ -222,12 +252,12 @@ function CreateLesson(props) {
                             </TouchableOpacity>
                         </Box>
                         <Stack direction="row">
-                            <Text style={[styles.text, { marginTop: 11 }]}>Hide</Text>
+                            <Text style={styles.text}>Hide</Text>
                             <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" onPress={() => setIsHide(!isHide)} />
                         </Stack>
                         <RadioButton.Group onValueChange={value => setType(value)} value={type}>
                             <Stack direction="row">
-                                <Text style={{ marginTop: 14, fontSize: 18, marginLeft: 4, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>Type : </Text>
+                                <Text style={{ marginTop: 15, fontSize: 18, marginLeft: 4, fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>Type : </Text>
                                 <RadioButton.Item label="Lesson" value="LESSON" color={'#E2D36B'} labelStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} />
                                 <RadioButton.Item label="Quiz" value="QUIZ" color={'#E2D36B'} labelStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }} />
                             </Stack>
@@ -243,12 +273,13 @@ function CreateLesson(props) {
                             secondaryColor="#ffffff"
                             autoCapitalize="none"
                             autoCorrect={false}
+                            initialInput={tags}
                             onAdd={(value) => value !== null ? setTags([...tags, value]) : null}
                         />
                         <TouchableOpacity style={styles.button} onPress={() => {
-                            createLesson()
+                            editLesson()
                         }}>
-                            <Text style={styles.text_button}>Create Lesson</Text>
+                            <Text style={styles.text_button}>Confirm</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView >
@@ -257,4 +288,4 @@ function CreateLesson(props) {
     );
 }
 
-export default CreateLesson;
+export default EditLesson;
