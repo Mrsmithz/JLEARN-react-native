@@ -55,8 +55,6 @@ function Lesson(props) {
     try {
       let myUserId = await UserService.getUser()
       let userRole = (data.users.filter((user) => user.id === myUserId.data.id))[0].role
-      console.log(userRole)
-      setUserRole(userRole)
       let result = await Promise.all(data.lessons.map(async (lesson) => {
         let lessonResult = (await LessonService.getLessonById(lesson.id)).data
         let creatorId = lessonResult.creatorId
@@ -64,7 +62,13 @@ function Lesson(props) {
         lessonResult.creator = creator
         return lessonResult
       }))
-      setLessonList(result)
+      let mylesson = result.filter((lesson)=>{
+        if (!lesson.isHide || userRole === 'LECTURER') {
+          return lesson
+        }
+      })
+      setUserRole(userRole)
+      setLessonList(mylesson)
       console.log(userRole)
     } catch (err) {
       console.log("no lesson")

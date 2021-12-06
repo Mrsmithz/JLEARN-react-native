@@ -12,6 +12,12 @@ class UserService {
     static async getUserById(id){
         return await axios.get(API.User.getUserById + id)
     }
+    static async getScoreboard(id){
+        return await axios.get(API.User.getScoreboard + id)
+    }
+    static async getLastSubmitted(id){
+        return await axios.get(API.User.getLastSubmitted + id)
+    }
 }
 
 export default UserService;

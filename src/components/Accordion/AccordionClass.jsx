@@ -121,6 +121,7 @@ const AccordionClass = (props) => {
             <List.Accordion
                 style={[styles.card, !expandedAttr ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={"Attributes"}
+                titleStyle={{fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",}}
                 expanded={expandedAttr}
                 theme={{ colors: { background: 'transparent' } }}
                 onPress={handlePressAttr}>
@@ -164,6 +165,7 @@ const AccordionClass = (props) => {
             <List.Accordion
                 style={[styles.card, !expandedMethods ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={"Methods"}
+                titleStyle={{fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",}}
                 expanded={expandedMethods}
                 theme={{ colors: { background: 'transparent' } }}
                 onPress={handlePressMethods}>

@@ -89,12 +89,12 @@ function DeleteIcon(props) {
                 style={{ width: "70%" }}
             >
                 <Card disabled={true} style={{ width: "100%", borderRadius: 7 }}>
-                    <Text style={{ justifyContent: 'center', textAlign: 'center', fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>Are You Sure To Delete {props.title}</Text>
+                    <Text style={{ justifyContent: 'center', textAlign: 'center', fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}>Are you sure to delete {props.title}</Text>
                     <View style={{ flexDirection: 'row', flex: 1 }}>
                         <TouchableOpacity onPress={() => setVisible(false)} style={styles.button}>
                             <Text style={styles.text}>Cancel</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => deleteObject(props.type, props.id)} style={[styles.button, , { backgroundColor: 'red' }]}>
+                        <TouchableOpacity onPress={() => deleteObject(props.type, props.id)} style={[styles.button, , { backgroundColor: '#F90716' }]}>
                             <Text style={styles.text}>Delete</Text>
                         </TouchableOpacity>
                     </View>

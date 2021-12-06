@@ -75,9 +75,10 @@ function EditAssignment(props) {
         },
         text_button: {
             alignSelf: 'center',
-            marginTop: 10,
+            marginTop: 13,
             fontWeight: 'bold',
             color: "snow",
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         button: {
             borderRadius: 10,
@@ -116,9 +117,10 @@ function EditAssignment(props) {
         text_upload: {
             fontSize: 18,
             marginLeft: 5,
-            marginTop: 2,
+            marginTop: 5,
             alignContent: 'center',
-            color: 'snow'
+            color: 'snow',
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         box: {
             backgroundColor: "#6F5F90",
@@ -188,10 +190,6 @@ function EditAssignment(props) {
     }
     const editAssignment = async () => {
         try {
-            // let veson = veSON
-            // veson.jaSon = jaSon
-            // veson.reSon = reSon
-            // console.log(veson, "veeeeee")
             let veson = ""
             let form = new FormData()
             form.append('id', assignment.id)
@@ -265,6 +263,15 @@ function EditAssignment(props) {
                             label="Assignment Name"
                             mode="outlined"
                             style={styles.textinput}
+                            theme={
+                                {
+                                    fonts: {
+                                        regular: {
+                                            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                    }
+                                }
+                            }
                             value={title}
                             onChangeText={title => setTitle(title)}
                         />
@@ -273,6 +280,15 @@ function EditAssignment(props) {
                             label="Description"
                             mode="outlined"
                             style={styles.textinput}
+                            theme={
+                                {
+                                    fonts: {
+                                        regular: {
+                                            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+                                        }
+                                    }
+                                }
+                            }
                             value={description}
                             onChangeText={description => setDescription(description)}
                         />
@@ -282,7 +298,7 @@ function EditAssignment(props) {
                                 <Box style={styles.box}>
                                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
                                         {newCodefiles.length ? newCodefiles.map((file, index) => {
-                                            return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteCodeFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                            return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteCodeFile(index)} style={styles.chip} textStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif", marginTop:3 }} key={index}>{file.name}</Chip>
                                         })
                                             : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
                                     </View>
@@ -303,7 +319,7 @@ function EditAssignment(props) {
                                 <Box style={styles.box}>
                                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
                                         {codeFiles.length ? codeFiles.map((file, index) => {
-                                            return <Chip onPress={() => console.log('Pressed')} style={styles.chip} key={index}>{file.name}</Chip>
+                                            return <Chip onPress={() => console.log('Pressed')} style={styles.chip} textStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif", marginTop:3 }} key={index}>{file.name}</Chip>
                                         })
                                             : <Text style={styles.text_upload}>No Uploaded Code Files</Text>}
                                     </View>
@@ -344,13 +360,13 @@ function EditAssignment(props) {
                             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginLeft: 5 }}>
                                 {files.length ?
                                     files.map((file, index) => {
-                                        return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                        return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteFile(index)} style={styles.chip} textStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif", marginTop:3 }} key={index}>{file.name}</Chip>
                                     })
                                     : null
                                 }
                                 {newPdfFiles.length ?
                                     newPdfFiles.map((file, index) => {
-                                        return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteNewFile(index)} style={styles.chip} key={index}>{file.name}</Chip>
+                                        return <Chip onPress={() => console.log('Pressed')} onClose={() => deleteNewFile(index)} style={styles.chip} textStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif", marginTop:3 }} key={index}>{file.name}</Chip>
                                     })
                                     : null
                                 }

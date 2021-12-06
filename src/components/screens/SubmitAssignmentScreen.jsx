@@ -19,10 +19,11 @@
    TouchableOpacity
  } from 'react-native';
  import SubmitAssignment from '../Assignment/SubmitAssignment';
+ import BottomAssignmentTab from '../Tab/BottomAssignmentTab';
  
  function SubmitAssignmentScreen(props) {
    return (
-     <SubmitAssignment props={props}></SubmitAssignment>
+     <BottomAssignmentTab props={props}></BottomAssignmentTab>
    );
  }
  

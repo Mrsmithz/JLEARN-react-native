@@ -20,7 +20,7 @@ const AccordionFiles = (props) => {
         setFiles(result)
     }
     useEffect(() => {
-        if(props.files){
+        if (props.files) {
             getFiles()
         }
     }, [props.files])
@@ -29,15 +29,17 @@ const AccordionFiles = (props) => {
             <List.Accordion
                 style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
+                titleStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif", marginTop: 2 }}
                 expanded={expanded}
                 onPress={handlePress}
-                theme={{colors:{background:'transparent', primary:'#D72323'}}}
+                theme={{ colors: { background: 'transparent', primary: '#0C7B93' } }}
                 left={props => <List.Icon {...props} icon={icon} />}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     {files.map((file, index) => {
                         return (<Link
                             _text={{
                                 color: "blue.400",
+                                fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
                             }}
                             key={index}
                             style={styles.files}
@@ -81,8 +83,8 @@ const styles = StyleSheet.create({
         width: "100%",
         alignSelf: "center",
     },
-    files:{
-        marginBottom:10
+    files: {
+        marginBottom: 10,
     }
 });
 
