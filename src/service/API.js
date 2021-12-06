@@ -18,6 +18,8 @@ const API = {
         userJoinCourse:`${BASE_URL}/user/join`,
         getUser:`${BASE_URL}/user/`,
         getUserById:`${BASE_URL}/user/find/`, //+id
+        getScoreboard:`${BASE_URL}/user/scoreboard/`, //+id
+        getLastSubmitted:`${BASE_URL}/history/user/`, //+id
     },
     Lesson:{
         createLesson:`${BASE_URL}/lesson`,

@@ -63,14 +63,15 @@ function Result(props) {
             borderRadius: 10,
             marginTop: 20,
             height: 40,
-            marginBottom: 10,
+            marginBottom: 20,
             backgroundColor: "#031B88",
         },
         text_button: {
             alignSelf: 'center',
-            marginTop: 10,
+            marginTop: 13,
             fontWeight: 'bold',
-            color: "snow"
+            color: "snow",
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
         },
         upload: {
             borderRadius: 10,
@@ -86,22 +87,25 @@ function Result(props) {
             marginLeft: 2,
         },
         text: {
-            marginTop: 15,
+            marginTop: 17,
             fontWeight: 'bold',
             fontSize: 13,
             flexWrap: 'wrap',
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
         },
         subtext: {
-            marginTop: 8.5,
+            marginTop: 9,
             flexWrap: 'nowrap',
-            flex: 1
+            flex: 1,
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
         },
         stack: {
             marginBottom: 10,
             flex: 1
         },
         score: {
-            marginBottom: 25
+            marginBottom: 25,
+            fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
         },
         icon: {
             height: 30,
@@ -142,11 +146,12 @@ function Result(props) {
                             <Stack direction="column" style={{ flex: 2 }}>
                                 <Progress.Circle
                                     size={130}
-                                    progress={assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore}
+                                    progress={assignmentHistory.fullAssignmentScore !==0 ? assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore : 100}
                                     showsText
-                                    color={(assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore) >= 0.5 ? '#CBE54E' : '#E06C78'}
+                                    color={(assignmentHistory.fullAssignmentScore !==0 ? assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore : 1) >= 0.5 ? '#CBE54E' : '#E06C78'}
                                     textStyle={{ 
-                                        color: (assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore) >= 0.5 ? "#94B447" : '#E06C78'
+                                        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+                                        color: (assignmentHistory.fullAssignmentScore !==0 ? assignmentHistory.assignmentScore/assignmentHistory.fullAssignmentScore : 1) >= 0.5 ? "#94B447" : '#E06C78'
                                     }}
                                     formatText={() => {
                                         return `${assignmentHistory.assignmentScore}/${assignmentHistory.fullAssignmentScore}`

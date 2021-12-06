@@ -43,7 +43,12 @@ function MyCourse(props) {
         let courseResult = (await CourseService.getCourseById(course.id)).data
         return courseResult
       }))
-      setCourseList(result)
+      let mycourse = result.filter((course)=>{
+        if (!course.isHide || data.role === 'LECTURER') {
+          return course
+        }
+      })
+      setCourseList(mycourse)
     } catch (err) {
       console.log("no course")
     }
@@ -55,9 +60,8 @@ function MyCourse(props) {
     });
   }
   useEffect(() => {
-    console.log("refresh1")
+    console.log("update mycourse")
     if (data) {
-      console.log("refresh2")
       getCourse()
     }
   }, [data])

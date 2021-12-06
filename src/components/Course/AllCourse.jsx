@@ -54,8 +54,19 @@ function AllCourse(props) {
       })
     }
     try {
-      let result = data.filter(course =>
-        !myCourseListId.includes(course.id)
+      let result = data.filter(course => {
+        if (myCourseList.data.role === "LECTURER") {
+          if (!myCourseListId.includes(course.id)) {
+            return course
+          }
+        } else {
+          if (!course.isHide) {
+            if (!myCourseListId.includes(course.id)) {
+              return course
+            }
+          }
+        }
+      }
       )
       setCourseList(result)
     } catch (err) {

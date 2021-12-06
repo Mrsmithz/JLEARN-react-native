@@ -45,6 +45,7 @@ function EditLesson(props) {
     let [title, setTitle] = React.useState(data.title);
     let [description, setDescription] = React.useState(data.description);
     let [isHide, setIsHide] = React.useState(data.isHide)
+    console.log(isHide)
     const styles = StyleSheet.create({
         Layout: {
             marginTop: 10,
@@ -253,7 +254,7 @@ function EditLesson(props) {
                         </Box>
                         <Stack direction="row">
                             <Text style={styles.text}>Hide</Text>
-                            <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" onPress={() => setIsHide(!isHide)} />
+                            <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" isChecked={isHide} onPress={() => setIsHide(!isHide)} />
                         </Stack>
                         <RadioButton.Group onValueChange={value => setType(value)} value={type}>
                             <Stack direction="row">

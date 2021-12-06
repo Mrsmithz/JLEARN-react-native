@@ -15,13 +15,14 @@ const AccordionText = (props) => {
   return (
     <List.Section >
       <List.Accordion
-        style={[styles.card, !expanded ? {borderRadius:10} : null, {backgroundColor:color}]}
+        style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
         title={props.title}
+        titleStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif", marginTop:2 }}
         expanded={expanded}
         onPress={handlePress}
-        theme={{colors:{background:'transparent', primary:'#0C7B93'}}}
+        theme={{ colors: { background: 'transparent', primary: '#0C7B93' } }}
         left={props => <List.Icon {...props} icon={icon} />}>
-        <Box style={[styles.Box, {backgroundColor:color}]}>
+        <Box style={[styles.Box, { backgroundColor: color }]}>
           <Text style={styles.text}>{text}</Text>
         </Box>
       </List.Accordion>
@@ -35,16 +36,17 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     marginTop: 5,
     flex: 1,
-    height:50,
+    height: 50,
     justifyContent: 'center',
-    borderBottomColor:'red',
+    borderBottomColor: 'red',
   },
   Box: {
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
   },
-  text:{
-    marginBottom:10
+  text: {
+    marginBottom: 10,
+    fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
   }
 });
 

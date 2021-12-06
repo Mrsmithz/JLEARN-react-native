@@ -225,7 +225,7 @@ function EditCourse(props) {
                             />
                             <Stack direction="row" style={{ marginTop: 5 }}>
                                 <Text style={styles.text}>Hide</Text>
-                                <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" onPress={() => setIsHide(!isHide)} />
+                                <Checkbox value="danger" colorScheme="info" style={styles.checkbox} accessibilityLabel="empty" isChecked={isHide} onPress={() => setIsHide(!isHide)} />
                             </Stack>
                             <Text style={styles.text}>Course Image</Text>
                             <Image source={(data.image || changeImage) ? { uri: image } : Logo} style={styles.logo} />

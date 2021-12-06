@@ -132,7 +132,6 @@ function CreateCourse(props) {
             form.append('password', enroll)
             form.append('isHide', isHide)
             await CourseService.createCourse(form)
-            console.log('ee')
             mutate(API.Course.getAllCourse)
             props.navigation.navigate("CourseScreen")
         } catch (err) {

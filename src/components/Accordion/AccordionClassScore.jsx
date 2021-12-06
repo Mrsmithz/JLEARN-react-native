@@ -25,15 +25,28 @@ const AccordionClassScore = (props) => {
             <List.Accordion
                 style={[styles.card, !expandedClass ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
+                titleStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif", }}
                 expanded={expandedClass}
-                theme={{colors:{background:'transparent', primary:'#FF5DA2'}}}
+                theme={{ colors: { background: 'transparent', primary: '#810034' }}}
                 onPress={handlePressClass}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
                         <DataTable.Header>
-                            <DataTable.Title>Name</DataTable.Title>
-                            <DataTable.Title>Found Class</DataTable.Title>
-                            <DataTable.Title style={{ justifyContent: 'center' }}>Score</DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.text}>
+                                    Name
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.text}>
+                                    Found Class
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ justifyContent: 'center' }}>
+                                <Text style={styles.text}>
+                                    Score
+                                </Text>
+                            </DataTable.Title>
 
                         </DataTable.Header>
 
@@ -53,13 +66,19 @@ function ClassTable(props) {
     return (
         <DataTable.Row>
             <DataTable.Cell>
-                {jason.name}
+                <Text style={styles.text}>
+                    {jason.name}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell>
-                {jason.foundClassName ? "Found" : "Not Found"}
+                <Text style={styles.text}>
+                    {jason.foundClassName ? "Found" : "Not Found"}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ justifyContent: 'center' }}>
-                {jason.allScore}
+                <Text style={styles.text}>
+                    {jason.allScore}
+                </Text>
             </DataTable.Cell>
         </DataTable.Row>
     )
@@ -109,6 +128,10 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginRight: "7.5%"
     },
+    text: {
+        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+        marginTop: 2
+    }
 });
 
 export default AccordionClassScore;

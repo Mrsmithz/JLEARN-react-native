@@ -29,15 +29,17 @@ const AccordionCodeFiles = (props) => {
             <List.Accordion
                 style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
+                titleStyle={{fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",}}
                 expanded={expanded}
                 onPress={handlePress}
-                theme={{colors:{background:'transparent', primary:'#AE4CCF'}}}
+                theme={{colors:{background:'transparent', primary: '#810034' }}}
                 left={props => <List.Icon {...props} icon={icon} />}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     {files.map((file, index) => {
                         return (<Link
                             _text={{
                                 color: "blue.400",
+                                fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
                             }}
                             key={index}
                             style={styles.files}

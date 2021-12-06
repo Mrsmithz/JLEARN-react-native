@@ -59,19 +59,19 @@ function Navbar(props) {
   const styles = StyleSheet.create({
     text: {
       fontWeight: 'bold',
-      fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif"
+      fontFamily: (Platform.OS === "ios") ? "Georgia" : "serif"
     }
 
   });
   return (
-    <Box height='119' borderBottomRadius='20' bg='#FFB284' width="100%" style={{ flexDirection: 'column' }} >
-      <Stack direction="row" style={{ marginRight: 20, marginTop: 50, alignItems: "center", justifyContent: "center" }}>
+    <Box height='100' borderBottomRadius='20' bg='#FFB284' width="100%" style={{ flexDirection: 'column' }} >
+      <Stack direction="row" style={{ marginRight: 20, marginTop: 40, alignItems: "center", justifyContent: "center" }}>
         <Stack direction="column" style={{ flex: 1, height: 35 }}>
           {props.back ?
             <Icon name="arrow-ios-back-outline" fill='snow' onPress={() => back()} />
             : null}
         </Stack>
-        <Stack direction="column" style={{ flex: 5, alignItems: "center" }}>
+        <Stack direction="column" style={{ flex: 5, alignItems: "center", marginLeft:30 }}>
           <Text style={styles.text}>{props.header}</Text>
         </Stack>
         <Stack direction="column" style={{ flex: 1, height: 35 }}>

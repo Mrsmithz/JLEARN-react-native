@@ -32,21 +32,38 @@ const AccordionRelation = (props) => {
             <List.Accordion
                 style={[styles.card, !expanded ? { borderRadius: 10 } : null, { backgroundColor: color }]}
                 title={props.title}
+                titleStyle={{ fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif" }}
                 expanded={expanded}
-                theme={{colors:{background:'transparent', primary:'#E5890A'}}}
+                theme={{ colors: { background: 'transparent', primary: '#810034' } }}
                 onPress={handlePress}>
                 <Box style={[styles.Box, { backgroundColor: color }]}>
                     <DataTable>
                         <DataTable.Header>
-                            <DataTable.Title>Source</DataTable.Title>
-                            <DataTable.Title>Target</DataTable.Title>
-                            <DataTable.Title>Type</DataTable.Title>
-                            <DataTable.Title style={{ justifyContent: 'center' }}>Score</DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.text}>
+                                    Source
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.text}>
+                                    Target
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title>
+                                <Text style={styles.text}>
+                                    Type
+                                </Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ justifyContent: 'center' }}>
+                                <Text style={styles.text}>
+                                    Score
+                                </Text>
+                            </DataTable.Title>
 
                         </DataTable.Header>
 
                         {reSon.map((reson, index) => {
-                            return (<LinkTable reSon={reson}  key={index} ></LinkTable>)
+                            return (<LinkTable reSon={reson} key={index} ></LinkTable>)
                         })}
                     </DataTable>
                 </Box>
@@ -55,21 +72,29 @@ const AccordionRelation = (props) => {
     );
 };
 
-function LinkTable(props){
+function LinkTable(props) {
     let reson = props.reSon
     return (
         <DataTable.Row>
             <DataTable.Cell>
-                {reson.source}
+                <Text style={styles.text}>
+                    {reson.source}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell>
-                {reson.target}
+                <Text style={styles.text}>
+                    {reson.target}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell>
-                {reson.type}
+                <Text style={styles.text}>
+                    {reson.type}
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ justifyContent: 'center' }}>
-                {reson.score}
+                <Text style={styles.text}>
+                    {reson.score}
+                </Text>
             </DataTable.Cell>
 
         </DataTable.Row>
@@ -120,6 +145,10 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginRight: "7.5%"
     },
+    text: {
+        fontFamily: (Platform.OS === "ios") ? "Palatino" : "serif",
+        marginTop: 2
+    }
 });
 
 export default AccordionRelation;
